@@ -20,7 +20,7 @@ public class ModelShop extends ModifiableObservableListBase<Product> {
 
     //get Product Array List from  Productlist
     public List<Product> getList() {
-        return ProductList.getInstance().getProductlist();
+        return delegate;
     }
 
     @Override

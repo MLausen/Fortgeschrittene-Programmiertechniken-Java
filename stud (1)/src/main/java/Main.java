@@ -1,3 +1,4 @@
+import Controller.ControllerCostumerView;
 import Controller.ControllerShop;
 import Model.ModelShop;
 import Services.ProductFactory;
@@ -25,9 +26,17 @@ public class Main extends Application {
 
     @Override
     public void start(Stage CostumerStage) throws Exception {
+        // defining model for application
+        // should be singleton pattern??
+        ModelShop model = new ModelShop();
+
+        // defining start views
         ViewShop viewShop = new ViewShop();
         ViewCustomer viewCustomer = new ViewCustomer();
+
+        // instanciate controller for views
         ControllerShop controllerShop = new ControllerShop();
+        ControllerCostumerView controllerCostumerView = new ControllerCostumerView();
 
         //customer stage
         CostumerStage.setTitle("Customer");
@@ -43,6 +52,7 @@ public class Main extends Application {
         shopStage.show();
 
         //link
-        controllerShop.link(new ModelShop(), viewShop, viewCustomer);
+        controllerShop.link(model, viewShop);
+        controllerCostumerView.link(model, viewCustomer);
     }
 }
