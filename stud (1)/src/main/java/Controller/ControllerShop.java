@@ -20,64 +20,64 @@ import java.io.FileNotFoundException;
 public class ControllerShop {
     String path;
     private ModelShop modelShop;
-
+    private ViewShop viewShop;
     public ControllerShop() throws FileNotFoundException {
     }
 
     // added event handler to view elements
-    public void link(ModelShop model, ViewShop viewShop) {
+    public void link(ModelShop model, ViewShop view) {
         this.modelShop = model;
+        this.viewShop = view;
+
         viewShop.getTable().setItems(modelShop);
         viewShop.addEventHandler(e -> {
             String buttonID = ((Button) e.getSource()).getId();
             switch (buttonID) {
                 case ViewShop.ADD_BUTTON_ID:
-                    addElement(viewShop.getName(), Double.parseDouble(viewShop.getPrice()), Integer.parseInt(viewShop.getQuantity()));
+                    addElement();
                     break;
                 case ViewShop.DEL_BUTTON_ID:
-                    deleteElement(viewShop.selectedProduct());
+                    deleteElement();
                     break;
                 case ViewShop.SAVE_BUTTON_ID:
-                    // todo without param?
-                    save(viewShop);
+                    save();
                     break;
                 case ViewShop.LOAD_BUTTON_ID:
-                    // todo
-                    load(viewShop);
+                    load();
                     break;
             }
         });
     }
 
     // add new product to model
-    private void addElement(String name, double price, int quantity) {
+    private void addElement() {
         try {
-            modelShop.add(new Model.Product(name, price, quantity));
+            modelShop.add(new Model.Product(viewShop.getName(), Double.parseDouble(viewShop.getPrice()), Integer.parseInt(viewShop.getQuantity())));
         } catch (NumberFormatException e2) {
             error("Please enter Numeric Value");
         }
     }
 
     // delete product from model
-    private void deleteElement(Product product) {
-        System.out.println("delete: " + product.getName());
-        modelShop.remove(product);
+    private void deleteElement() {
+        System.out.println("delete: " + viewShop.selectedProduct().getName());
+        modelShop.remove(viewShop.selectedProduct());
         for (fpt.com.Product p : Services.ProductList.getInstance().getProductlist()) {
             System.out.println("remaining: " + p.getName());
         }
     }
 
-    private void save(ViewShop v) {
+    private void save() {
         try {
-            modelShop.save((SerializableStrategy) getStratagy(v), path);
+            modelShop.save((SerializableStrategy) getStratagy(viewShop), path);
         } catch (Exception e1) {
             // todo dont catch all exceptions
         }
     }
 
-    private void load(ViewShop v) {
+    private void load() {
         try {
-            modelShop.load((SerializableStrategy) getStratagy(v), path);
+            modelShop.load((SerializableStrategy) getStratagy(viewShop), path);
         } catch (Exception e1) {
             // todo dont catch all exceptions
         }
