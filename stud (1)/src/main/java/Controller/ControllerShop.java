@@ -24,7 +24,7 @@ public class ControllerShop {
     public ControllerShop() throws FileNotFoundException {
     }
 
-    // TODO comment
+    // added event handler to view elements
     public void link(ModelShop model, ViewShop viewShop) {
         this.modelShop = model;
         viewShop.getTable().setItems(modelShop);
@@ -38,7 +38,7 @@ public class ControllerShop {
                     deleteElement(viewShop.selectedProduct());
                     break;
                 case ViewShop.SAVE_BUTTON_ID:
-                    // todo
+                    // todo without param?
                     save(viewShop);
                     break;
                 case ViewShop.LOAD_BUTTON_ID:
@@ -71,6 +71,7 @@ public class ControllerShop {
         try {
             modelShop.save((SerializableStrategy) getStratagy(v), path);
         } catch (Exception e1) {
+            // todo dont catch all exceptions
         }
     }
 
@@ -78,7 +79,7 @@ public class ControllerShop {
         try {
             modelShop.load((SerializableStrategy) getStratagy(v), path);
         } catch (Exception e1) {
-
+            // todo dont catch all exceptions
         }
     }
 
