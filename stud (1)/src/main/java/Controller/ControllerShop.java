@@ -1,9 +1,11 @@
 package Controller;
 
 
+import Helper.ErrorDialog;
 import Model.ModelShop;
 import Strategy.BinaryStrategy;
 import Strategy.XMLStrategy;
+import Strategy.XStreamStrategy;
 import View.ViewCustomer;
 import View.ViewShop;
 import fpt.com.Product;
@@ -18,9 +20,10 @@ import java.io.FileNotFoundException;
  * controller element of View.ViewShop
  */
 public class ControllerShop {
-    String path;
+    String path; // why global? what if binary, xml and xstream
     private ModelShop modelShop;
     private ViewShop viewShop;
+
     public ControllerShop() throws FileNotFoundException {
     }
 
@@ -54,7 +57,7 @@ public class ControllerShop {
         try {
             modelShop.add(new Model.Product(viewShop.getName(), Double.parseDouble(viewShop.getPrice()), Integer.parseInt(viewShop.getQuantity())));
         } catch (NumberFormatException e2) {
-            error("Please enter Numeric Value");
+            ErrorDialog.error("Please enter Numeric Value");
         }
     }
 
@@ -83,22 +86,20 @@ public class ControllerShop {
         }
     }
 
-    private void error(String s) {
-        JOptionPane.showMessageDialog(null,
-                "Error : " + s);
-    }
-
     public SerializableStrategy getStratagy(ViewShop v) throws FileNotFoundException {
         String choice = ("" + v.getCboiseBox());
         switch (choice) {
-            case "XML-Serialisierung":
+            case ViewShop.XML_SER:
                 path = "sss.xml";
                 return new XMLStrategy();
-            case "Binary-Serialisierung":
+            case ViewShop.BINARY_SER:
                 path = "sss.ser";
                 return new BinaryStrategy();
+            case ViewShop.XSTREAM_SER:
+                path = "sss.xml";
+                return new XStreamStrategy();
             default:
-                error("Please select SerializableStrategy");
+                ErrorDialog.error("something went wrong");
         }
         return null;
     }

@@ -1,5 +1,6 @@
 package Strategy;
 
+import Helper.ErrorDialog;
 import fpt.com.*;
 import fpt.com.Product;
 
@@ -27,7 +28,7 @@ public class BinaryStrategy implements SerializableStrategy {
         } catch (EOFException e) {
 
         } catch (ClassNotFoundException | IOException e) {
-            // TODO Auto-generated catch block
+            ErrorDialog.error("Unfortunately, the requested file was not found.");
             e.printStackTrace();
         }
         return readObject;
@@ -38,10 +39,8 @@ public class BinaryStrategy implements SerializableStrategy {
         try {
             objectOutputStream.writeObject(obj); // write Object
             objectOutputStream.flush();
-
-        } catch (EOFException e) {
-
         } catch (IOException e) {
+            ErrorDialog.error("Unfortunately, the file could not be created.");
             e.printStackTrace();
         }
     }

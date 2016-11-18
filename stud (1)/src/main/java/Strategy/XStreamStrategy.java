@@ -1,28 +1,41 @@
 package Strategy;
 
+import Helper.ErrorDialog;
 import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.io.xml.DomDriver;
 import fpt.com.*;
 import fpt.com.Product;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import javax.swing.*;
+import java.io.*;
 
 /**
- * Created by Sufian Vaio on 16.11.2016.
+ * Created
  */
 public class XStreamStrategy implements SerializableStrategy {
-
-    XStream stream = new XStream();
+    XStream stream;
+    Object output;
 
     @Override
-    public fpt.com.Product readObject() throws IOException {
-        return null;
+    public fpt.com.Product readObject() {
+        try (FileReader fileReader = new FileReader("XStreamSer.xml")) {
+            output = (fpt.com.Product) stream.fromXML(fileReader);
+        } catch (IOException io) {
+            ErrorDialog.error("Unfortunately, the requested file was not found.");
+        }
+
+        return (fpt.com.Product) output;
     }
 
     @Override
-    public void writeObject(Product obj) throws IOException {
-
+    public void writeObject(Product obj) {
+        stream = new XStream(new DomDriver());
+        try (FileWriter fileReader = new FileWriter("XStreamSer.xml")) {
+            stream.toXML(obj, fileReader);
+        } catch (IOException io) {
+            ErrorDialog.error("Unfortunately, the file could not be created.");
+            io.printStackTrace();
+        }
     }
 
     @Override
@@ -32,6 +45,6 @@ public class XStreamStrategy implements SerializableStrategy {
 
     @Override
     public void open(InputStream input, OutputStream output) throws IOException {
-
+        // TODO
     }
 }

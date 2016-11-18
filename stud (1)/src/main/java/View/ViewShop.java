@@ -20,10 +20,16 @@ import javafx.scene.layout.HBox;
 public class ViewShop extends BorderPane {
     TableView<fpt.com.Product> table = new TableView<>();
 
+    // TODO create String file
     public static final String ADD_BUTTON_ID ="addButton";
     public static final String DEL_BUTTON_ID = "deleteButton";
     public static final String SAVE_BUTTON_ID = "saveButton";
     public static final String LOAD_BUTTON_ID = "loadButton";
+
+    public static final String BINARY_SER = "Binary-Serialisierung";
+    public static final String XML_SER = "XML-Serialisierung";
+    public static final String XSTREAM_SER = "XStream XML-Serialisierung";
+
 
     Button addbtn;
     Button delbtn;
@@ -49,7 +55,7 @@ public class ViewShop extends BorderPane {
         savebtn.setId(SAVE_BUTTON_ID);
         loadbtn.setId(LOAD_BUTTON_ID);
 
-        cb = new ChoiceBox(FXCollections.observableArrayList("Binary-Serialisierung", "XML-Serialisierung", "XStream XML-Serialisierung:"));
+        cb = new ChoiceBox(FXCollections.observableArrayList(BINARY_SER, XML_SER, XSTREAM_SER));
         toolbox = new HBox(savebtn, loadbtn, cb);
         toolbox.setSpacing(20);
 

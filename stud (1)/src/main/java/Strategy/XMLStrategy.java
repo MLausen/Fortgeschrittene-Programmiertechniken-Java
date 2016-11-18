@@ -1,5 +1,6 @@
 package Strategy;
 
+import Helper.ErrorDialog;
 import fpt.com.*;
 import fpt.com.Product;
 
@@ -24,6 +25,7 @@ public class XMLStrategy implements SerializableStrategy {
         try {
             p = (Product) decoder.readObject();
         }catch (Exception e){
+            ErrorDialog.error("Unfortunately, the requested file was not found.");
             return null;
         }
         return p;
