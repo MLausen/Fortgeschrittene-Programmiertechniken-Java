@@ -16,6 +16,9 @@ public class XStreamStrategy implements SerializableStrategy {
     XStream stream;
     Object output;
 
+    FileReader reader;
+    FileWriter writer;
+
     @Override
     public fpt.com.Product readObject() {
         try (FileReader fileReader = new FileReader("XStreamSer.xml")) {
@@ -45,6 +48,14 @@ public class XStreamStrategy implements SerializableStrategy {
 
     @Override
     public void open(InputStream input, OutputStream output) throws IOException {
-        // TODO
+       /* if (input != null) {
+            reader = new FileReader();
+        }
+        if (output != null) {
+            writer = new FileWriter(output);
+        }*/
     }
+
+    // default method from interface
+    //public XStream createXStream(){}
 }

@@ -20,7 +20,7 @@ import java.io.FileNotFoundException;
  * controller element of View.ViewShop
  */
 public class ControllerShop {
-    String path; // why global? what if binary, xml and xstream
+    String path;
     private ModelShop modelShop;
     private ViewShop viewShop;
 
@@ -76,7 +76,7 @@ public class ControllerShop {
 
     private void save() {
         try {
-            modelShop.save((SerializableStrategy) getStratagy(viewShop), path);
+            modelShop.save(getStratagy(viewShop), path);
         } catch (Exception e1) {
             // todo dont catch all exceptions
         }
@@ -84,23 +84,23 @@ public class ControllerShop {
 
     private void load() {
         try {
-            modelShop.load((SerializableStrategy) getStratagy(viewShop), path);
+            modelShop.load(getStratagy(viewShop), path);
         } catch (Exception e1) {
             // todo dont catch all exceptions
         }
     }
 
-    public SerializableStrategy getStratagy(ViewShop v) throws FileNotFoundException {
+    public SerializableStrategy getStratagy(ViewShop v) {
         String choice = ("" + v.getCboiseBox());
         switch (choice) {
             case ViewShop.XML_SER:
-                path = "sss.xml";
+                path = "XmlSer.xml";
                 return new XMLStrategy();
             case ViewShop.BINARY_SER:
-                path = "sss.ser";
+                path = "BinarySer.ser";
                 return new BinaryStrategy();
             case ViewShop.XSTREAM_SER:
-                path = "sss.xml";
+                path = "XStreamSer.xml";
                 return new XStreamStrategy();
             default:
                 ErrorDialog.error("something went wrong");
