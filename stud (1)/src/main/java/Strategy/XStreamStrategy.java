@@ -8,6 +8,7 @@ import fpt.com.Product;
 
 import javax.swing.*;
 import java.io.*;
+import java.nio.file.Paths;
 
 /**
  * Created
@@ -16,35 +17,37 @@ public class XStreamStrategy implements SerializableStrategy {
     XStream stream;
     Object output;
 
-    @Override
-    public fpt.com.Product readObject() {
-        try (FileReader fileReader = new FileReader("XStreamSer.xml")) {
-            output = (fpt.com.Product) stream.fromXML(fileReader);
-        } catch (IOException io) {
-            ErrorDialog.error("Unfortunately, the requested file was not found.");
-        }
+    FileReader reader;
+    FileWriter writer;
 
+    ByteArrayInputStream byteInput;
+    ByteArrayOutputStream byteOutput;
+
+    @Override
+    public fpt.com.Product readObject() throws IOException {
+        output = (fpt.com.Product) stream.fromXML(reader);
         return (fpt.com.Product) output;
     }
 
     @Override
-    public void writeObject(Product obj) {
-        stream = new XStream(new DomDriver());
-        try (FileWriter fileReader = new FileWriter("XStreamSer.xml")) {
-            stream.toXML(obj, fileReader);
-        } catch (IOException io) {
-            ErrorDialog.error("Unfortunately, the file could not be created.");
-            io.printStackTrace();
+    public void writeObject(Product obj) throws  IOException{
+        // auf rat von uebungsleiter hin
+        if(stream == null){
+            writer = new FileWriter("XStreamSer.xml");
+            stream = new XStream(new DomDriver());
         }
+        stream.toXML(obj, writer);
     }
 
     @Override
     public void close() throws IOException {
-
+        reader.close();
+        writer.close();
     }
 
     @Override
-    public void open(InputStream input, OutputStream output) throws IOException {
-        // TODO
-    }
+    public void open(InputStream input, OutputStream output) throws IOException {  }
+
+    // default method from interface
+    // public XStream createXStream(){}
 }

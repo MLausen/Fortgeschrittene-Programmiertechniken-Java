@@ -1,5 +1,6 @@
 package Model;
 
+import Helper.ErrorDialog;
 import Services.ProductList;
 import fpt.com.Product;
 import fpt.com.SerializableStrategy;
@@ -50,13 +51,16 @@ public class ModelShop extends ModifiableObservableListBase<Product> {
         return delegate.remove(index);
     }
 
-    public void save(SerializableStrategy strategy, String path) throws IOException {
+    public void save(SerializableStrategy strategy, String path) throws IOException{
         try {
             strategy.open(null, new FileOutputStream(path));
             for (int i = 0; i < this.getList().size(); i++) {
                 strategy.writeObject(this.getList().get(i));
             }
-        }catch (Exception e){
+        }catch (IOException io){
+            ErrorDialog.error("Unfortunately, the file could not be created.");
+            io.printStackTrace();
+        }finally {
             strategy.close();
         }
     }
@@ -69,7 +73,10 @@ public class ModelShop extends ModifiableObservableListBase<Product> {
             while ((p = strategy.readObject()) != null) {
                 this.add(p);
             }
-        }catch (EOFException e){
+        }catch (IOException io){
+            ErrorDialog.error("Unfortunately, the requested file was not found.");
+            io.printStackTrace();
+        }finally {
             strategy.close();
         }
     }

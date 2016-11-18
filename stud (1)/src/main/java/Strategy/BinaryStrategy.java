@@ -17,11 +17,11 @@ public class BinaryStrategy implements SerializableStrategy {
     private ObjectOutputStream objectOutputStream;
     private ObjectInputStream objectInputStream;
 
-    public BinaryStrategy() throws FileNotFoundException {
+    public BinaryStrategy() {
     }
 
     @Override
-    public Product readObject() throws IOException {
+    public Product readObject() {
         Product readObject = null;
         try {
             readObject = (fpt.com.Product) objectInputStream.readObject(); // Read Object
@@ -35,7 +35,7 @@ public class BinaryStrategy implements SerializableStrategy {
     }
 
     @Override
-    public void writeObject(fpt.com.Product obj) throws IOException {
+    public void writeObject(fpt.com.Product obj) throws IOException{
         try {
             objectOutputStream.writeObject(obj); // write Object
             objectOutputStream.flush();
@@ -51,8 +51,12 @@ public class BinaryStrategy implements SerializableStrategy {
 
     @Override
     public void open(InputStream input, OutputStream output) throws IOException {
-        if (input != null) objectInputStream = new ObjectInputStream(input);
-        if (output != null) objectOutputStream = new ObjectOutputStream(output);
+        if (input != null) {
+            objectInputStream = new ObjectInputStream(input);
+        }
+        if (output != null) {
+            objectOutputStream = new ObjectOutputStream(output);
+        }
     }
 }
 
