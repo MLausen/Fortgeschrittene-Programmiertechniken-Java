@@ -63,6 +63,10 @@ public class ControllerShop {
 
     // delete product from model
     private void deleteElement() {
+        if (viewShop.selectedProduct() == null) {
+            ErrorDialog.error("Please add product first.");
+            return;
+        }
         System.out.println("delete: " + viewShop.selectedProduct().getName());
         modelShop.remove(viewShop.selectedProduct());
         for (fpt.com.Product p : Services.ProductList.getInstance().getProductlist()) {

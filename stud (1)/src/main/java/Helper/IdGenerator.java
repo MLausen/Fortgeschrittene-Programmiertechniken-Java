@@ -19,7 +19,7 @@ public class IdGenerator {
 
     private static int id = 0;
     public static int generateID() throws IdOverFlowException {
-        if(id < 99999){
+        if(id < 999999){
             return ++id;
         }
         throw new IdOverFlowException();
