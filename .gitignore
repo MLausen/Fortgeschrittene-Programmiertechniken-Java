@@ -1,3 +1,3 @@
 stud (1)/.idea/
 *.class
-stud(1)/target/
+stud(1)/target/*
