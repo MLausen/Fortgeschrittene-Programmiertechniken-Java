@@ -24,6 +24,7 @@ public class Product implements fpt.com.Product, Externalizable {
     private SimpleLongProperty id = new SimpleLongProperty();
     private SimpleDoubleProperty price = new SimpleDoubleProperty();
     private SimpleIntegerProperty quantity = new SimpleIntegerProperty();
+
     private ObjectInput in;
 
     public Product() {

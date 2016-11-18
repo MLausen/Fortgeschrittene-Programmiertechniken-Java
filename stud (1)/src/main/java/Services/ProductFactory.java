@@ -9,6 +9,7 @@ import Model.Product;
 public class ProductFactory {
     // TODO singleton pattern?
     public static void createProducts(){
+
         // TODO instance of ModelShop
         ProductList.getInstance().add(new Product("Apfel", 0.67, 20));
         ProductList.getInstance().add(new Product("Birne", 0.89, 15));

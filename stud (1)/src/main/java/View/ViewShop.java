@@ -20,13 +20,18 @@ import javafx.scene.layout.HBox;
 public class ViewShop extends BorderPane {
     TableView<fpt.com.Product> table = new TableView<>();
 
+    public static final String ADD_BUTTON_ID ="addButton";
+    public static final String DEL_BUTTON_ID = "deleteButton";
+    public static final String SAVE_BUTTON_ID = "saveButton";
+    public static final String LOAD_BUTTON_ID = "loadButton";
+
     Button addbtn;
     Button delbtn;
     Button savebtn;
     Button loadbtn;
 
-    TextField price, quantatiy, name;
-    Label priceL, quantatiyL, nameL;
+    TextField priceArea, quantatiyArea, nameArea;
+    Label priceLabel, quantatiyLabel, nameLabel;
     HBox box;
 
     HBox toolbox;
@@ -39,24 +44,25 @@ public class ViewShop extends BorderPane {
         savebtn = new Button("Save");
         loadbtn = new Button("Load");
 
+        addbtn.setId(ADD_BUTTON_ID);
+        delbtn.setId(DEL_BUTTON_ID);
+        savebtn.setId(SAVE_BUTTON_ID);
+        loadbtn.setId(LOAD_BUTTON_ID);
+
         cb = new ChoiceBox(FXCollections.observableArrayList("Binary-Serialisierung", "XML-Serialisierung", "XStream XML-Serialisierung:"));
         toolbox = new HBox(savebtn, loadbtn, cb);
         toolbox.setSpacing(20);
 
-        addbtn.setId("addButton");
-        delbtn.setId("deleteButton");
-        savebtn.setId("saveButton");
-        loadbtn.setId("loadButton");
 
-        price = new TextField();
-        quantatiy = new TextField();
-        name = new TextField();
+        priceArea = new TextField();
+        quantatiyArea = new TextField();
+        nameArea = new TextField();
 
-        priceL = new Label("          Price");
-        quantatiyL = new Label("Quantity");
-        nameL = new Label("Name");
+        priceLabel = new Label("\t\tPrice");
+        quantatiyLabel = new Label("Quantity");
+        nameLabel = new Label("Name");
 
-        box = new HBox(addbtn, delbtn, priceL, price, quantatiyL, quantatiy, nameL, name);
+        box = new HBox(addbtn, delbtn, priceLabel, priceArea, quantatiyLabel, quantatiyArea, nameLabel, nameArea);
         bigbox = new HBox(box);
         bigbox.setAlignment(Pos.CENTER);
         bigbox.setPrefHeight(50);
@@ -105,14 +111,14 @@ public class ViewShop extends BorderPane {
     }
 
     public String getName() {
-        return name.getText();
+        return nameArea.getText();
     }
 
     public String getQuantity() {
-        return quantatiy.getText();
+        return quantatiyArea.getText();
     }
 
     public String getPrice() {
-        return price.getText();
+        return priceArea.getText();
     }
 }

@@ -20,8 +20,7 @@ public class ControllerShop {
     String path;
     private ModelShop modelShop;
 
-    public ControllerShop() throws FileNotFoundException {
-    }
+    public ControllerShop() throws FileNotFoundException {  }
 
     // TODO comment
     public void link(ModelShop model, ViewShop viewShop, ViewCustomer viewCustomer) {
@@ -31,23 +30,23 @@ public class ControllerShop {
         viewShop.addEventHandler(e -> {
             String buttonID = ((Button) e.getSource()).getId();
             switch (buttonID) {
-                case "addButton":
+                case ViewShop.ADD_BUTTON_ID:
                     try {
                         modelShop.add(new Product(viewShop.getName(), Double.parseDouble(viewShop.getPrice()), Integer.parseInt(viewShop.getQuantity())));
                     } catch (NumberFormatException e2) {
                         error("Please enter Numeric Value");
                     }
                     break;
-                case "deleteButton":
+                case ViewShop.DEL_BUTTON_ID:
                     modelShop.remove(viewShop.selectedProduct());
                     break;
-                case "saveButton":
+                case ViewShop.SAVE_BUTTON_ID:
                     try {
                         modelShop.save((SerializableStrategy) getStratagy(viewShop), path);
                     } catch (Exception e1) {
                     }
                     break;
-                case "loadButton":
+                case ViewShop.LOAD_BUTTON_ID:
                     try {
                         modelShop.load((SerializableStrategy) getStratagy(viewShop), path);
                     } catch (Exception e1) {
