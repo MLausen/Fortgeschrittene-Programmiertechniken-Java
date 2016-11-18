@@ -13,28 +13,34 @@ import javafx.stage.Stage;
 public class Main extends Application {
 
     public static void main(String[] args) {
+        // prepare
         ProductFactory.createProducts();
+        // launch application
         Application.launch(args);
     }
 
+    // TODO question Melli
+    // What if content of main view changes?
+    // still need primary stage!? --> give as parameter to view???
+
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage CostumerStage) throws Exception {
         ViewShop viewShop = new ViewShop();
         ViewCustomer viewCustomer = new ViewCustomer();
         ControllerShop controllerShop = new ControllerShop();
 
         //customer stage
-        primaryStage.setTitle("Customer");
+        CostumerStage.setTitle("Customer");
         Scene scene = new Scene(viewCustomer);
-        primaryStage.setScene(scene);
-        primaryStage.show();
+        CostumerStage.setScene(scene);
+        CostumerStage.show();
 
         //shop stage
-        Stage anotherStage = new Stage();
-        anotherStage.setTitle("Shop");
+        Stage shopStage = new Stage();
+        shopStage.setTitle("Shop");
         Scene shopScene = new Scene(viewShop);
-        anotherStage.setScene(shopScene);
-        anotherStage.show();
+        shopStage.setScene(shopScene);
+        shopStage.show();
 
         //link
         controllerShop.link(new ModelShop(), viewShop, viewCustomer);
