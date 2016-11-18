@@ -57,8 +57,9 @@ public class ModelShop extends ModifiableObservableListBase<Product> {
             for (int i = 0; i < this.getList().size(); i++) {
                 strategy.writeObject(this.getList().get(i));
             }
-        }catch (IOException e){
-            ErrorDialog.error("TEST");
+        }catch (IOException io){
+            ErrorDialog.error("Unfortunately, the file could not be created.");
+            io.printStackTrace();
         }finally {
             strategy.close();
         }
@@ -72,7 +73,10 @@ public class ModelShop extends ModifiableObservableListBase<Product> {
             while ((p = strategy.readObject()) != null) {
                 this.add(p);
             }
-        }catch (EOFException e){
+        }catch (IOException io){
+            ErrorDialog.error("Unfortunately, the requested file was not found.");
+            io.printStackTrace();
+        }finally {
             strategy.close();
         }
     }
