@@ -30,7 +30,7 @@ public class Product implements fpt.com.Product, Externalizable {
         this("undefined", 0, 0);
     }
 
-    public Product(String name, int quantity, double price) {
+    public Product(String name, double price, int quantity) {
         this.name.set(name);
         this.quantity.set(quantity);
         this.price.set(price);

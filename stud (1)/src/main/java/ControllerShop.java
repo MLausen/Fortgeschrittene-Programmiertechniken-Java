@@ -16,7 +16,6 @@ import java.io.FileNotFoundException;
  * Created by Team 1/2Hobbyte
  */
 public class ControllerShop {
-    IdGenerator idGen = new IdGenerator();
     String path;
 
     public ControllerShop() throws FileNotFoundException {
@@ -31,7 +30,7 @@ public class ControllerShop {
             switch (buttonID) {
                 case "addButton":
                     try {
-                        modelShop.add(new Product(viewShop.getName(), Integer.parseInt(viewShop.getQuantity()), Double.parseDouble(viewShop.getPrice())));
+                        modelShop.add(new Product(viewShop.getName(), Double.parseDouble(viewShop.getPrice()), Integer.parseInt(viewShop.getQuantity())));
                     } catch (NumberFormatException e2) {
                         error("Please enter Numeric Value");
                     }

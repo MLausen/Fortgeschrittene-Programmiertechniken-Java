@@ -1,4 +1,5 @@
 import Model.ModelShop;
+import Services.ProductFactory;
 import View.ViewCustomer;
 import View.ViewShop;
 import javafx.application.Application;
@@ -12,6 +13,7 @@ import javafx.stage.Stage;
 public class Main extends Application {
 
     public static void main(String[] args) {
+        ProductFactory.createProducts();
         Application.launch(args);
     }
 
