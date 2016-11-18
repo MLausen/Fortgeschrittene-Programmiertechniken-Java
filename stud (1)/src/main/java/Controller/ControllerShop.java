@@ -18,12 +18,14 @@ import java.io.FileNotFoundException;
  */
 public class ControllerShop {
     String path;
+    private ModelShop modelShop;
 
     public ControllerShop() throws FileNotFoundException {
     }
 
     // TODO comment
-    public void link(ModelShop modelShop, ViewShop viewShop, ViewCustomer viewCustomer) {
+    public void link(ModelShop model, ViewShop viewShop, ViewCustomer viewCustomer) {
+        this.modelShop = model;
         viewCustomer.setProducts(modelShop);
         viewShop.getTable().setItems(modelShop);
         viewShop.addEventHandler(e -> {

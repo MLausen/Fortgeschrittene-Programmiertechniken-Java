@@ -10,7 +10,6 @@ import javafx.stage.Stage;
 /**
  * Created by Team 1/2Hobbyte
  */
-
 public class Main extends Application {
 
     public static void main(String[] args) {
@@ -20,13 +19,9 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        ModelShop modelShop = new ModelShop();
         ViewShop viewShop = new ViewShop();
         ViewCustomer viewCustomer = new ViewCustomer();
         ControllerShop controllerShop = new ControllerShop();
-
-        //link
-        controllerShop.link(modelShop, viewShop, viewCustomer);
 
         //customer stage
         primaryStage.setTitle("Customer");
@@ -40,5 +35,8 @@ public class Main extends Application {
         Scene shopScene = new Scene(viewShop);
         anotherStage.setScene(shopScene);
         anotherStage.show();
+
+        //link
+        controllerShop.link(new ModelShop(), viewShop, viewCustomer);
     }
 }
