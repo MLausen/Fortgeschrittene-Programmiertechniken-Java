@@ -1,3 +1,4 @@
+import Controller.ControllerShop;
 import Model.ModelShop;
 import Services.ProductFactory;
 import View.ViewCustomer;

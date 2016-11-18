@@ -1,12 +1,13 @@
-import Helper.IdGenerator;
-import Helper.IdOverFlowException;
+package Controller;
+
+
 import Model.ModelShop;
 import Model.Product;
 import Strategy.BinaryStrategy;
 import Strategy.XMLStrategy;
 import View.ViewCustomer;
 import View.ViewShop;
-import fpt.com.*;
+import fpt.com.SerializableStrategy;
 import javafx.scene.control.Button;
 
 import javax.swing.*;
