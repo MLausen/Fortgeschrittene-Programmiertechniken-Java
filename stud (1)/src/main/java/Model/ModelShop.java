@@ -4,6 +4,7 @@ import Helper.ErrorDialog;
 import Services.ProductList;
 import fpt.com.Product;
 import fpt.com.SerializableStrategy;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ModifiableObservableListBase;
 
 import java.io.*;
@@ -34,7 +35,20 @@ public class ModelShop extends ModifiableObservableListBase<Product> {
         return ProductList.getInstance().getProductlist().size();
     }
 
-    // ML ???
+    @Override
+    public void add(int index, Product product) {
+        if (product != null) {
+            for (Product p : delegate) {
+                if (product.getName().equals(p.getName())) {
+                    p.setQuantity(p.getQuantity() + product.getQuantity());
+                    System.out.println("UPDATES Product named: " + product.getName());
+                    return;
+                }
+            }
+        }
+        super.add(index, product);
+        //ProductList.getInstance().add(element);
+    }
 
     @Override
     protected void doAdd(int index, Product element) {

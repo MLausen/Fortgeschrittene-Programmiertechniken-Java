@@ -32,7 +32,6 @@ public class Order implements fpt.com.Order {
             e.setQuantity(e.getQuantity() - 1);
 
             return true;
-
         }
         return false;
     }

@@ -3,7 +3,7 @@ package Helper;
 import javax.swing.*;
 
 /**
- * Created
+ * Created by Team 10
  */
 public class ErrorDialog{
     public static void error(String message){

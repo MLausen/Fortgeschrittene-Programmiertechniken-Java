@@ -23,5 +23,7 @@ public class ProductFactory {
         ProductList.getInstance().add(new Product("Joghurt", 0.99, 50));
         ProductList.getInstance().add(new Product("Milch", 1.49, 100));
         ProductList.getInstance().add(new Product("Orange", 0.45, 75));
+        ProductList.getInstance().add(new Product("Apfel", 0.67, 20));
+
     }
 }
