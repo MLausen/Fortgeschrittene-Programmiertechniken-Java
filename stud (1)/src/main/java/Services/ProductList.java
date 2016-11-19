@@ -27,6 +27,7 @@ public class ProductList implements fpt.com.ProductList {
 
     @Override
     public boolean add(Product product) {
+        //TODO check if name in list --> count quantity >
         boolean success = false;
         if (product != null) {
             for (Product p : productlist) {

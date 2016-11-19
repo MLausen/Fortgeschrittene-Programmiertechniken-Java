@@ -35,8 +35,7 @@ public class Product implements fpt.com.Product, Externalizable {
         this.name.set(name);
         this.quantity.set(quantity);
         this.price.set(price);
-
-        // generate new id
+        
         try {
             this.id.set(IdGenerator.generateID());
         } catch (IdOverFlowException e) {

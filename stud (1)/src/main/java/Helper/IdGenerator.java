@@ -1,5 +1,10 @@
 package Helper;
 
+import Services.ProductList;
+import fpt.com.Product;
+
+import java.util.List;
+
 /**
  * Created by Team 1/2Hobbyte
  */
@@ -17,10 +22,11 @@ public class IdGenerator {
         throw new IdOverFlowException();
     }*/
 
-    private static int id = 0;
-    public static int generateID() throws IdOverFlowException {
-        if(id < 999999){
-            return ++id;
+    private static long id = 0;
+    public static long generateID() throws IdOverFlowException {
+        for (id = 1; id <= 999999; id++) {
+            if(ProductList.getInstance().findProductById(id) == null)
+                return id;
         }
         throw new IdOverFlowException();
     }
