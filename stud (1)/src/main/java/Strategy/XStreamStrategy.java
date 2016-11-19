@@ -37,6 +37,9 @@ public class XStreamStrategy implements SerializableStrategy {
             stream = new XStream(new DomDriver());
         }
         stream.toXML(obj, writer);
+        //TODO to make id 6 char
+        //createXStream().aliasAttribute();
+        //stream.registerConverter(new Helper.SingleValueConverter());
     }
 
     @Override

@@ -52,10 +52,12 @@ public class ControllerShop {
         });
     }
 
+    // TODO check if quantity > 0
     // add new product to model
     private void addElement() {
         try {
             modelShop.add(new Model.Product(viewShop.getName(), Double.parseDouble(viewShop.getPrice()), Integer.parseInt(viewShop.getQuantity())));
+            System.out.println(modelShop.getList().size());
         } catch (NumberFormatException e2) {
             ErrorDialog.error("Please enter Numeric Value");
         }
@@ -75,10 +77,14 @@ public class ControllerShop {
     }
 
     private void save() {
-        try {
-            modelShop.save(getStratagy(viewShop), path);
-        } catch (Exception e1) {
-            // todo dont catch all exceptions
+        if (modelShop.getList().size() > 4) {
+            try {
+                modelShop.save(getStratagy(viewShop), path);
+            } catch (Exception e1) {
+                // todo dont catch all exceptions
+            }
+        } else {
+            ErrorDialog.error("Min 5 elements to save in file.");
         }
     }
 
@@ -94,13 +100,13 @@ public class ControllerShop {
         String choice = ("" + v.getCboiseBox());
         switch (choice) {
             case ViewShop.XML_SER:
-                path = "XmlSer.xml";
+                path = "products.xml";
                 return new XMLStrategy();
             case ViewShop.BINARY_SER:
-                path = "BinarySer.ser";
+                path = "products.ser";
                 return new BinaryStrategy();
             case ViewShop.XSTREAM_SER:
-                path = "XStreamSer.xml";
+                path = "xproducts.xml";
                 return new XStreamStrategy();
             default:
                 ErrorDialog.error("something went wrong");

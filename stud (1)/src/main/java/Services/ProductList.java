@@ -1,4 +1,5 @@
 package Services;
+
 import fpt.com.Product;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
@@ -27,15 +28,14 @@ public class ProductList implements fpt.com.ProductList {
 
     @Override
     public boolean add(Product product) {
-        //TODO check if name in list --> count quantity >
+        //TODO delete duplicate
         boolean success = false;
         if (product != null) {
-            for (Product p : productlist) {
-                if (product.getName().equals(p.getName())) {
-                    p.setQuantity(p.getQuantity() + product.getQuantity());
-                    System.out.println("UPDATES Product named: " + product.getName());
-                    success = true;
-                }
+            Product temp;
+            if ((temp = findProductByName(product.getName())) != null) {
+                temp.setQuantity(temp.getQuantity() + product.getQuantity());
+                System.out.println("UPDATES Product named: " + product.getName());
+                success = true;
             }
             if (!success) {
                 productlist.add(product);
