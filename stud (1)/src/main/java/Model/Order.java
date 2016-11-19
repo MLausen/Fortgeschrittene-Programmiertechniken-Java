@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 /**
- * Created by Team 1/2Hobbyte
+ * Created by Team 10
  */
 public class Order implements fpt.com.Order {
     // Product with quantity of order

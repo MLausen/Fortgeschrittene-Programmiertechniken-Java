@@ -9,7 +9,7 @@ import java.beans.XMLEncoder;
 import java.io.*;
 
 /**
- * Created by Team 1/2Hobbyte
+ * Created by Team 10
  */
 public class XMLStrategy implements SerializableStrategy {
     //ML made private

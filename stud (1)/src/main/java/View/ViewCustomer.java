@@ -9,7 +9,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 
 /**
- * Created by Sufian Vaio on 13.11.2016.
+ * Created by Team 10
  */
 public class ViewCustomer extends BorderPane {
 

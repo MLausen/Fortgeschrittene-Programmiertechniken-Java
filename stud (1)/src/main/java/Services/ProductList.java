@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.ListIterator;
 
 /**
- * Created by Team 1/2Hobbyte
+ * Created by Team 10
  */
 public class ProductList implements fpt.com.ProductList {
     // TODO, wenn name schon vorhanden, sollte einfach die Quantity hochgesetzt werden

@@ -15,7 +15,7 @@ import java.io.ObjectInput;
 import java.io.ObjectOutput;
 
 /**
- * Created by Team 1/2Hobbyte
+ * Created by Team 10
  */
 public class Product implements fpt.com.Product, Externalizable {
     private static final long serialVersionUID = 701L;
