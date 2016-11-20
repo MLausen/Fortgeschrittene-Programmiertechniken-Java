@@ -12,7 +12,6 @@ import java.util.ListIterator;
  * Created by Team 10
  */
 public class ProductList implements fpt.com.ProductList {
-    // TODO, wenn name schon vorhanden, sollte einfach die Quantity hochgesetzt werden
     List<Product> productlist = new ArrayList<Product>();
     private static ProductList instance;
 
@@ -22,26 +21,18 @@ public class ProductList implements fpt.com.ProductList {
     public static ProductList getInstance() {
         if (ProductList.instance == null) {
             ProductList.instance = new ProductList();
+            initalCreationOfProducts();
         }
         return ProductList.instance;
     }
 
     @Override
     public boolean add(Product product) {
-        //TODO delete duplicate
         boolean success = false;
         if (product != null) {
-            Product temp;
-            if ((temp = findProductByName(product.getName())) != null) {
-                temp.setQuantity(temp.getQuantity() + product.getQuantity());
-                System.out.println("UPDATES Product named: " + product.getName());
-                success = true;
-            }
-            if (!success) {
-                productlist.add(product);
-                System.out.println("ADDED Product named: " + product.getName());
-                success = true;
-            }
+            productlist.add(product);
+            System.out.println("ADDED Product named: " + product.getName());
+            success = true;
         }
         return success;
     }
@@ -63,8 +54,7 @@ public class ProductList implements fpt.com.ProductList {
 
     @Override
     public int size() {
-        int result = -1;
-        return result;
+        return getProductlist().size();
     }
 
     @Override
@@ -87,59 +77,83 @@ public class ProductList implements fpt.com.ProductList {
     }
 
     public List<Product> getProductlist() {
-        return this.productlist;
+        return productlist;
     }
 
-    //TODO
+    // product factory
+    private static void initalCreationOfProducts(){
+        ProductList.getInstance().add(new Model.Product("Apfel", 0.67, 20));
+        ProductList.getInstance().add(new Model.Product("Birne", 0.89, 15));
+        ProductList.getInstance().add(new Model.Product("Pflaume", 0.45, 50));
+        ProductList.getInstance().add(new Model.Product("Brot", 0.99, 10));
+        ProductList.getInstance().add(new Model.Product("Aubergine", 1.99, 7));
+        ProductList.getInstance().add(new Model.Product("Paprika", 0.79, 36));
+        ProductList.getInstance().add(new Model.Product("Pfirsich", 0.23, 50));
+        ProductList.getInstance().add(new Model.Product("Erdbeeren 500g", 2.99, 20));
+        ProductList.getInstance().add(new Model.Product("Himbeeren 200g", 1.99, 20));
+        ProductList.getInstance().add(new Model.Product("Joghurt", 0.99, 50));
+        ProductList.getInstance().add(new Model.Product("Milch", 1.49, 100));
+        ProductList.getInstance().add(new Model.Product("Orange", 0.45, 75));
+    }
+
     @Override
     public Iterator<Product> iterator() {
-        int cursor = 0; // TODO give index
-        final int end = productlist.size();
+        int cursor = 0;
+        final int end = size();
 
         return new ListIterator<Product>() {
             @Override
             public boolean hasNext() {
-                return cursor < end;
+                return cursor + 1 < end;
             }
 
             @Override
             public Product next() {
-                throw new NotImplementedException();
+                if (cursor + 1 < end) {
+                    return ProductList.getInstance().getProductlist().get(cursor + 1);
+                }
+                return null;
             }
 
             @Override
             public boolean hasPrevious() {
-                throw new NotImplementedException();
+                if (cursor > 0)
+                    return true;
+                return false;
             }
 
             @Override
             public Product previous() {
-                throw new NotImplementedException();
+                if (cursor > 0) {
+                    return ProductList.getInstance().getProductlist().get(cursor - 1);
+                }
+                return null;
             }
 
             @Override
             public int nextIndex() {
-                throw new NotImplementedException();
+                return (cursor + 1);
             }
 
             @Override
             public int previousIndex() {
-                throw new NotImplementedException();
+                return (cursor - 1);
             }
 
+            //TODO
             @Override
             public void remove() {
-                throw new NotImplementedException();
+                throw new UnsupportedOperationException();
             }
 
             @Override
             public void set(Product product) {
-                throw new NotImplementedException();
+                throw new UnsupportedOperationException();
             }
 
             @Override
             public void add(Product product) {
-                throw new NotImplementedException();
+                throw new UnsupportedOperationException();
             }
         };
     }
