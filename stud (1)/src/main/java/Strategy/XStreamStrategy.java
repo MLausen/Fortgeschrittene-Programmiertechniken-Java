@@ -1,6 +1,7 @@
 package Strategy;
 
 import Helper.ErrorDialog;
+import Helper.SingleValueConverter;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 import fpt.com.*;
@@ -31,15 +32,15 @@ public class XStreamStrategy implements SerializableStrategy {
 
     @Override
     public void writeObject(Product obj) throws  IOException{
-        // auf rat von uebungsleiter hin
         if(stream == null){
-            writer = new FileWriter("XStreamSer.xml");
+            writer = new FileWriter("xproducts.xml");
             stream = new XStream(new DomDriver());
         }
+
+        stream.registerConverter(new SingleValueConverter(), XStream.PRIORITY_LOW);
+        stream.alias("waren", Model.Product.class);
+
         stream.toXML(obj, writer);
-        //TODO to make id 6 char
-        //createXStream().aliasAttribute();
-        //stream.registerConverter(new Helper.SingleValueConverter());
     }
 
     @Override
