@@ -42,11 +42,24 @@ public class SingleValueConverter implements Converter {
     @Override
     public Object unmarshal(HierarchicalStreamReader reader, UnmarshallingContext context) {
         Product prod = new Model.Product();
-        reader.moveDown();
         prod.setId(Long.parseLong(reader.getAttribute("id")));
-        prod.setQuantity(Integer.parseInt(reader.getAttribute("quantity")));
-        prod.setPrice(Double.parseDouble(reader.getAttribute("price")));
-        prod.setName(reader.getAttribute("name"));
+
+        for (int i = 0; i < 3; i++){
+            reader.moveDown();
+
+            if(reader.getNodeName().equals("name")) {
+                prod.setName(reader.getValue());
+            }
+
+            if(reader.getNodeName().equals("quantity")) {
+                prod.setQuantity(Integer.parseInt(reader.getValue()));
+            }
+
+            if(reader.getNodeName().equals("price")) {
+                prod.setPrice(Double.parseDouble(reader.getValue()));
+            }
+
+        }
         return prod;
     }
 

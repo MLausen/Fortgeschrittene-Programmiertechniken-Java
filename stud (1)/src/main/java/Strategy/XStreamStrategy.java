@@ -28,7 +28,7 @@ public class XStreamStrategy implements SerializableStrategy {
     public fpt.com.Product readObject() throws IOException {
         if (stream == null) {
             stream = new XStream(new DomDriver());
-            stream.registerConverter(new SingleValueConverter());
+            stream.registerConverter(new SingleValueConverter(), XStream.PRIORITY_LOW);
         }
         output = stream.fromXML(reader);
         return (fpt.com.Product) output;
