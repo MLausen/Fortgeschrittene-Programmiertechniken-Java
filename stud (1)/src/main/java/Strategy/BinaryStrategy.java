@@ -7,7 +7,7 @@ import fpt.com.Product;
 import java.io.*;
 
 /**
- * Created by Team 1/2Hobbyte
+ * Created by Team 10
  */
 public class BinaryStrategy implements SerializableStrategy {
     // ML made private

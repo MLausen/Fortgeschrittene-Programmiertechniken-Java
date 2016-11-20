@@ -11,7 +11,7 @@ import java.io.*;
 import java.nio.file.Paths;
 
 /**
- * Created
+ * Created by Team 10
  */
 public class XStreamStrategy implements SerializableStrategy {
     XStream stream;

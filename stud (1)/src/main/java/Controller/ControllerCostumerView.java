@@ -6,7 +6,7 @@ import View.ViewShop;
 import javafx.scene.control.Button;
 
 /**
- * Created by Melli on 18.11.2016.
+ * Created Team 10
  */
 public class ControllerCostumerView {
     private ModelShop modelShop;

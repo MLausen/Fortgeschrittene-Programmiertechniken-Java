@@ -16,7 +16,7 @@ import javax.swing.*;
 import java.io.FileNotFoundException;
 
 /**
- * Created by Team 1/2Hobbyte
+ * Created by Team 10
  * controller element of View.ViewShop
  */
 public class ControllerShop {

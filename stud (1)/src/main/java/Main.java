@@ -9,7 +9,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 /**
- * Created by Team 1/2Hobbyte
+ * Created by Team 10
  */
 public class Main extends Application {
 

@@ -14,7 +14,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 
 /**
- * Created by Team 1/2Hobbyte
+ * Created by Team 10
  */
 
 public class ViewShop extends BorderPane {

@@ -11,8 +11,8 @@ import java.io.*;
 import java.util.List;
 
 /**
- * Created by Team 1/2Hobbyte
- */
+ * Created by Team 10
+         */
 public class ModelShop extends ModifiableObservableListBase<Product> {
     List<Product> delegate;
 

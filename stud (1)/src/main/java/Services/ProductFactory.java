@@ -4,7 +4,7 @@ package Services;
 import Model.Product;
 
 /**
- * Created by Team 1/2Hobbyte
+ * Created by Team 10
  */
 public class ProductFactory {
     // TODO singleton pattern?
