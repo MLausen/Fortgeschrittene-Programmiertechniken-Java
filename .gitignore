@@ -2,3 +2,16 @@ stud (1)/.idea/
 */*.class
 *.class
 stud (1)/target/*
+_windows/*
+inspection/*
+IntelliLang.xml
+mavenVersion.xml
+ui.Inf.xml
+cvs.xml
+ide.general.xml
+web-browser.xml
+github_settings.xml
+filetypes.xml
+debugger.xml
+color.scheme.xml
+diff.xml
