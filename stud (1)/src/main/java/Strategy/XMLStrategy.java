@@ -12,13 +12,13 @@ import java.io.*;
  * Created by Team 10
  */
 public class XMLStrategy implements SerializableStrategy {
-    //ML made private
     private FileOutputStream fo;
     private FileInputStream fi;
 
     private XMLEncoder encoder;
     private XMLDecoder decoder;
 
+    // TODO Exception
     @Override
     public fpt.com.Product readObject() throws IOException {
         Product p = null;
