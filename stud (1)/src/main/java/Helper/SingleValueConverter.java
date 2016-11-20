@@ -19,29 +19,35 @@ public class SingleValueConverter implements Converter {
 
     @Override
     public void marshal(Object obj, HierarchicalStreamWriter writer, MarshallingContext context) {
-        Product temp = (Product) obj;
+        Product prod = (Product) obj;
 
         // add id to head
-        writer.addAttribute("id", getSixCharId(temp.getId()));
+        writer.addAttribute("id", getSixCharId(prod.getId()));
 
         // create child nodes
 
         writer.startNode("name");
-        writer.setValue(temp.getName());
+        writer.setValue(prod.getName());
         writer.endNode();
 
         writer.startNode("price");
-        writer.setValue(parseToPriceFormat(temp.getPrice()));
+        writer.setValue(parseToPriceFormat(prod.getPrice()));
         writer.endNode();
 
         writer.startNode("quantity");
-        writer.setValue("" + temp.getQuantity());
+        writer.setValue("" + prod.getQuantity());
         writer.endNode();
     }
 
     @Override
-    public Object unmarshal(HierarchicalStreamReader hierarchicalStreamReader, UnmarshallingContext unmarshallingContext) {
-        return null;
+    public Object unmarshal(HierarchicalStreamReader reader, UnmarshallingContext context) {
+        Product prod = new Model.Product();
+        reader.moveDown();
+        prod.setId(Long.parseLong(reader.getAttribute("id")));
+        prod.setQuantity(Integer.parseInt(reader.getAttribute("quantity")));
+        prod.setPrice(Double.parseDouble(reader.getAttribute("price")));
+        prod.setName(reader.getAttribute("name"));
+        return prod;
     }
 
     @Override
@@ -56,6 +62,10 @@ public class SingleValueConverter implements Converter {
         String formattedPrice = df.format(price);
         return formattedPrice;
     }
+
+   /* private long getLongValue(String id){
+        return Long.parseLong(id);
+    }*/
 
     private String getSixCharId(long id) {
         if (id < 10) {
