@@ -47,6 +47,12 @@ public class BinaryStrategy implements SerializableStrategy {
 
     @Override
     public void close() throws IOException {
+        if (objectOutputStream != null) {
+            objectOutputStream.close();
+        }
+        if (objectInputStream != null) {
+            objectInputStream.close();
+        }
     }
 
     @Override

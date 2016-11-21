@@ -3,6 +3,7 @@ package Strategy;
 import Helper.ErrorDialog;
 import Helper.SingleValueConverter;
 import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 import fpt.com.*;
 import fpt.com.Product;
@@ -14,6 +15,8 @@ import java.nio.file.Paths;
 /**
  * Created by Team 10
  */
+//http://stackoverflow.com/questions/24894108/add-a-root-element-to-a-xml
+//not allowed to iterate with for loop
 public class XStreamStrategy implements SerializableStrategy {
     XStream stream;
     Object output;
@@ -28,8 +31,10 @@ public class XStreamStrategy implements SerializableStrategy {
     public fpt.com.Product readObject() throws IOException {
         if (stream == null) {
             stream = new XStream(new DomDriver());
-            stream.registerConverter(new SingleValueConverter(), XStream.PRIORITY_LOW);
+            reader = new FileReader("xproducts.xml");
         }
+
+        stream.registerConverter(new SingleValueConverter(), XStream.PRIORITY_LOW);
         output = stream.fromXML(reader);
         return (fpt.com.Product) output;
     }
@@ -42,7 +47,7 @@ public class XStreamStrategy implements SerializableStrategy {
         }
 
         stream.registerConverter(new SingleValueConverter(), XStream.PRIORITY_LOW);
-        stream.alias("waren", Model.Product.class);
+        //stream.alias("waren", Model.Product.class);
 
         stream.toXML(obj, writer);
     }

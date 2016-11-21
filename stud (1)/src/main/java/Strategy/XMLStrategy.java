@@ -12,9 +12,6 @@ import java.io.*;
  * Created by Team 10
  */
 public class XMLStrategy implements SerializableStrategy {
-    private FileOutputStream fo;
-    private FileInputStream fi;
-
     private XMLEncoder encoder;
     private XMLDecoder decoder;
 
@@ -40,6 +37,12 @@ public class XMLStrategy implements SerializableStrategy {
 
     @Override
     public void close() throws IOException {
+        if (encoder != null) {
+            encoder.close();
+        }
+        if (decoder != null) {
+            decoder.close();
+        }
     }
 
     @Override

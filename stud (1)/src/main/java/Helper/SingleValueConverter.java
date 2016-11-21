@@ -1,24 +1,31 @@
 package Helper;
 
+import Services.ProductList;
 import com.thoughtworks.xstream.converters.Converter;
 import com.thoughtworks.xstream.converters.MarshallingContext;
 import com.thoughtworks.xstream.converters.UnmarshallingContext;
 import com.thoughtworks.xstream.io.HierarchicalStreamReader;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
+
 import fpt.com.Product;
 
 import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
-import java.util.Locale;
 
 /**
  * Created by Team 10
  */
 public class SingleValueConverter implements Converter {
     // tutorial http://x-stream.github.io/converter-tutorial.html
+    private int index = 0;
 
     @Override
     public void marshal(Object obj, HierarchicalStreamWriter writer, MarshallingContext context) {
+        /*if(index == 0){
+            writer.startNode("xml");
+            writer.addAttribute("version", "1.0");
+            writer.addAttribute("encoding", "UTF-8");
+        }*/
+
         Product prod = (Product) obj;
 
         // add id to head
@@ -37,14 +44,19 @@ public class SingleValueConverter implements Converter {
         writer.startNode("quantity");
         writer.setValue("" + prod.getQuantity());
         writer.endNode();
+        index++;
     }
 
     @Override
     public Object unmarshal(HierarchicalStreamReader reader, UnmarshallingContext context) {
         Product prod = new Model.Product();
+
+        //go to first position
+        reader.moveDown();
         prod.setId(Long.parseLong(reader.getAttribute("id")));
 
         for (int i = 0; i < 3; i++){
+            // go to next position
             reader.moveDown();
 
             if(reader.getNodeName().equals("name")) {
@@ -58,7 +70,8 @@ public class SingleValueConverter implements Converter {
             if(reader.getNodeName().equals("price")) {
                 prod.setPrice(Double.parseDouble(reader.getValue()));
             }
-
+            // move back to tag
+            reader.moveUp();
         }
         return prod;
     }
