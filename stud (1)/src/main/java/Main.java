@@ -18,21 +18,16 @@ public class Main extends Application {
         Application.launch(args);
     }
 
-    // TODO question Melli
-    // What if content of main view changes?
-    // still need primary stage!? --> give as parameter to view???
-
     @Override
     public void start(Stage CostumerStage) throws Exception {
         // defining model for application
-        // should be singleton pattern??
         ModelShop model = new ModelShop();
 
         // defining start views
         ViewShop viewShop = new ViewShop();
         ViewCustomer viewCustomer = new ViewCustomer();
 
-        // instanciate controller for views
+        //instanciate controller for views
         ControllerShop controllerShop = new ControllerShop();
         ControllerCostumerView controllerCostumerView = new ControllerCostumerView();
 
