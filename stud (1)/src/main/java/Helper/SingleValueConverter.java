@@ -1,76 +1,58 @@
 package Helper;
 
-import Services.ProductList;
 import com.thoughtworks.xstream.converters.Converter;
 import com.thoughtworks.xstream.converters.MarshallingContext;
 import com.thoughtworks.xstream.converters.UnmarshallingContext;
 import com.thoughtworks.xstream.io.HierarchicalStreamReader;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
-
 import fpt.com.Product;
 
-import java.text.DecimalFormat;
+import java.util.Locale;
 
 /**
  * Created by Team 10
  */
 public class SingleValueConverter implements Converter {
-    // tutorial http://x-stream.github.io/converter-tutorial.html
-    private int index = 0;
 
     @Override
     public void marshal(Object obj, HierarchicalStreamWriter writer, MarshallingContext context) {
-        /*if(index == 0){
-            writer.startNode("xml");
-            writer.addAttribute("version", "1.0");
-            writer.addAttribute("encoding", "UTF-8");
-        }*/
-
         Product prod = (Product) obj;
 
-        // add id to head
-        writer.addAttribute("id", getSixCharId(prod.getId()));
+        // add id as attribute and convert the id with 6 digits id
+        writer.addAttribute("id", String.format("%06d", prod.getId()));
 
-        // create child nodes
-
-        writer.startNode("name");
-        writer.setValue(prod.getName());
-        writer.endNode();
+        //create xml tag
+        writer.startNode("name");                  //open tag as name
+        writer.setValue(prod.getName());         // add value to tag
+        writer.endNode();                       //close tag
 
         writer.startNode("price");
-        writer.setValue(parseToPriceFormat(prod.getPrice()));
+        writer.setValue(String.format(Locale.US, "%.2f", prod.getPrice())); //make the double number as 2 digits after comma
         writer.endNode();
 
         writer.startNode("quantity");
         writer.setValue("" + prod.getQuantity());
         writer.endNode();
-        index++;
     }
 
     @Override
     public Object unmarshal(HierarchicalStreamReader reader, UnmarshallingContext context) {
         Product prod = new Model.Product();
 
-        //go to first position
-        reader.moveDown();
+        //read the attribute id and set it to product
         prod.setId(Long.parseLong(reader.getAttribute("id")));
 
-        for (int i = 0; i < 3; i++){
-            // go to next position
+        //complete reading until there is no tags
+        while (reader.hasMoreChildren()) {
             reader.moveDown();
-
-            if(reader.getNodeName().equals("name")) {
+            String nodeName = reader.getNodeName();
+            if ("name".equalsIgnoreCase(nodeName)) {
                 prod.setName(reader.getValue());
-            }
-
-            if(reader.getNodeName().equals("quantity")) {
+            } else if ("price".equalsIgnoreCase(nodeName)) {
+                prod.setPrice(Double.parseDouble(reader.getValue()));
+            } else if ("quantity".equalsIgnoreCase(nodeName)) {
                 prod.setQuantity(Integer.parseInt(reader.getValue()));
             }
-
-            if(reader.getNodeName().equals("price")) {
-                prod.setPrice(Double.parseDouble(reader.getValue()));
-            }
-            // move back to tag
             reader.moveUp();
         }
         return prod;
@@ -81,34 +63,5 @@ public class SingleValueConverter implements Converter {
         return c.equals(Model.Product.class);
     }
 
-    private String parseToPriceFormat(double price){
-        // https://docs.oracle.com/javase/tutorial/i18n/format/decimalFormat.html#numberpattern
-        DecimalFormat df = new DecimalFormat();
-        df.applyLocalizedPattern("0.00");
-        String formattedPrice = df.format(price);
-        return formattedPrice;
-    }
 
-   /* private long getLongValue(String id){
-        return Long.parseLong(id);
-    }*/
-
-    private String getSixCharId(long id) {
-        if (id < 10) {
-            return "00000" + id;
-        }
-        if (id < 100) {
-            return "0000" + id;
-        }
-        if (id < 1000) {
-            return "000" + id;
-        }
-        if (id < 10000){
-            return "00" + id;
-        }
-        if (id < 100000){
-            return "0" + id;
-        }
-            return "" +  id;
-    }
 }

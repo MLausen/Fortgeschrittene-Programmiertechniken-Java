@@ -1,9 +1,7 @@
 package Strategy;
 
-import Helper.ErrorDialog;
-import fpt.com.*;
 import fpt.com.Product;
-
+import fpt.com.SerializableStrategy;
 import java.beans.XMLDecoder;
 import java.beans.XMLEncoder;
 import java.io.*;
@@ -15,18 +13,16 @@ public class XMLStrategy implements SerializableStrategy {
     private XMLEncoder encoder;
     private XMLDecoder decoder;
 
-    // TODO Exception
-    // Array Index out of Bounds?
-    // es wird auf index 12 zugegriffen, obwohl 12 elemente und 11 index
-    // warum kommt programm in readObj meth, wenn for schleife das abdecken soll?
+    private FileOutputStream fos;
+    private FileInputStream fis;
+
+
     @Override
     public fpt.com.Product readObject() throws IOException {
         Product p = null;
         try {
             p = (Product) decoder.readObject();
         } catch (Exception e) {
-            ErrorDialog.error("Unfortunately, the requested file was not found.");
-            e.printStackTrace();
             return null;
         }
         return p;
@@ -36,26 +32,25 @@ public class XMLStrategy implements SerializableStrategy {
     public void writeObject(Product obj) throws IOException {
         encoder.writeObject(obj);
         encoder.flush();
-        System.out.println(encoder + "naksdmkaslkdmas");
     }
 
     @Override
     public void close() throws IOException {
-        if (encoder != null) {
-            encoder.close();
-        }
-        if (decoder != null) {
-            decoder.close();
-        }
+        if(encoder!=null) encoder.close();
+        if(decoder!=null) decoder.close();
+        if(fis!=null) fis.close();
+        if(fos!=null)  fos.close();
     }
 
     @Override
     public void open(InputStream input, OutputStream output) throws IOException {
         if (output != null) {
             this.encoder = new XMLEncoder(output);
+            this.fos = (FileOutputStream) output;
         }
         if (input != null) {
             this.decoder = new XMLDecoder(input);
+            this.fis = (FileInputStream) input;
         }
     }
 }

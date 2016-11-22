@@ -104,7 +104,7 @@ public class ViewShop extends BorderPane {
         loadbtn.addEventHandler(ActionEvent.ACTION, eventHandler);
     }
 
-    public String getCboiseBox() {
+    public String getChoiceBox() {
         return (String) cb.getValue();
     }
 
@@ -113,7 +113,7 @@ public class ViewShop extends BorderPane {
     }
 
     public Product selectedProduct() {
-        return (Product) table.getSelectionModel().getSelectedItem();
+        return table.getSelectionModel().getSelectedItem();
     }
 
     public String getName() {

@@ -1,67 +1,71 @@
 package Strategy;
 
-import Helper.ErrorDialog;
 import Helper.SingleValueConverter;
 import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 import com.thoughtworks.xstream.io.xml.DomDriver;
-import fpt.com.*;
 import fpt.com.Product;
+import fpt.com.SerializableStrategy;
 
-import javax.swing.*;
 import java.io.*;
-import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Team 10
  */
-//http://stackoverflow.com/questions/24894108/add-a-root-element-to-a-xml
-//not allowed to iterate with for loop
+
 public class XStreamStrategy implements SerializableStrategy {
-    XStream stream;
-    Object output;
+    XStream stream = new XStream(new DomDriver());
+    ArrayList<Product> products;
 
     FileReader reader;
     FileWriter writer;
 
-    ByteArrayInputStream byteInput;
-    ByteArrayOutputStream byteOutput;
+    int i = 0;
 
     @Override
     public fpt.com.Product readObject() throws IOException {
-        if (stream == null) {
-            stream = new XStream(new DomDriver());
-            reader = new FileReader("xproducts.xml");
-        }
-
-        stream.registerConverter(new SingleValueConverter(), XStream.PRIORITY_LOW);
-        output = stream.fromXML(reader);
-        return (fpt.com.Product) output;
+        if (i < products.size()) return products.get(i++);
+        return null;
     }
 
     @Override
     public void writeObject(Product obj) throws IOException {
-        if (stream == null) {
-            writer = new FileWriter("xproducts.xml");
-            stream = new XStream(new DomDriver());
-        }
-
         stream.registerConverter(new SingleValueConverter(), XStream.PRIORITY_LOW);
-        //stream.alias("waren", Model.Product.class);
-
-        stream.toXML(obj, writer);
+        stream.alias("ware", Model.Product.class);
+        products.add(obj);
     }
 
     @Override
     public void close() throws IOException {
-        reader.close();
-        writer.close();
+        if (reader != null) {
+            i= 0;
+            reader.close();
+        }
+        if (writer != null) {
+            stream.alias("Waren", List.class);
+            stream.toXML(products, writer);
+            writer.close();
+        }
+
+
     }
 
     @Override
     public void open(InputStream input, OutputStream output) throws IOException {
-    }
+        if (input != null) {
+            reader = new FileReader("xproducts.xml");
+            products = null;
 
-    // default method from interface
-    // public XStream createXStream(){}
+            stream.alias("Waren", List.class);
+            stream.alias("ware", Model.Product.class);
+            stream.registerConverter(new SingleValueConverter());
+
+            products = (ArrayList<Product>) stream.fromXML(reader);
+        }
+        if (output != null) {
+            writer = new FileWriter("xproducts.xml");
+            products = new ArrayList<>();
+        }
+    }
 }

@@ -14,6 +14,8 @@ public class IdGenerator {
                 return id;
             }
         }
+
+        //when all 999999 ids are used throw exception
         throw new IdOverFlowException();
     }
 }

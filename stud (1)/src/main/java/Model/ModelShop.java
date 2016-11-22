@@ -4,19 +4,20 @@ import Helper.ErrorDialog;
 import Services.ProductList;
 import fpt.com.Product;
 import fpt.com.SerializableStrategy;
-import javafx.collections.ListChangeListener;
 import javafx.collections.ModifiableObservableListBase;
 
-import java.io.*;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Created by Team 10
-         */
+ */
 public class ModelShop extends ModifiableObservableListBase<Product> {
     List<Product> delegate;
 
-    public ModelShop(){
+    public ModelShop() {
         delegate = ProductList.getInstance().getProductlist();
     }
 
@@ -47,7 +48,6 @@ public class ModelShop extends ModifiableObservableListBase<Product> {
             }
         }
         super.add(index, product);
-        //ProductList.getInstance().add(element);
     }
 
     @Override
@@ -65,21 +65,26 @@ public class ModelShop extends ModifiableObservableListBase<Product> {
         return delegate.remove(index);
     }
 
-    public void save(SerializableStrategy strategy, String path) throws IOException{
+
+
+
+    // start serialization with opening outputstream for the selected strategy  and iterate the productlist to write every object
+    public void serialization(SerializableStrategy strategy, String path) throws IOException {
         try {
             strategy.open(null, new FileOutputStream(path));
             for (int i = 0; i < this.getList().size(); i++) {
                 strategy.writeObject(this.getList().get(i));
             }
-        }catch (IOException io){
+        } catch (IOException io) {
             ErrorDialog.error("Unfortunately, the file could not be created.");
             io.printStackTrace();
-        }finally {
+        } finally {
             strategy.close();
         }
     }
 
-    public void load(SerializableStrategy strategy, String path) throws IOException {
+    //deserialization by removing all the products from the productlist and then open inputstream and iterates the loaded file from the path
+    public void deserialization(SerializableStrategy strategy, String path) throws IOException {
         this.clear();
         strategy.open(new FileInputStream(path), null);
         Product p;
@@ -87,10 +92,10 @@ public class ModelShop extends ModifiableObservableListBase<Product> {
             while ((p = strategy.readObject()) != null) {
                 this.add(p);
             }
-        }catch (IOException io){
+        } catch (IOException io) {
             ErrorDialog.error("Unfortunately, the requested file was not found.");
             io.printStackTrace();
-        }finally {
+        } finally {
             strategy.close();
         }
     }

@@ -6,58 +6,76 @@ import Model.ModelShop;
 import Strategy.BinaryStrategy;
 import Strategy.XMLStrategy;
 import Strategy.XStreamStrategy;
-import View.ViewCustomer;
 import View.ViewShop;
-import fpt.com.Product;
 import fpt.com.SerializableStrategy;
 import javafx.scene.control.Button;
 
-import javax.swing.*;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 
 /**
  * Created by Team 10
  * controller element of View.ViewShop
  */
 public class ControllerShop {
+    //path where the file will be saved and deserialization
     String path;
     private ModelShop modelShop;
     private ViewShop viewShop;
 
+    //TODO Comment
     public ControllerShop() throws FileNotFoundException {
     }
 
-    // added event handler to view elements
+    //link
     public void link(ModelShop model, ViewShop view) {
         this.modelShop = model;
         this.viewShop = view;
 
+        // productList from modelShop to shop view
         viewShop.getTable().setItems(modelShop);
+
+        // added event handler to view elements
         viewShop.addEventHandler(e -> {
+            //get id we defined in viewShop
             String buttonID = ((Button) e.getSource()).getId();
             switch (buttonID) {
+
+                //add
                 case ViewShop.ADD_BUTTON_ID:
                     addElement();
                     break;
+
+                //delete
                 case ViewShop.DEL_BUTTON_ID:
                     deleteElement();
                     break;
+
+                //serialization
                 case ViewShop.SAVE_BUTTON_ID:
-                    save();
+                    try {
+                        save();
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
+                    }
                     break;
+
+                //deserialization
                 case ViewShop.LOAD_BUTTON_ID:
-                    load();
+                    try {
+                        load();
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
+                    }
                     break;
             }
         });
     }
 
-    // TODO check if quantity > 0
     // add new product to model
     private void addElement() {
         try {
             modelShop.add(new Model.Product(viewShop.getName(), Double.parseDouble(viewShop.getPrice()), Integer.parseInt(viewShop.getQuantity())));
-            System.out.println(modelShop.getList().size());
         } catch (NumberFormatException e2) {
             ErrorDialog.error("Please enter Numeric Value");
         }
@@ -65,39 +83,41 @@ public class ControllerShop {
 
     // delete product from model
     private void deleteElement() {
+
+        //check if a product is selected in view
         if (viewShop.selectedProduct() == null) {
-            ErrorDialog.error("Please add product first.");
-            return;
+            ErrorDialog.error("Please select a product to delete.");
         }
-        System.out.println("delete: " + viewShop.selectedProduct().getName());
+
+        //call remove method in modelShop
         modelShop.remove(viewShop.selectedProduct());
-        for (fpt.com.Product p : Services.ProductList.getInstance().getProductlist()) {
-            System.out.println("remaining: " + p.getName());
-        }
+
+        //print deleted elements in console
+        System.out.println("delete: " + viewShop.selectedProduct().getName());
     }
 
-    private void save() {
+
+    private void save() throws IOException {
+
+        //minimum size to serialize is 5 products
         if (modelShop.getList().size() > 4) {
-            try {
-                modelShop.save(getStratagy(viewShop), path);
-            } catch (Exception e1) {
-                // todo dont catch all exceptions
-            }
+
+            //serialization after getting strategy and file path
+            modelShop.serialization(getStrategy(viewShop), path);
         } else {
-            ErrorDialog.error("Min 5 elements to save in file.");
+            ErrorDialog.error("Min 5 elements to serialization in file.");
         }
     }
 
-    private void load() {
-        try {
-            modelShop.load(getStratagy(viewShop), path);
-        } catch (Exception e1) {
-            // todo dont catch all exceptions
-        }
+
+    private void load() throws IOException {
+        //deserialization after getting strategy and file path
+        modelShop.deserialization(getStrategy(viewShop), path);
     }
 
-    public SerializableStrategy getStratagy(ViewShop v) {
-        String choice = ("" + v.getCboiseBox());
+    //get the selected strategy from choice box and return it as a new object with its file path
+    public SerializableStrategy getStrategy(ViewShop v) {
+        String choice = ("" + v.getChoiceBox());
         switch (choice) {
             case ViewShop.XML_SER:
                 path = "products.xml";
@@ -109,7 +129,7 @@ public class ControllerShop {
                 path = "xproducts.xml";
                 return new XStreamStrategy();
             default:
-                ErrorDialog.error("something went wrong");
+                ErrorDialog.error("Please select one of the saving methods");
         }
         return null;
     }

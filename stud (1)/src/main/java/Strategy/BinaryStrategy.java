@@ -10,9 +10,9 @@ import java.io.*;
  * Created by Team 10
  */
 public class BinaryStrategy implements SerializableStrategy {
-    // ML made private
-    private FileInputStream fi;
-    private FileOutputStream fo;
+
+    private FileInputStream fis;
+    private FileOutputStream fos;
 
     private ObjectOutputStream objectOutputStream;
     private ObjectInputStream objectInputStream;
@@ -47,47 +47,22 @@ public class BinaryStrategy implements SerializableStrategy {
 
     @Override
     public void close() throws IOException {
-        if (objectOutputStream != null) {
-            objectOutputStream.close();
-        }
-        if (objectInputStream != null) {
-            objectInputStream.close();
-        }
+        if (objectOutputStream != null) objectOutputStream.close();
+        if (objectInputStream != null) objectInputStream.close();
+        if (fis != null) fis.close();
+        if (fos != null) fos.close();
     }
 
     @Override
     public void open(InputStream input, OutputStream output) throws IOException {
         if (input != null) {
             objectInputStream = new ObjectInputStream(input);
+            this.fis = (FileInputStream) input;
         }
         if (output != null) {
             objectOutputStream = new ObjectOutputStream(output);
+            this.fos = (FileOutputStream) output;
+
         }
     }
 }
-
-   /* public void save(){
-        try (FileOutputStream fo = new FileOutputStream("binSer.ser");
-             ObjectOutputStream os = new ObjectOutputStream(fo)) {
-            for(int i = 0 ; i < productList.size() ; i++) {
-                os.writeObject(productList.get(i)); // write Object
-                os.flush();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void load() {
-        getList().clear();
-        try (FileInputStream fi = new FileInputStream("binSer.ser");
-             ObjectInputStream is = new ObjectInputStream(fi)) {
-            int i =0;
-            while(is.readObject() != null){
-                doAdd(i++,(Product) is.readObject()); // Read Object
-            }
-        }catch (ClassNotFoundException | IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-    }*/
