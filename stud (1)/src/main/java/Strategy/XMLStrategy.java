@@ -16,6 +16,9 @@ public class XMLStrategy implements SerializableStrategy {
     private XMLDecoder decoder;
 
     // TODO Exception
+    // Array Index out of Bounds?
+    // es wird auf index 12 zugegriffen, obwohl 12 elemente und 11 index
+    // warum kommt programm in readObj meth, wenn for schleife das abdecken soll?
     @Override
     public fpt.com.Product readObject() throws IOException {
         Product p = null;
@@ -23,6 +26,7 @@ public class XMLStrategy implements SerializableStrategy {
             p = (Product) decoder.readObject();
         } catch (Exception e) {
             ErrorDialog.error("Unfortunately, the requested file was not found.");
+            e.printStackTrace();
             return null;
         }
         return p;
