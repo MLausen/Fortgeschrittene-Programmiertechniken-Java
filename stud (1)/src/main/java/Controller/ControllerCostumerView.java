@@ -10,9 +10,11 @@ import View.ViewCustomer;
 public class ControllerCostumerView {
     private ModelShop modelShop;
 
-    //link ProductList from ModelShop to Customer View
+    // defines controller for customer view
     public void link(ModelShop model, ViewCustomer viewCustomer) {
         this.modelShop = model;
+
+        // link ProductList from ModelShop to Customer View
         viewCustomer.setProducts(modelShop);
     }
 }

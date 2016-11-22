@@ -19,12 +19,11 @@ public class Order implements fpt.com.Order {
         if (e.getQuantity() > 0) { // if available
             int quantity = 1;
             for (fpt.com.Product p : orderMap.keySet()) {
-                // TODO same instance?
                 if (e.equals(p)) {
                     quantity = orderMap.get(p) + 1;
                 }
             }
-            // TODO has to be same instance
+
             // quantity of product x in order
             orderMap.put(e, quantity);
 
@@ -39,7 +38,6 @@ public class Order implements fpt.com.Order {
     @Override
     public boolean delete(fpt.com.Product e) {
         for (fpt.com.Product p : orderMap.keySet()) {
-            // TODO oder mit equals vergleichen?
             if (e.getId() == p.getId()) {
                 orderMap.remove(p);
 

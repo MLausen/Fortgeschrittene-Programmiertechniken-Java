@@ -16,7 +16,6 @@ public class XMLStrategy implements SerializableStrategy {
     private FileOutputStream fos;
     private FileInputStream fis;
 
-
     @Override
     public fpt.com.Product readObject() throws IOException {
         Product p = null;

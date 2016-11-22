@@ -16,12 +16,15 @@ import java.io.ObjectOutput;
 
 /**
  * Created by Team 10
+ * Product class defines data structure of a Product available in store
  */
 public class Product implements fpt.com.Product, Externalizable {
     private static final long serialVersionUID = 701L;
 
-    private SimpleStringProperty name = new SimpleStringProperty();
+    // unique key
     private SimpleLongProperty id = new SimpleLongProperty();
+    // properties
+    private SimpleStringProperty name = new SimpleStringProperty();
     private SimpleDoubleProperty price = new SimpleDoubleProperty();
     private SimpleIntegerProperty quantity = new SimpleIntegerProperty();
 

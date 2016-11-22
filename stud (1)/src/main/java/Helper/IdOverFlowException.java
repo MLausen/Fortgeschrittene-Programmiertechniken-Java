@@ -4,7 +4,7 @@ package Helper;
  * Created by Team 10
  */
 
-//id overflow exception when all 999999 ids are used
+// exception thrown in case of unavailable id index
 public class IdOverFlowException extends Exception {
     public IdOverFlowException(){
         ErrorDialog.error("Reached maximum number of products.");

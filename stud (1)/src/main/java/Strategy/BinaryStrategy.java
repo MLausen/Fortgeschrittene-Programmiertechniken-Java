@@ -10,7 +10,6 @@ import java.io.*;
  * Created by Team 10
  */
 public class BinaryStrategy implements SerializableStrategy {
-
     private FileInputStream fis;
     private FileOutputStream fos;
 

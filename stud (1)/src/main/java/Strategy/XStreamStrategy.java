@@ -47,8 +47,6 @@ public class XStreamStrategy implements SerializableStrategy {
             stream.toXML(products, writer);
             writer.close();
         }
-
-
     }
 
     @Override

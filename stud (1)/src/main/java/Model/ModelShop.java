@@ -21,7 +21,7 @@ public class ModelShop extends ModifiableObservableListBase<Product> {
         delegate = ProductList.getInstance().getProductlist();
     }
 
-    //get Product Array List from  Productlist
+    // gets unique defined arraylist with shop's products
     public List<Product> getList() {
         return delegate;
     }
@@ -64,9 +64,6 @@ public class ModelShop extends ModifiableObservableListBase<Product> {
     protected Product doRemove(int index) {
         return delegate.remove(index);
     }
-
-
-
 
     // start serialization with opening outputstream for the selected strategy  and iterate the productlist to write every object
     public void serialization(SerializableStrategy strategy, String path) throws IOException {

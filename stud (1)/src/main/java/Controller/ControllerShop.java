@@ -18,16 +18,14 @@ import java.io.IOException;
  * controller element of View.ViewShop
  */
 public class ControllerShop {
-    //path where the file will be saved and deserialization
+    // path where the file will be saved or gotten for deserialization
     String path;
     private ModelShop modelShop;
     private ViewShop viewShop;
 
-    //TODO Comment
-    public ControllerShop() throws FileNotFoundException {
-    }
+    public ControllerShop() throws FileNotFoundException {   }
 
-    //link
+    // defines controller for shop view
     public void link(ModelShop model, ViewShop view) {
         this.modelShop = model;
         this.viewShop = view;
@@ -36,22 +34,18 @@ public class ControllerShop {
         viewShop.getTable().setItems(modelShop);
 
         // added event handler to view elements
+        // to add or delete products
+        // or to save or load product list form file
         viewShop.addEventHandler(e -> {
             //get id we defined in viewShop
             String buttonID = ((Button) e.getSource()).getId();
             switch (buttonID) {
-
-                //add
                 case ViewShop.ADD_BUTTON_ID:
                     addElement();
                     break;
-
-                //delete
                 case ViewShop.DEL_BUTTON_ID:
                     deleteElement();
                     break;
-
-                //serialization
                 case ViewShop.SAVE_BUTTON_ID:
                     try {
                         save();
@@ -59,8 +53,6 @@ public class ControllerShop {
                         e1.printStackTrace();
                     }
                     break;
-
-                //deserialization
                 case ViewShop.LOAD_BUTTON_ID:
                     try {
                         load();
@@ -83,22 +75,18 @@ public class ControllerShop {
 
     // delete product from model
     private void deleteElement() {
-
         //check if a product is selected in view
         if (viewShop.selectedProduct() == null) {
             ErrorDialog.error("Please select a product to delete.");
+            return;
         }
 
         //call remove method in modelShop
         modelShop.remove(viewShop.selectedProduct());
-
-        //print deleted elements in console
         System.out.println("delete: " + viewShop.selectedProduct().getName());
     }
 
-
     private void save() throws IOException {
-
         //minimum size to serialize is 5 products
         if (modelShop.getList().size() > 4) {
 
@@ -108,7 +96,6 @@ public class ControllerShop {
             ErrorDialog.error("Min 5 elements to serialization in file.");
         }
     }
-
 
     private void load() throws IOException {
         //deserialization after getting strategy and file path

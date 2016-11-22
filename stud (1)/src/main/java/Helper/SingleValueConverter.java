@@ -21,10 +21,13 @@ public class SingleValueConverter implements Converter {
         // add id as attribute and convert the id with 6 digits id
         writer.addAttribute("id", String.format("%06d", prod.getId()));
 
-        //create xml tag
-        writer.startNode("name");                  //open tag as name
-        writer.setValue(prod.getName());         // add value to tag
-        writer.endNode();                       //close tag
+        /*
+        creating xml nodes by opening tag, writing tag and closung tag
+         */
+
+        writer.startNode("name");
+        writer.setValue(prod.getName());
+        writer.endNode();
 
         writer.startNode("price");
         writer.setValue(String.format(Locale.US, "%.2f", prod.getPrice())); //make the double number as 2 digits after comma
@@ -39,10 +42,10 @@ public class SingleValueConverter implements Converter {
     public Object unmarshal(HierarchicalStreamReader reader, UnmarshallingContext context) {
         Product prod = new Model.Product();
 
-        //read the attribute id and set it to product
+        // read the attribute id and set it to product
         prod.setId(Long.parseLong(reader.getAttribute("id")));
 
-        //complete reading until there is no tags
+        // complete reading until there is no tags
         while (reader.hasMoreChildren()) {
             reader.moveDown();
             String nodeName = reader.getNodeName();
@@ -62,6 +65,4 @@ public class SingleValueConverter implements Converter {
     public boolean canConvert(Class c) {
         return c.equals(Model.Product.class);
     }
-
-
 }

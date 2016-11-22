@@ -10,6 +10,7 @@ import java.util.ListIterator;
 
 /**
  * Created by Team 10
+ * Singleton class to offer instance of available products once
  */
 public class ProductList implements fpt.com.ProductList {
     List<Product> productlist = new ArrayList<Product>();
@@ -18,6 +19,7 @@ public class ProductList implements fpt.com.ProductList {
     private ProductList() {
     }
 
+    // gets the only instance of ProductList
     public static ProductList getInstance() {
         if (ProductList.instance == null) {
             ProductList.instance = new ProductList();
@@ -80,7 +82,7 @@ public class ProductList implements fpt.com.ProductList {
         return productlist;
     }
 
-    // product factory
+    // product factory that creates a set of default products in store
     private static void initalCreationOfProducts(){
         ProductList.getInstance().add(new Model.Product("Apfel", 0.67, 20));
         ProductList.getInstance().add(new Model.Product("Birne", 0.89, 15));
