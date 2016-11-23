@@ -80,10 +80,10 @@ public class ControllerShop {
             ErrorDialog.error("Please select a product to delete.");
             return;
         }
-
+        System.out.println("delete: " + viewShop.selectedProduct().getName());
         //call remove method in modelShop
         modelShop.remove(viewShop.selectedProduct());
-        System.out.println("delete: " + viewShop.selectedProduct().getName());
+
     }
 
     private void save() throws IOException {

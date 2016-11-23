@@ -21,6 +21,9 @@ public class XStreamStrategy implements SerializableStrategy {
     FileReader reader;
     FileWriter writer;
 
+    private FileOutputStream fos;
+    private FileInputStream fis;
+
     int i = 0;
 
     @Override
@@ -43,26 +46,30 @@ public class XStreamStrategy implements SerializableStrategy {
             reader.close();
         }
         if (writer != null) {
-            stream.alias("Waren", List.class);
+            stream.alias("waren", List.class);
             stream.toXML(products, writer);
             writer.close();
         }
+        if(fis != null) fis.close();
+        if(fos != null) fos.close();
     }
 
     @Override
     public void open(InputStream input, OutputStream output) throws IOException {
         if (input != null) {
-            reader = new FileReader("xproducts.xml");
+            fis = (FileInputStream) input;
+            reader = new FileReader(fis.getFD());
             products = null;
 
-            stream.alias("Waren", List.class);
+            stream.alias("waren", List.class);
             stream.alias("ware", Model.Product.class);
             stream.registerConverter(new SingleValueConverter());
 
             products = (ArrayList<Product>) stream.fromXML(reader);
         }
         if (output != null) {
-            writer = new FileWriter("xproducts.xml");
+            fos = (FileOutputStream) output;
+            writer = new FileWriter(fos.getFD());
             products = new ArrayList<>();
         }
     }
