@@ -76,24 +76,36 @@ public class ModelShop extends ModifiableObservableListBase<Product> {
             ErrorDialog.error("Unfortunately, the file could not be created.");
             io.printStackTrace();
         } finally {
-            strategy.close();
+            if(strategy != null) {
+                strategy.close();
+            }
         }
     }
 
     //deserialization by removing all the products from the productlist and then open inputstream and iterates the loaded file from the path
     public void deserialization(SerializableStrategy strategy, String path) throws IOException {
-        this.clear();
-        strategy.open(new FileInputStream(path), null);
-        Product p;
+
+        FileInputStream fis = null;
         try {
-            while ((p = strategy.readObject()) != null) {
-                this.add(p);
+            fis = new FileInputStream(path);
+        } catch (Exception e) {
+            ErrorDialog.error("You have to save before loading.");
+        }
+        if (fis != null) {
+            this.clear();
+            strategy.open(fis, null);
+            Product p;
+
+            try {
+                while ((p = strategy.readObject()) != null) {
+                    this.add(p);
+                }
+            } catch (IOException io) {
+                ErrorDialog.error("Unfortunately, the requested file was not found.");
+                io.printStackTrace();
+            } finally {
+                strategy.close();
             }
-        } catch (IOException io) {
-            ErrorDialog.error("Unfortunately, the requested file was not found.");
-            io.printStackTrace();
-        } finally {
-            strategy.close();
         }
     }
 }

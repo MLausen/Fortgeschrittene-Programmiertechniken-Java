@@ -20,31 +20,31 @@ public class Main extends Application {
 
     @Override
     public void start(Stage CostumerStage) throws Exception {
-        // defining model for application
+        // define model for application
         ModelShop model = new ModelShop();
 
-        // defining start views
+        // define start views
         ViewShop viewShop = new ViewShop();
         ViewCustomer viewCustomer = new ViewCustomer();
 
-        //instanciate controller for views
+        // instanciate controller for views
         ControllerShop controllerShop = new ControllerShop();
         ControllerCostumerView controllerCostumerView = new ControllerCostumerView();
 
-        //customer stage
+        // prepare customer stage
         CostumerStage.setTitle("Customer");
         Scene scene = new Scene(viewCustomer);
         CostumerStage.setScene(scene);
         CostumerStage.show();
 
-        //shop stage
+        // prepare shop stage
         Stage shopStage = new Stage();
         shopStage.setTitle("Shop");
         Scene shopScene = new Scene(viewShop);
         shopStage.setScene(shopScene);
         shopStage.show();
 
-        //link
+        // link view and controller
         controllerShop.link(model, viewShop);
         controllerCostumerView.link(model, viewCustomer);
     }
