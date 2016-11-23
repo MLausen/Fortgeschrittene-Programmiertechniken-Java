@@ -7,6 +7,7 @@ import fpt.com.SerializableStrategy;
 import javafx.collections.ModifiableObservableListBase;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
@@ -67,28 +68,37 @@ public class ModelShop extends ModifiableObservableListBase<Product> {
 
     // start serialization with opening outputstream for the selected strategy  and iterate the productlist to write every object
     public void serialization(SerializableStrategy strategy, String path) throws IOException {
+        FileOutputStream fos = null;
         try {
-            strategy.open(null, new FileOutputStream(path));
-            for (int i = 0; i < this.getList().size(); i++) {
-                strategy.writeObject(this.getList().get(i));
-            }
-        } catch (IOException io) {
-            ErrorDialog.error("Unfortunately, the file could not be created.");
-            io.printStackTrace();
-        } finally {
-            if(strategy != null) {
-                strategy.close();
+            fos = new FileOutputStream(path);
+        } catch (NullPointerException e) {
+            // returns nullpointer if file path not found and file null
+        }
+
+        if (fos != null) {
+            try {
+                strategy.open(null, fos);
+                for (int i = 0; i < this.getList().size(); i++) {
+                    strategy.writeObject(this.getList().get(i));
+                }
+            } catch (IOException io) {
+                ErrorDialog.error("Unfortunately, the file could not be created.");
+                io.printStackTrace();
+            } finally {
+                if (strategy != null) {
+                    strategy.close();
+                }
             }
         }
     }
 
     //deserialization by removing all the products from the productlist and then open inputstream and iterates the loaded file from the path
     public void deserialization(SerializableStrategy strategy, String path) throws IOException {
-
         FileInputStream fis = null;
         try {
             fis = new FileInputStream(path);
-        } catch (Exception e) {
+        } catch (NullPointerException e) {
+            // returns nullpointer if file path not found and file null
             ErrorDialog.error("You have to save before loading.");
         }
         if (fis != null) {
