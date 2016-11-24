@@ -33,6 +33,7 @@ public class ControllerShop {
         // productList from modelShop to shop view
         viewShop.getTable().setItems(modelShop);
 
+        //TODO single event handler for each button
         // added event handler to view elements
         // to add or delete products
         // or to save or load product list form file

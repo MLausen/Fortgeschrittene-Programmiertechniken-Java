@@ -80,6 +80,8 @@ public class ModelShop extends ModifiableObservableListBase<Product> {
             try {
                 strategy.open(null, fos);
                 for (int i = 0; i < this.getList().size(); i++) {
+                    strategy.writeObject(get(i));
+
                     strategy.writeObject(this.getList().get(i));
                 }
             } catch (IOException io) {

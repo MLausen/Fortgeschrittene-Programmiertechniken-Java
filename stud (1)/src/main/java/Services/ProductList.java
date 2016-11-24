@@ -1,7 +1,6 @@
 package Services;
 
 import fpt.com.Product;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -23,7 +22,7 @@ public class ProductList implements fpt.com.ProductList {
     public static ProductList getInstance() {
         if (ProductList.instance == null) {
             ProductList.instance = new ProductList();
-            initalCreationOfProducts();
+            initialCreationOfProducts();
         }
         return ProductList.instance;
     }
@@ -83,7 +82,7 @@ public class ProductList implements fpt.com.ProductList {
     }
 
     // product factory that creates a set of default products in store
-    private static void initalCreationOfProducts(){
+    private static void initialCreationOfProducts(){
         ProductList.getInstance().add(new Model.Product("Apfel", 0.67, 20));
         ProductList.getInstance().add(new Model.Product("Birne", 0.89, 15));
         ProductList.getInstance().add(new Model.Product("Pflaume", 0.45, 50));

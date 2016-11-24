@@ -30,7 +30,6 @@ public class ViewShop extends BorderPane {
     public static final String XML_SER = "XML-Serialisierung";
     public static final String XSTREAM_SER = "XStream XML-Serialisierung";
 
-
     Button addbtn;
     Button delbtn;
     Button savebtn;
@@ -59,7 +58,6 @@ public class ViewShop extends BorderPane {
         toolbox = new HBox(savebtn, loadbtn, cb);
         toolbox.setSpacing(20);
 
-
         priceArea = new TextField();
         quantatiyArea = new TextField();
         nameArea = new TextField();
@@ -72,6 +70,7 @@ public class ViewShop extends BorderPane {
         bigbox = new HBox(box);
         bigbox.setAlignment(Pos.CENTER);
         bigbox.setPrefHeight(50);
+
         //Name column
         TableColumn<fpt.com.Product, String> nameColumn = new TableColumn<>("Name");
         nameColumn.setMinWidth(200);
@@ -86,6 +85,7 @@ public class ViewShop extends BorderPane {
         TableColumn<fpt.com.Product, String> quantityColumn = new TableColumn<>("Quantity");
         quantityColumn.setMinWidth(100);
         quantityColumn.setCellValueFactory(new PropertyValueFactory<>("quantity"));
+
         //ids column
         TableColumn<fpt.com.Product, Long> idColumn = new TableColumn<>("Id");
         idColumn.setMinWidth(100);

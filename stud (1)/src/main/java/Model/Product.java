@@ -92,7 +92,6 @@ public class Product implements fpt.com.Product, Externalizable {
         return id;
     }
 
-
     @Override
     public void writeExternal(ObjectOutput out) throws IOException {
         out.writeObject(getName());
