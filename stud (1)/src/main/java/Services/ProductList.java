@@ -10,7 +10,7 @@ import java.util.ListIterator;
 
 /**
  * Created by Team 10
- * Singleton class to offer instance of available products once
+ * Singleton pattern - class to offer instance of available products once
  */
 public class ProductList implements fpt.com.ProductList {
     List<Product> productlist = new ArrayList<Product>();

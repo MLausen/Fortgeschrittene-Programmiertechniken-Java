@@ -22,7 +22,7 @@ public class SingleValueConverter implements Converter {
         writer.addAttribute("id", String.format("%06d", prod.getId()));
 
         /*
-        creating xml nodes by opening tag, writing tag and closung tag
+        creating xml nodes by opening tag, writing tag and closing tag
          */
 
         writer.startNode("name");

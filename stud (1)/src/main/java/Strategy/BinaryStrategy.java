@@ -61,7 +61,6 @@ public class BinaryStrategy implements SerializableStrategy {
         if (output != null) {
             objectOutputStream = new ObjectOutputStream(output);
             this.fos = (FileOutputStream) output;
-
         }
     }
 }

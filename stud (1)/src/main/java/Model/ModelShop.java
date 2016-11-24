@@ -73,6 +73,7 @@ public class ModelShop extends ModifiableObservableListBase<Product> {
             fos = new FileOutputStream(path);
         } catch (NullPointerException e) {
             // returns nullpointer if file path not found and file null
+            System.out.println("debug log on Modelshop serialisation()\n" + e.toString());
         }
 
         if (fos != null) {

@@ -16,6 +16,7 @@ import java.util.List;
 
 public class XStreamStrategy implements SerializableStrategy {
     XStream stream = new XStream(new DomDriver());
+    // xstream needs root, list as container of product nodes
     ArrayList<Product> products;
 
     FileReader reader;
