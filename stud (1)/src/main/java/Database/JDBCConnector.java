@@ -58,7 +58,7 @@ public class JDBCConnector {
             DatabaseMetaData dmd = con.getMetaData();
             ResultSet set = dmd.getCatalogs();
 
-            // nor always implemented
+            // not always implemented
             dmd.getUserName();
 
             while(set.next()){
