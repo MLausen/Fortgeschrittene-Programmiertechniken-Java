@@ -1,6 +1,7 @@
 package Controller;
 
 
+import Database.JDBCConnector;
 import Helper.ErrorDialog;
 import Model.ModelShop;
 import Strategy.BinaryStrategy;
@@ -12,6 +13,7 @@ import javafx.scene.control.Button;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.sql.SQLException;
 
 /**
  * Created by Team 10
@@ -22,6 +24,7 @@ public class ControllerShop {
     String path;
     private ModelShop modelShop;
     private ViewShop viewShop;
+    private static JDBCConnector jdbc = JDBCConnector.getInstance();
 
     public ControllerShop() throws FileNotFoundException {   }
 
@@ -68,9 +71,12 @@ public class ControllerShop {
     // add new product to model
     private void addElement() {
         try {
-            modelShop.add(new Model.Product(viewShop.getName(), Double.parseDouble(viewShop.getPrice()), Integer.parseInt(viewShop.getQuantity())));
+          //  modelShop.add(new Model.Product(viewShop.getName(), Double.parseDouble(viewShop.getPrice()), Integer.parseInt(viewShop.getQuantity())));
+            modelShop.add(jdbc.read(jdbc.insert(viewShop.getName(),Double.parseDouble(viewShop.getPrice()), Integer.parseInt(viewShop.getQuantity()))));
         } catch (NumberFormatException e2) {
             ErrorDialog.error("Please enter Numeric Value");
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 

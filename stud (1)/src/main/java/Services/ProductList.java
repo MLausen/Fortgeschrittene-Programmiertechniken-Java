@@ -1,5 +1,6 @@
 package Services;
 
+import Database.JDBCConnector;
 import fpt.com.Product;
 
 import java.util.ArrayList;
@@ -14,6 +15,7 @@ import java.util.ListIterator;
 public class ProductList implements fpt.com.ProductList {
     List<Product> productlist = new ArrayList<Product>();
     private static ProductList instance;
+    private static JDBCConnector jdbc = JDBCConnector.getInstance();
 
     private ProductList() {
     }
@@ -83,18 +85,9 @@ public class ProductList implements fpt.com.ProductList {
 
     // product factory that creates a set of default products in store
     private static void initialCreationOfProducts(){
-        ProductList.getInstance().add(new Model.Product("Apfel", 0.67, 20));
-        ProductList.getInstance().add(new Model.Product("Birne", 0.89, 15));
-        ProductList.getInstance().add(new Model.Product("Pflaume", 0.45, 50));
-        ProductList.getInstance().add(new Model.Product("Brot", 0.99, 10));
-        ProductList.getInstance().add(new Model.Product("Aubergine", 1.99, 7));
-        ProductList.getInstance().add(new Model.Product("Paprika", 0.79, 36));
-        ProductList.getInstance().add(new Model.Product("Pfirsich", 0.23, 50));
-        ProductList.getInstance().add(new Model.Product("Erdbeeren 500g", 2.99, 20));
-        ProductList.getInstance().add(new Model.Product("Himbeeren 200g", 1.99, 20));
-        ProductList.getInstance().add(new Model.Product("Joghurt", 0.99, 50));
-        ProductList.getInstance().add(new Model.Product("Milch", 1.49, 100));
-        ProductList.getInstance().add(new Model.Product("Orange", 0.45, 75));
+       for(int i =11375; i <11388 ;i++) {
+            ProductList.getInstance().add(jdbc.read(i));
+        }
     }
 
     @Override
