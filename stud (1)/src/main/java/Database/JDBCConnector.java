@@ -2,7 +2,6 @@ package Database;
 
 import Helper.ErrorDialog;
 import fpt.com.Product;
-
 import java.sql.*;
 
 public class JDBCConnector {
@@ -13,6 +12,18 @@ public class JDBCConnector {
     private static String TABLE_PW = "ftpw10";
 
     public JDBCConnector() {
+        try {
+            DatabaseMetaData dbmd = this.createConnection().getMetaData();
+            System.out.println("DB-Name: " + dbmd.getDatabaseProductName()
+                    + "\nDB-Version: " + dbmd.getDatabaseMajorVersion()
+                    + "\nDB-Release: " + dbmd.getDriverMinorVersion()
+                    + "\nTransaktionen erlaubt: " + dbmd.supportsTransactions()
+                    + "\nbeachtet GroBKlein: " + dbmd.storesMixedCaseIdentifiers()
+                    + "\nunterstfitzt UNION: " + dbmd.supportsUnion()
+                    + "\nmax. Prozedurname: " + dbmd.getMaxProcedureNameLength());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public static JDBCConnector getInstance() {
@@ -20,18 +31,19 @@ public class JDBCConnector {
             JDBCConnector.instance = new JDBCConnector();
         }
         return JDBCConnector.instance;
+
     }
 
     public Connection createConnection() throws SQLException {
 
         try {
             con = DriverManager.getConnection(TABLE_PRODUCTS_FPT, TABLE_USERNAME, TABLE_PW);
+            return con ;
         } catch (SQLException e) {
             e.printStackTrace();
             ErrorDialog.error("Database connection failed");
-
         }
-        return con;
+        return null;
     }
 
     public long insert(String name, double price, int quantity) throws SQLException {
