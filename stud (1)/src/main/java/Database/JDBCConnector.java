@@ -14,14 +14,22 @@ public class JDBCConnector {
     public JDBCConnector() {
         try {
             DatabaseMetaData dbmd = this.createConnection().getMetaData();
-            System.out.println("DB-Url: " + dbmd.getURL().split("//")[1]
-                    + "\nDB-Name: " + dbmd.getDatabaseProductName()
-                    + "\nDB-Version: " + dbmd.getDatabaseMajorVersion()
-                    + "\nDB-Release: " + dbmd.getDriverMinorVersion()
-                    + "\nTransaktionen erlaubt: " + dbmd.supportsTransactions()
-                    + "\nbeachtet GroBKlein: " + dbmd.storesMixedCaseIdentifiers()
-                    + "\nunterstfitzt UNION: " + dbmd.supportsUnion()
-                    + "\nmax. Prozedurname: " + dbmd.getMaxProcedureNameLength());
+
+            //URL and username
+            System.out.println("Successfully Connected to the database!"
+                    + "\nDB-Url: " + dbmd.getURL().split("//")[1]
+                    + "\nUserName: " + dbmd.getUserName());
+
+            //all database table
+            String[] types = {"TABLE"};
+            ResultSet resultSet = dbmd.getTables(null, null, "%",types);
+            while (resultSet.next()) {
+                String tableName = resultSet.getString(3);
+                String tableCatalog = resultSet.getString(1);
+                String tableSchema = resultSet.getString(2);
+                System.out.println("Table : " + tableName +" , "+ "nCatalog : " + tableCatalog  +" , "+  "nSchema : " + tableSchema);
+            }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
