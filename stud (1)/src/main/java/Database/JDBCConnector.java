@@ -14,7 +14,8 @@ public class JDBCConnector {
     public JDBCConnector() {
         try {
             DatabaseMetaData dbmd = this.createConnection().getMetaData();
-            System.out.println("DB-Name: " + dbmd.getDatabaseProductName()
+            System.out.println("DB-Url: " + dbmd.getURL().split("//")[1]
+                    + "\nDB-Name: " + dbmd.getDatabaseProductName()
                     + "\nDB-Version: " + dbmd.getDatabaseMajorVersion()
                     + "\nDB-Release: " + dbmd.getDriverMinorVersion()
                     + "\nTransaktionen erlaubt: " + dbmd.supportsTransactions()
@@ -31,7 +32,6 @@ public class JDBCConnector {
             JDBCConnector.instance = new JDBCConnector();
         }
         return JDBCConnector.instance;
-
     }
 
     public Connection createConnection() throws SQLException {
