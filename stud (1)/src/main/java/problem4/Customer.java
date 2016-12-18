@@ -18,6 +18,8 @@ public class Customer {
         //int interest =  (int) Math.random();
         int interest = ThreadLocalRandom.current().nextInt(0, 2);
         System.out.println("isInterested: " + interest);
-        return interest == 0 ? false : true;
+
+        return true;
+        //return interest == 0 ? false : true;
     }
 }
