@@ -44,9 +44,11 @@ public class ModelShop extends ModifiableObservableListBase<Product> {
                 if (product.getName().equals(p.getName())) {
                     p.setQuantity(p.getQuantity() + product.getQuantity());
                     System.out.println("UPDATES Product named: " + product.getName());
+                    return; // leave method to not add duplicate product with same name
                 }
             }
         }
+        // should only be added, if no product with same name found
         super.add(index, product);
     }
 
