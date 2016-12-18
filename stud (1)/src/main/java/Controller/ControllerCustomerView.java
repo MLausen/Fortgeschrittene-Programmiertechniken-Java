@@ -7,7 +7,7 @@ import View.ViewCustomer;
  * Created Team 10
  */
 
-public class ControllerCostumerView {
+public class ControllerCustomerView {
     private ModelShop modelShop;
 
     // defines controller for customer view

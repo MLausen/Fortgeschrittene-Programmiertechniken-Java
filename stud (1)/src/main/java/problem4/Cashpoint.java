@@ -7,16 +7,18 @@ import java.util.concurrent.ThreadLocalRandom;
 /**
  * Created by Team 10
  */
-// TODO change 500 to 5000, 100 to 1000
+// TODO change 600 to 6000, 100 to 1000
 public class Cashpoint implements Runnable{
     private WaitingQueue queue = new WaitingQueue();
 
     private boolean isOpen;
     private int id;
+    //private double sales;
 
     public Cashpoint(int id){
         this.id = id;
         isOpen = false;
+        //sales = 0;
     }
 
     @Override
@@ -25,7 +27,7 @@ public class Cashpoint implements Runnable{
 
         // TODO replace: cashpoint needs customers
         try {
-            Thread.sleep(500);
+            Thread.sleep(600);
         } catch (InterruptedException ie) {
             ie.printStackTrace();
         }
@@ -33,7 +35,7 @@ public class Cashpoint implements Runnable{
         System.out.println("run() Cashpoint " + id);
 
         while(queue.size() > 0) {
-            queue.remove(0);
+            removeCustomer();
 
             try {
                 int sleepTime = 100 * ThreadLocalRandom.current().nextInt(6, 11); // range 6, 7, 8, 9, 10
@@ -49,7 +51,19 @@ public class Cashpoint implements Runnable{
 
     public void closeCashpoint(){
         isOpen = false;
-        System.out.println("Cashpoint " + id + " closed!");
+        System.out.println("---Cashpoint " + id + " closed---");
+    }
+
+    private void removeCustomer(){
+        System.out.println("cashpoint " + id + " processed customer " + queue.get(0).getId());
+        queue.remove(0);
+        System.out.println(getQueueSize() + " customers at cashpoint " + id);
+    }
+
+    public void addCustomer(Customer c){
+        queue.add(c);
+        Balance.getInstance().addValue(this.id, c.getBill());
+        System.out.println(getQueueSize() + " customers at cashpoint " + id);
     }
 
     public int getQueueSize(){
@@ -64,7 +78,11 @@ public class Cashpoint implements Runnable{
         return this.id;
     }
 
-    public void addCustomer(Customer c){
-        queue.add(c);
+   /* public double getSales(){
+        return this.sales;
     }
+
+    public void setSales(double payed){
+        this.sales += payed;
+    }*/
 }

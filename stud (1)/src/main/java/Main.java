@@ -1,7 +1,6 @@
-import Controller.ControllerCostumerView;
+import Controller.ControllerCustomerView;
 import Controller.ControllerShop;
 import Model.ModelShop;
-import Services.ProductList;
 import View.ViewCustomer;
 import View.ViewShop;
 import javafx.application.Application;
@@ -19,7 +18,7 @@ public class Main extends Application {
     }
 
     @Override
-    public void start(Stage CostumerStage) throws Exception {
+    public void start(Stage CustomerStage) throws Exception {
         // define model for application
         ModelShop model = new ModelShop();
 
@@ -29,13 +28,13 @@ public class Main extends Application {
 
         // instanciate controller for views
         ControllerShop controllerShop = new ControllerShop();
-        ControllerCostumerView controllerCostumerView = new ControllerCostumerView();
+        ControllerCustomerView controllerCustomerView = new ControllerCustomerView();
 
         // prepare customer stage
-        CostumerStage.setTitle("Customer");
+        CustomerStage.setTitle("Customer");
         Scene scene = new Scene(viewCustomer);
-        CostumerStage.setScene(scene);
-        CostumerStage.show();
+        CustomerStage.setScene(scene);
+        CustomerStage.show();
 
         // prepare shop stage
         Stage shopStage = new Stage();
@@ -46,6 +45,6 @@ public class Main extends Application {
 
         // link view and controller
         controllerShop.link(model, viewShop);
-        controllerCostumerView.link(model, viewCustomer);
+        controllerCustomerView.link(model, viewCustomer);
     }
 }

@@ -9,7 +9,7 @@ import java.util.ArrayList;
  */
 public class CashpointService {
     private static CashpointService instance;
-    public ArrayList<Cashpoint> cashpoints;
+    private ArrayList<Cashpoint> cashpoints;
 
     private CashpointService(){
         cashpoints = new ArrayList<Cashpoint>();
@@ -41,7 +41,7 @@ public class CashpointService {
         }
 
         if(current == null){
-            ErrorDialog.error("Sorry, every cashpoint is busy");
+            System.err.println("Sorry, every cashpoint is busy");
         }else {
             current.start();
         }
@@ -87,5 +87,9 @@ public class CashpointService {
                 return; // important, do not delete --> same cashpoint would be opened 5 times
             }
         }
+    }
+
+    public ArrayList<Cashpoint> getCashpoints(){
+        return this.cashpoints;
     }
 }
