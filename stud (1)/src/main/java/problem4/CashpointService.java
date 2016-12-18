@@ -50,7 +50,7 @@ public class CashpointService {
     public Cashpoint getCashpointWithLowestCustomerAmount(){
         Cashpoint temp = cashpoints.get(0);
         for (Cashpoint cp : cashpoints){
-            if(temp.getQueueSize() > cp.getQueueSize()){
+            if(cp.isOpen() && temp.getQueueSize() > cp.getQueueSize()){
                 temp = cp;
             }
         }
@@ -60,7 +60,7 @@ public class CashpointService {
     public Cashpoint getCashpointWithHighestCustomerAmount(){
         Cashpoint temp = cashpoints.get(0);
         for (Cashpoint cp : cashpoints){
-            if(temp.getQueueSize() < cp.getQueueSize()){
+            if(cp.isOpen() && temp.getQueueSize() < cp.getQueueSize()){
                 temp = cp;
             }
         }
@@ -84,6 +84,7 @@ public class CashpointService {
         for(Cashpoint c : cashpoints){
             if(c.getQueueSize() > 5) {
                 openCashpoint();
+                return; // important, do not delete --> same cashpoint would be opened 5 times
             }
         }
     }

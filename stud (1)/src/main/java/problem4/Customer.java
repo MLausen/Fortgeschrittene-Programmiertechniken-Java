@@ -16,8 +16,8 @@ public class Customer {
     // acquistion not always successfull
     public boolean isInterested(){
         //int interest =  (int) Math.random();
-        int interest = ThreadLocalRandom.current().nextInt(0, 2);
-        System.out.println("isInterested: " + interest);
+        //int interest = ThreadLocalRandom.current().nextInt(0, 2);
+        //System.out.println("isInterested: " + interest);
 
         return true;
         //return interest == 0 ? false : true;

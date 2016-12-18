@@ -49,7 +49,7 @@ public class Cashpoint implements Runnable{
 
     public void closeCashpoint(){
         isOpen = false;
-        System.out.println("Cashpoint closed!");
+        System.out.println("Cashpoint " + id + " closed!");
     }
 
     public int getQueueSize(){
