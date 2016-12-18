@@ -85,7 +85,9 @@ public class ProductList implements fpt.com.ProductList {
 
     // product factory that creates a set of default products in store
     private static void initialCreationOfProducts(){
+        // why this numbers?
        for(int i =11375; i <11388 ;i++) {
+           // why some names are equal? duplicates should not be added (ModelShop.add)
             ProductList.getInstance().add(jdbc.read(i));
         }
     }
