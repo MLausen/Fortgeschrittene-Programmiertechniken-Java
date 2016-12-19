@@ -1,13 +1,11 @@
 package problem4;
 
-import Helper.ErrorDialog;
-
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.locks.Lock;
 /**
  * Created by Tean 10
  */
-// TODO change 100 to 1000
+// TODO replace 100 with 1000
 public class Acquisition implements Runnable {
     Lock lock;
     public Acquisition(Lock rLock){
@@ -18,15 +16,16 @@ public class Acquisition implements Runnable {
     public void run() {
         System.out.println("run() Acquisition");
 
-        // TODO check if size correct while threading!!!!! --> synch
+        // get new customer while no of the cashpoints has a queue with 8 or more people
         while(CashpointService.getInstance().getHighestCustomerAmount() < 8) {
+            // lock thread to not change cashpoint state while acquisition and assigning customer to cashpoint
             lock.lock();
-            Customer customer = new Customer();
 
-            if(customer.isInterested()){
-                CashpointService.getInstance().getCashpointWithLowestCustomerAmount().addCustomer(customer);
-            }
-            CashpointService.getInstance().checkForReopeningCashpoint();
+            Customer customer = new Customer();
+            CashpointService.getInstance().getCashpointWithLowestCustomerAmount().addCustomer(customer);
+            CashpointService.getInstance().checkForCashpointToOpen();
+
+            // unlock thread after assigning customer to cashpoint and checking for a new cashpoint to open
             lock.unlock();
 
             try {

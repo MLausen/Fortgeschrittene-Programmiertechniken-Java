@@ -8,11 +8,13 @@ import java.util.*;
 public class Balance {
     private static Balance instance;
 
-    private HashMap<Integer, Double> cashpointToRevenue;// Integer: Id of Cashpoint, Double: sales
+    // <map key="cashpoint.id" value="revenue">
+    private HashMap<Integer, Double> cashpointToRevenue;
 
     public Balance(){
         cashpointToRevenue = new HashMap<>();
 
+        // fill map with cashpoints and revenue = 0,00€
         for(Cashpoint c : CashpointService.getInstance().getCashpoints()){
             cashpointToRevenue.put(c.getId(), 0.0);
         }
@@ -25,6 +27,7 @@ public class Balance {
         return instance;
     }
 
+    // sort cashpoint descending by revenue
     public List<Map.Entry<Integer, Double>> getCashpointsDescByRevenue(){
         Set<Map.Entry<Integer, Double>> entries = cashpointToRevenue.entrySet();
         List<Map.Entry<Integer, Double>> entryList = new ArrayList<>(entries);
@@ -42,7 +45,6 @@ public class Balance {
             }
         });
 
-
         System.out.println("- cashpoint " + entryList.get(0).getKey() + " with revenue "  + entryList.get(0).getValue() + " -");
         System.out.println("- cashpoint " + entryList.get(1).getKey() + " with revenue "  + entryList.get(1).getValue() + " -");
         System.out.println("- cashpoint " + entryList.get(2).getKey() + " with revenue "  + entryList.get(2).getValue() + " -");
@@ -53,11 +55,19 @@ public class Balance {
         return entryList;
     }
 
+    // add payed value to revenue of cashpoint with <param value="id">
     public void addValue(int id, double price){
+        double newValue = price + cashpointToRevenue.get(id);
+        // two digits
+        newValue = newValue * 100;
+        newValue = Math.round(newValue);
+        newValue = newValue / 100;
+
+        cashpointToRevenue.replace(id, newValue);
         this.getCashpointsDescByRevenue();
-        cashpointToRevenue.replace(id, (price + cashpointToRevenue.get(id)));
     }
 
+    // get revenue of whole day
     public double getRevenueSum(){
         double sum = 0;
         for(Double d : cashpointToRevenue.values()){

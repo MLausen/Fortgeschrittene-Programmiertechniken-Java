@@ -19,8 +19,18 @@ public class Main {
 
         CashpointService.getInstance().openCashpoint();
 
+        try{
+            acquisitionThread.join();
+            while(CashpointService.getInstance().isAnyCashpointOpen()){
+                //...
+            }
+            // all the other threads . join()
+        }catch(InterruptedException ie){
+            ie.printStackTrace();
+        }
         // print when every thread has terminated
         // join()...
-        System.out.println("Mission completed");
+        System.out.println("Ended day of sale");
+        System.out.println("Revenue of cashpoints:" +  Balance.getInstance().getRevenueSum() + "€");
     }
 }

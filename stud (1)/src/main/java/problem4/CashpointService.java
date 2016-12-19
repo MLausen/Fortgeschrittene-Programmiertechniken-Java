@@ -7,10 +7,12 @@ import java.util.ArrayList;
 /**
  * Created by Team 10
  */
+// singleton that defines and administrates cashpoints
 public class CashpointService {
     private static CashpointService instance;
     private ArrayList<Cashpoint> cashpoints;
 
+    // creates cashpoints once
     private CashpointService(){
         cashpoints = new ArrayList<Cashpoint>();
 
@@ -29,6 +31,7 @@ public class CashpointService {
         return instance;
     }
 
+    // next unemployed cashpoint will be opened
     public void openCashpoint(){
         Thread current = null;
         for(int i = 0; i < 6; i++){
@@ -47,6 +50,7 @@ public class CashpointService {
         }
     }
 
+    // return cashpoint with lowest customer amount
     public Cashpoint getCashpointWithLowestCustomerAmount(){
         Cashpoint temp = cashpoints.get(0);
         for (Cashpoint cp : cashpoints){
@@ -57,6 +61,7 @@ public class CashpointService {
         return temp;
     }
 
+    // returns cashpoint  with highest customer amount
     public Cashpoint getCashpointWithHighestCustomerAmount(){
         Cashpoint temp = cashpoints.get(0);
         for (Cashpoint cp : cashpoints){
@@ -67,10 +72,12 @@ public class CashpointService {
         return temp;
     }
 
+    // gets value of cashpoint with highest customer amount
     public int getHighestCustomerAmount(){
         return getCashpointWithHighestCustomerAmount().getQueueSize();
     }
 
+    // return cashopint with id = <param id>
     public Cashpoint getCashpointById(int id){
         for(int i = 0; i < 6; i++){
             if(cashpoints.get(i).getId() == id) {
@@ -80,7 +87,7 @@ public class CashpointService {
         return null;
     }
 
-    public void checkForReopeningCashpoint(){
+    public void checkForCashpointToOpen(){
         for(Cashpoint c : cashpoints){
             if(c.getQueueSize() > 5) {
                 openCashpoint();
@@ -89,6 +96,16 @@ public class CashpointService {
         }
     }
 
+    public boolean isAnyCashpointOpen(){
+        for(Cashpoint cp : cashpoints){
+            if(cp.isOpen()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // return all cashpoints as arraylist
     public ArrayList<Cashpoint> getCashpoints(){
         return this.cashpoints;
     }

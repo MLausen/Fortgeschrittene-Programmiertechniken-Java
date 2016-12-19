@@ -7,13 +7,12 @@ import java.util.concurrent.ThreadLocalRandom;
 /**
  * Created by Team 10
  */
-// TODO change 600 to 6000, 100 to 1000
+// TODO replace 600 with 6000, 100 with 1000
 public class Cashpoint implements Runnable{
     private WaitingQueue queue = new WaitingQueue();
 
     private boolean isOpen;
     private int id;
-    //private double sales;
 
     public Cashpoint(int id){
         this.id = id;
@@ -25,7 +24,6 @@ public class Cashpoint implements Runnable{
     public void run() {
         isOpen = true;
 
-        // TODO replace: cashpoint needs customers
         try {
             Thread.sleep(600);
         } catch (InterruptedException ie) {
@@ -49,20 +47,23 @@ public class Cashpoint implements Runnable{
         this.closeCashpoint();
     }
 
+    // sets value of isOpen to <isOpen value=false>
     public void closeCashpoint(){
         isOpen = false;
         System.out.println("---Cashpoint " + id + " closed---");
     }
 
+    // processes queue by removing first customer
     private void removeCustomer(){
         System.out.println("cashpoint " + id + " processed customer " + queue.get(0).getId());
+        System.out.println("customer " + queue.get(0).getId() + " pays " + queue.get(0).getBill() + "€");
+        Balance.getInstance().addValue(this.id, queue.get(0).getBill());
         queue.remove(0);
         System.out.println(getQueueSize() + " customers at cashpoint " + id);
     }
 
     public void addCustomer(Customer c){
         queue.add(c);
-        Balance.getInstance().addValue(this.id, c.getBill());
         System.out.println(getQueueSize() + " customers at cashpoint " + id);
     }
 
@@ -77,12 +78,4 @@ public class Cashpoint implements Runnable{
     public int getId(){
         return this.id;
     }
-
-   /* public double getSales(){
-        return this.sales;
-    }
-
-    public void setSales(double payed){
-        this.sales += payed;
-    }*/
 }
