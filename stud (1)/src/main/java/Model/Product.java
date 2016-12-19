@@ -9,6 +9,7 @@ import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 
+import javax.persistence.*;
 import java.io.Externalizable;
 import java.io.IOException;
 import java.io.ObjectInput;
@@ -18,6 +19,8 @@ import java.io.ObjectOutput;
  * Created by Team 10
  * Product class defines data structure of a Product available in store
  */
+@Entity()
+@Table(name = "products")
 public class Product implements fpt.com.Product, Externalizable {
     private static final long serialVersionUID = 701L;
 
@@ -44,6 +47,8 @@ public class Product implements fpt.com.Product, Externalizable {
         }
     }
 
+    @Id
+    @GeneratedValue
     public long getId() {
         return id.get();
     }
