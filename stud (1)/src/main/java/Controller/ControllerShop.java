@@ -2,6 +2,7 @@ package Controller;
 
 
 import Database.JDBCConnector;
+import Database.OpenJPAConnector;
 import Helper.ErrorDialog;
 import Model.ModelShop;
 import Strategy.BinaryStrategy;
@@ -25,6 +26,7 @@ public class ControllerShop {
     private ModelShop modelShop;
     private ViewShop viewShop;
     private static JDBCConnector jdbc = JDBCConnector.getInstance();
+    //private static OpenJPAConnector jpa = OpenJPAConnector.getInstance();
 
     public ControllerShop() throws FileNotFoundException {   }
 
@@ -72,10 +74,11 @@ public class ControllerShop {
     private void addElement() {
         try {
           //  modelShop.add(new Model.Product(viewShop.getName(), Double.parseDouble(viewShop.getPrice()), Integer.parseInt(viewShop.getQuantity())));
-            modelShop.add(jdbc.read(jdbc.insert(viewShop.getName(),Double.parseDouble(viewShop.getPrice()), Integer.parseInt(viewShop.getQuantity()))));
+          modelShop.add(jdbc.read(jdbc.insert(viewShop.getName(),Double.parseDouble(viewShop.getPrice()), Integer.parseInt(viewShop.getQuantity()))));
+          //modelShop.add(jpa.read(jpa.insert(viewShop.getName(),Double.parseDouble(viewShop.getPrice()), Integer.parseInt(viewShop.getQuantity()))));
         } catch (NumberFormatException e2) {
             ErrorDialog.error("Please enter Numeric Value");
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

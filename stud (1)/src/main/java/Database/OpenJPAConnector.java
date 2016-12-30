@@ -5,15 +5,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
-import javax.persistence.Persistence;
+import javax.persistence.*;
+
 import org.apache.openjpa.persistence.OpenJPAPersistence;
 
 import Model.Product;
 
 public class OpenJPAConnector {
+    private static OpenJPAConnector instance;
     EntityManagerFactory factory;
     EntityManager manager;
     EntityTransaction transaction;
@@ -23,10 +22,35 @@ public class OpenJPAConnector {
         manager = factory.createEntityManager();
         transaction = manager.getTransaction();
         transaction.begin();
-        manager.persist(Product.class);
-        transaction.commit();
-        transaction.begin();
     }
+
+    public static OpenJPAConnector getInstance(){
+        if (OpenJPAConnector.instance == null){
+            OpenJPAConnector.instance = new OpenJPAConnector();
+        }
+        return OpenJPAConnector.instance;
+    }
+
+    public long insert(String name, double price, int quantity) {
+        Product product = new Product(0, name, price, quantity);
+        manager.persist(product);
+        System.out.print("Insert erfolgt");
+        return product.getId();
+    }
+
+    public Product read(long id) {
+        //TODO read method
+        /*Query q = manager.createQuery("SELECT c FROM Product c WHERE  c.id = "+id);
+        List<Product> products = (List<Product>) q.getResultList();
+
+        if (products.size() > 0)
+            return products.get(0);
+
+        this.close();*/
+        
+        return null;
+    }
+
 
     public static EntityManagerFactory getWithoutConfig() {
 
@@ -51,7 +75,7 @@ public class OpenJPAConnector {
                     buf.append(";");
                 buf.append(c.getName());
             }
-            // <class>Producer</class>
+            // <class>Product</class>
             map.put("openjpa.MetaDataFactory", "jpa(Types=" + buf.toString()
                     + ")");
         }
