@@ -8,6 +8,8 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
+import org.apache.openjpa.persistence.Persistent;
+import org.apache.openjpa.persistence.jdbc.Strategy;
 
 import javax.persistence.*;
 import java.io.Externalizable;
@@ -25,10 +27,28 @@ public class Product implements fpt.com.Product, Externalizable {
     private static final long serialVersionUID = 701L;
 
     // unique key
+    @Id
+    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator = "products_SEQ")
+    private long idDB;
+
+    public long getIdDB() {
+        return this.idDB;
+    }
+
+
     private SimpleLongProperty id = new SimpleLongProperty();
     // properties
+
+    @Persistent
+    @Strategy("fpt.com.db.StringPropertyValueHandler")
     private SimpleStringProperty name = new SimpleStringProperty();
+
+    @Persistent
+    @Strategy("fpt.com.db.DoublePropertyValueHandler")
     private SimpleDoubleProperty price = new SimpleDoubleProperty();
+
+    @Persistent
+    @Strategy("fpt.com.db.IntegerPropertyValueHandler")
     private SimpleIntegerProperty quantity = new SimpleIntegerProperty();
 
     public Product() {
@@ -47,8 +67,6 @@ public class Product implements fpt.com.Product, Externalizable {
         }
     }
 
-    @Id
-    @GeneratedValue
     public long getId() {
         return id.get();
     }

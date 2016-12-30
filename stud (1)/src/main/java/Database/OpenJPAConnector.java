@@ -32,7 +32,8 @@ public class OpenJPAConnector {
     }
 
     public long insert(String name, double price, int quantity) {
-        Product product = new Product(0, name, price, quantity);
+        Product product = new Product(name, price, quantity);
+        product.setId(0);
         manager.persist(product);
         System.out.print("Insert erfolgt");
         return product.getId();
@@ -47,7 +48,7 @@ public class OpenJPAConnector {
             return products.get(0);
 
         this.close();*/
-        
+
         return null;
     }
 
