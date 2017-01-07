@@ -29,11 +29,11 @@ public class SingleValueConverter implements Converter {
         writer.setValue(prod.getName());
         writer.endNode();
 
-        writer.startNode("price");
+        writer.startNode("preis");
         writer.setValue(String.format(Locale.US, "%.2f", prod.getPrice())); //make the double number as 2 digits after comma
         writer.endNode();
 
-        writer.startNode("quantity");
+        writer.startNode("anzahl");
         writer.setValue("" + prod.getQuantity());
         writer.endNode();
     }
@@ -51,9 +51,9 @@ public class SingleValueConverter implements Converter {
             String nodeName = reader.getNodeName();
             if ("name".equalsIgnoreCase(nodeName)) {
                 prod.setName(reader.getValue());
-            } else if ("price".equalsIgnoreCase(nodeName)) {
+            } else if ("preis".equalsIgnoreCase(nodeName)) {
                 prod.setPrice(Double.parseDouble(reader.getValue()));
-            } else if ("quantity".equalsIgnoreCase(nodeName)) {
+            } else if ("anzahl".equalsIgnoreCase(nodeName)) {
                 prod.setQuantity(Integer.parseInt(reader.getValue()));
             }
             reader.moveUp();

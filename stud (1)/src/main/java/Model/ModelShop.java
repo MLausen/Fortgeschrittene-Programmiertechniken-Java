@@ -39,7 +39,7 @@ public class ModelShop extends ModifiableObservableListBase<Product> {
 
     @Override
     public void add(int index, Product product) {
-        if (product != null) {
+       /* if (product != null) {
             for (Product p : delegate) {
                 if (product.getName().equals(p.getName())) {
                     p.setQuantity(p.getQuantity() + product.getQuantity());
@@ -47,7 +47,7 @@ public class ModelShop extends ModifiableObservableListBase<Product> {
                     return; // leave method to not add duplicate product with same name
                 }
             }
-        }
+        }*/ // we cant sum duplicates anymore because the database is desgined not  to merge Entities
         // should only be added, if no product with same name found
         super.add(index, product);
     }
