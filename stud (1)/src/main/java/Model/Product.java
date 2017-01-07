@@ -1,11 +1,8 @@
 package Model;
 
-import Helper.IdGenerator;
-import Helper.IdOverFlowException;
-import com.thoughtworks.xstream.core.ReferenceByIdMarshaller;
+
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 import org.apache.openjpa.persistence.Persistent;
@@ -26,18 +23,9 @@ import java.io.ObjectOutput;
 public class Product implements fpt.com.Product, Externalizable {
     private static final long serialVersionUID = 701L;
 
-    // unique key
     @Id
-    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator = "products_SEQ")
-    private long idDB;
-
-    public long getIdDB() {
-        return this.idDB;
-    }
-
-
-    private SimpleLongProperty id = new SimpleLongProperty();
-    // properties
+    @GeneratedValue(strategy= GenerationType.IDENTITY, generator = "products_SEQ")
+    private long id;
 
     @Persistent
     @Strategy("fpt.com.db.StringPropertyValueHandler")
@@ -60,19 +48,14 @@ public class Product implements fpt.com.Product, Externalizable {
         this.quantity.set(quantity);
         this.price.set(price);
 
-        try {
-            this.id.set(IdGenerator.generateID());
-        } catch (IdOverFlowException e) {
-            e.printStackTrace();
-        }
     }
 
     public long getId() {
-        return id.get();
+        return this.id;
     }
 
     public void setId(long id) {
-        this.id.set(id);
+        this.id = id;
     }
 
     public double getPrice() {
@@ -111,9 +94,7 @@ public class Product implements fpt.com.Product, Externalizable {
         return quantity;
     }
 
-    public ObservableValue<Number> idProperty() {
-        return id;
-    }
+
 
     @Override
     public void writeExternal(ObjectOutput out) throws IOException {
