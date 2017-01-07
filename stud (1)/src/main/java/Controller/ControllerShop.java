@@ -2,10 +2,11 @@ package Controller;
 
 
 import Database.JDBCConnector;
-import Database.OpenJPAConnector;
+import Database.OpenJPA;
 import Helper.ErrorDialog;
 import Model.ModelShop;
 import Strategy.BinaryStrategy;
+import Strategy.DatabaseStrategy;
 import Strategy.XMLStrategy;
 import Strategy.XStreamStrategy;
 import View.ViewShop;
@@ -14,7 +15,6 @@ import javafx.scene.control.Button;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.sql.SQLException;
 
 /**
  * Created by Team 10
@@ -25,8 +25,7 @@ public class ControllerShop {
     String path;
     private ModelShop modelShop;
     private ViewShop viewShop;
-    private static JDBCConnector jdbc = JDBCConnector.getInstance();
-    //private static OpenJPAConnector jpa = OpenJPAConnector.getInstance();
+
 
     public ControllerShop() throws FileNotFoundException {   }
 
@@ -73,9 +72,7 @@ public class ControllerShop {
     // add new product to model
     private void addElement() {
         try {
-          //  modelShop.add(new Model.Product(viewShop.getName(), Double.parseDouble(viewShop.getPrice()), Integer.parseInt(viewShop.getQuantity())));
-          modelShop.add(jdbc.read(jdbc.insert(viewShop.getName(),Double.parseDouble(viewShop.getPrice()), Integer.parseInt(viewShop.getQuantity()))));
-          //modelShop.add(jpa.read(jpa.insert(viewShop.getName(),Double.parseDouble(viewShop.getPrice()), Integer.parseInt(viewShop.getQuantity()))));
+            modelShop.add(new Model.Product(viewShop.getName(), Double.parseDouble(viewShop.getPrice()), Integer.parseInt(viewShop.getQuantity())));
         } catch (NumberFormatException e2) {
             ErrorDialog.error("Please enter Numeric Value");
         } catch (Exception e) {
@@ -97,14 +94,9 @@ public class ControllerShop {
     }
 
     private void save() throws IOException {
-        //minimum size to serialize is 5 products
-        if (modelShop.getList().size() > 4) {
-
             //serialization after getting strategy and file path
             modelShop.serialization(getStrategy(viewShop), path);
-        } else {
-            ErrorDialog.error("Min 5 elements to serialization in file.");
-        }
+
     }
 
     private void load() throws IOException {
@@ -125,6 +117,9 @@ public class ControllerShop {
             case ViewShop.XSTREAM_SER:
                 path = "xproducts.xml";
                 return new XStreamStrategy();
+            case ViewShop.JPA_SER:
+                path = "products.xml";
+                return new DatabaseStrategy();
             default:
                 ErrorDialog.error("Please select one of the saving methods");
         }

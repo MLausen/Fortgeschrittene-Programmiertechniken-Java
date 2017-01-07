@@ -29,6 +29,8 @@ public class ViewShop extends BorderPane {
     public static final String BINARY_SER = "Binary-Serialisierung";
     public static final String XML_SER = "XML-Serialisierung";
     public static final String XSTREAM_SER = "XStream XML-Serialisierung";
+    public static final String JDBC_SER = "JDBC-Database";
+    public static final String JPA_SER = "OpenJPA-Database";
 
     Button addbtn;
     Button delbtn;
@@ -54,7 +56,7 @@ public class ViewShop extends BorderPane {
         savebtn.setId(SAVE_BUTTON_ID);
         loadbtn.setId(LOAD_BUTTON_ID);
 
-        cb = new ChoiceBox(FXCollections.observableArrayList(BINARY_SER, XML_SER, XSTREAM_SER));
+        cb = new ChoiceBox(FXCollections.observableArrayList(BINARY_SER, XML_SER, XSTREAM_SER, JPA_SER));
         toolbox = new HBox(savebtn, loadbtn, cb);
         toolbox.setSpacing(20);
 
