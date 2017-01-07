@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 public class OpenJPA {
+    //TODO close EntityManager + EntityManagerFactory
     EntityManagerFactory factory;
     static EntityManager entityManager ;
     EntityTransaction transaction ;

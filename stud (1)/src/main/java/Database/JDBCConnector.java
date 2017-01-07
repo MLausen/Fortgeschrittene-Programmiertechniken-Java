@@ -12,6 +12,7 @@ public class JDBCConnector {
     private static String TABLE_PW = "ftpw10";
 
     public JDBCConnector() {
+        //TODO close connections + statments
         try {
             DatabaseMetaData dbmd = this.createConnection().getMetaData();
 
@@ -98,6 +99,5 @@ public class JDBCConnector {
         }
         return product;
     }
-
 
 }
