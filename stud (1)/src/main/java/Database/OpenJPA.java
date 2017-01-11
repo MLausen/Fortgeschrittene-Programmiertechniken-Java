@@ -1,32 +1,31 @@
 package Database;
 
 import fpt.com.Product;
-import org.apache.openjpa.kernel.Query;
 import org.apache.openjpa.persistence.OpenJPAPersistence;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
-import java.beans.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class OpenJPA {
-    //TODO close EntityManager + EntityManagerFactory
     EntityManagerFactory factory;
-    static EntityManager entityManager ;
-    EntityTransaction transaction ;
+    EntityManager entityManager;
+    EntityTransaction transaction;
     private static OpenJPA instance;
-    public OpenJPA(){
-         //factory = Persistence.createEntityManagerFactory("openjpa", System.getProperties());
-         factory = getWithoutConfig();
-         entityManager = factory.createEntityManager();
-         transaction = entityManager.getTransaction();
+
+    public OpenJPA() {
+        //factory = Persistence.createEntityManagerFactory("openjpa", System.getProperties());
+        factory = getWithoutConfig();
+        entityManager = factory.createEntityManager();
+        transaction = entityManager.getTransaction();
 
 
     }
+
     public static OpenJPA getInstance() {
         if (OpenJPA.instance == null) {
             OpenJPA.instance = new OpenJPA();
@@ -34,7 +33,7 @@ public class OpenJPA {
         return OpenJPA.instance;
     }
 
-    public static EntityManagerFactory getWithoutConfig() {
+    public EntityManagerFactory getWithoutConfig() {
 
         Map<String, String> map = new HashMap<String, String>();
 
@@ -56,57 +55,51 @@ public class OpenJPA {
                     buf.append(";");
                 buf.append(c.getName());
             }
-            map.put("openjpa.MetaDataFactory" , "jpa(Types=" + Model.Product.class.getName() + ")") ;
+            map.put("openjpa.MetaDataFactory", "jpa(Types=" + Model.Product.class.getName() + ")");
         }
 
         return OpenJPAPersistence.getEntityManagerFactory(map);
 
     }
 
-    public static Product read(long id) {
+    public Product read(long id) {
+        begin();
+
         Model.Product p = new Model.Product();
-        javax.persistence.Query query = entityManager.createQuery("SELECT c FROM Product c WHERE  c.id = "+id);
-         List<Model.Product> products = (List<Model.Product>)query.getResultList();
-            if(products.size() >0) {
-                p.setName(products.get(0).getName());
-                p.setId(products.get(0).getId());
-                p.setQuantity(products.get(0).getQuantity());
-                p.setPrice(products.get(0).getPrice());
-                return p;
-            }
-        return   null;
+        javax.persistence.Query query = entityManager.createQuery("SELECT c FROM Product c WHERE  c.id = " + id);
+        List<Model.Product> products = (List<Model.Product>) query.getResultList();
+        if (products.size() > 0) {
+            p.setName(products.get(0).getName());
+            p.setId(products.get(0).getId());
+            p.setQuantity(products.get(0).getQuantity());
+            p.setPrice(products.get(0).getPrice());
+            return p;
+        }
+        commit();
+        return null;
     }
 
-    public long insert(String name, double price, int quantity){
+    public long insert(String name, double price, int quantity) {
+        begin();
 
-        Model.Product product = new Model.Product(name,price,quantity);
+        Model.Product product = new Model.Product(name, price, quantity);
+        entityManager.persist(product);
 
-            entityManager.persist(product);
-            return product.getId();
+        commit();
+        return product.getId();
 
 
     }
 
-
-
-
-
-    public void open(){
-        transaction.begin();
-    }
-    public void close(){
-        if(transaction.isActive())
-            transaction.commit();
-    }
 
     public ArrayList<Model.Product> readList() {
-
-        ArrayList<Model.Product> productsList=new ArrayList<>();
+        begin();
+        ArrayList<Model.Product> productsList = new ArrayList<>();
         javax.persistence.Query query = entityManager.createQuery("SELECT p FROM Product p ORDER BY p.id DESC");
         query.setMaxResults(10);
         List<Model.Product> products = query.getResultList();
-       for(int i = 9 ;i >=0;i--) {
-           Model.Product p = new Model.Product();
+        for (int i = 9; i >= 0; i--) {
+            Model.Product p = new Model.Product();
             p.setName(products.get(i).getName());
             p.setId(products.get(i).getId());
             p.setQuantity(products.get(i).getQuantity());
@@ -114,12 +107,31 @@ public class OpenJPA {
             productsList.add(p);
 
         }
-            return productsList;
+        commit();
+        return productsList;
 
     }
 
-
-    public boolean isClosed() {
-        return !transaction.isActive();
+    public void begin() {
+        if (!transaction.isActive()) transaction.begin();
     }
+
+    public void commit() {
+        if (transaction.isActive()) transaction.commit();
+    }
+
+
+    public void close() {
+        if (entityManager.isOpen()) entityManager.close();
+        if (factory.isOpen()) factory.close();
+        commit();
+    }
+
+    public void open() {
+        if (!factory.isOpen()) factory = getWithoutConfig();
+        if (!entityManager.isOpen()) entityManager = factory.createEntityManager();
+        transaction = entityManager.getTransaction();
+    }
+
 }
+

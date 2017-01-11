@@ -2,8 +2,13 @@ package Database;
 
 import Helper.ErrorDialog;
 import fpt.com.Product;
+
 import java.sql.*;
 
+/**
+ * Created by Team 10
+ * controller element of View.ViewShop
+ */
 public class JDBCConnector {
     private Connection con = null;
     private static JDBCConnector instance;
@@ -12,9 +17,9 @@ public class JDBCConnector {
     private static String TABLE_PW = "ftpw10";
 
     public JDBCConnector() {
-        //TODO close connections + statments
+
         try {
-            DatabaseMetaData dbmd = this.createConnection().getMetaData();
+            DatabaseMetaData dbmd = createConnection().getMetaData();
 
             //URL and username
             System.out.println("Successfully Connected to the database!"
@@ -23,12 +28,12 @@ public class JDBCConnector {
 
             //all database table
             String[] types = {"TABLE"};
-            ResultSet resultSet = dbmd.getTables(null, null, "%",types);
+            ResultSet resultSet = dbmd.getTables(null, null, "%", types);
             while (resultSet.next()) {
                 String tableName = resultSet.getString(3);
                 String tableCatalog = resultSet.getString(1);
                 String tableSchema = resultSet.getString(2);
-                System.out.println("Table : " + tableName +" , "+ "nCatalog : " + tableCatalog  +" , "+  "nSchema : " + tableSchema);
+                System.out.println("Table : " + tableName + " , " + "nCatalog : " + tableCatalog + " , " + "nSchema : " + tableSchema);
             }
 
         } catch (SQLException e) {
@@ -44,20 +49,23 @@ public class JDBCConnector {
     }
 
     public Connection createConnection() throws SQLException {
-
-        try {
-            con = DriverManager.getConnection(TABLE_PRODUCTS_FPT, TABLE_USERNAME, TABLE_PW);
-            return con ;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            ErrorDialog.error("Database connection failed");
+        if (con != null) {
+            return con;
+        } else {
+            try {
+                con = DriverManager.getConnection(TABLE_PRODUCTS_FPT, TABLE_USERNAME, TABLE_PW);
+                return con;
+            } catch (SQLException e) {
+                e.printStackTrace();
+                ErrorDialog.error("Database connection failed");
+            }
+            return null;
         }
-        return null;
     }
 
     public long insert(String name, double price, int quantity) throws SQLException {
         long id = -1L;
-
+        //pst will automatically close
         try (PreparedStatement pst = createConnection()
                 .prepareStatement("INSERT INTO products(name,price,quantity) VALUES (?,?,?)",
                         Statement.RETURN_GENERATED_KEYS);) {
@@ -68,7 +76,6 @@ public class JDBCConnector {
             pst.executeUpdate();
 
             ResultSet rs = pst.getGeneratedKeys();
-
             if (rs.next()) {
                 id = rs.getLong(1);
             }
@@ -85,6 +92,7 @@ public class JDBCConnector {
 
     public Product read(long id) {
         Product product = new Model.Product();
+        //prst will automatically close
         try (PreparedStatement prst = createConnection().prepareStatement("SELECT id,name,price,quantity FROM products WHERE id=?")) {
             prst.setLong(1, id);
             ResultSet rs = prst.executeQuery();
@@ -100,4 +108,15 @@ public class JDBCConnector {
         return product;
     }
 
+    //we can use it as finally
+    public void close() {
+        if (con != null) {
+            try {
+                con.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
 }
