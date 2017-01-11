@@ -78,7 +78,7 @@ public class Balance {
     public double getRevenueSum(){
         return this.revenueSum;
     }
-    
+
     // round to two digits format
     public double roundToPriceFormat(double price, double sum){
         double newValue = price + sum;
