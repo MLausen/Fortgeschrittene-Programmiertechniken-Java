@@ -22,8 +22,6 @@ public class OpenJPA {
         factory = getWithoutConfig();
         entityManager = factory.createEntityManager();
         transaction = entityManager.getTransaction();
-
-
     }
 
     public static OpenJPA getInstance() {
@@ -34,7 +32,6 @@ public class OpenJPA {
     }
 
     public EntityManagerFactory getWithoutConfig() {
-
         Map<String, String> map = new HashMap<String, String>();
 
         map.put("openjpa.ConnectionURL",
@@ -59,7 +56,6 @@ public class OpenJPA {
         }
 
         return OpenJPAPersistence.getEntityManagerFactory(map);
-
     }
 
     public Product read(long id) {
@@ -87,8 +83,6 @@ public class OpenJPA {
 
         commit();
         return product.getId();
-
-
     }
 
 
@@ -132,6 +126,4 @@ public class OpenJPA {
         if (!entityManager.isOpen()) entityManager = factory.createEntityManager();
         transaction = entityManager.getTransaction();
     }
-
 }
-

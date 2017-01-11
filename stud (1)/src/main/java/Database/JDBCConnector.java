@@ -117,6 +117,5 @@ public class JDBCConnector {
                 e.printStackTrace();
             }
         }
-
     }
 }
