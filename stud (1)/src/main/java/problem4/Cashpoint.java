@@ -17,7 +17,6 @@ public class Cashpoint implements Runnable{
     public Cashpoint(int id){
         this.id = id;
         isOpen = false;
-        //sales = 0;
     }
 
     @Override
@@ -30,9 +29,11 @@ public class Cashpoint implements Runnable{
             ie.printStackTrace();
         }
 
-        System.out.println("run() Cashpoint " + id);
+        System.out.println("run Cashpoint " + id);
 
+        // IndexoutofBounds
         while(queue.size() > 0) {
+            //lock?
             removeCustomer();
 
             try {
@@ -73,6 +74,11 @@ public class Cashpoint implements Runnable{
 
     public boolean isOpen(){
         return this.isOpen;
+    }
+
+    public void setCashpointOpen(){
+        System.out.println("Cashpoint " + id + " just opened.");
+        this.isOpen = true;
     }
 
     public int getId(){

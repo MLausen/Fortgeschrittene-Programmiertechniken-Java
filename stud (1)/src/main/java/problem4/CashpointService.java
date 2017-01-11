@@ -13,7 +13,7 @@ public class CashpointService {
     private ArrayList<Cashpoint> cashpoints;
 
     // creates cashpoints once
-    private CashpointService(){
+    private CashpointService() {
         cashpoints = new ArrayList<Cashpoint>();
 
         cashpoints.add(new Cashpoint(1));
@@ -24,37 +24,42 @@ public class CashpointService {
         cashpoints.add(new Cashpoint(6));
     }
 
-    public static CashpointService getInstance(){
-        if(instance == null){
+    public static CashpointService getInstance() {
+        if (instance == null) {
             instance = new CashpointService();
         }
         return instance;
     }
 
     // next unemployed cashpoint will be opened
-    public void openCashpoint(){
+    public void openCashpoint() {
         Thread current = null;
-        for(int i = 0; i < 6; i++){
+        int cashpointIndex = -1;
+
+        for (int i = 0; i < 6; i++) {
             // if cashpoint still closed
-            if(!cashpoints.get(i).isOpen()) {
-                System.out.println("Next Cashpoint to run: " + i);
+            if (!cashpoints.get(i).isOpen()) {
+                System.out.println("Next Cashpoint to run: " + (i + 1));
                 current = new Thread(cashpoints.get(i));
+                cashpointIndex = i;
                 break; // stop search for unemployed cashpoint
             }
         }
 
-        if(current == null){
+        if (current == null) {
             System.err.println("Sorry, every cashpoint is busy");
-        }else {
+        } else {
+            System.out.println("started new thread");
             current.start();
+            cashpoints.get(cashpointIndex).setCashpointOpen();
         }
     }
 
     // return cashpoint with lowest customer amount
-    public Cashpoint getCashpointWithLowestCustomerAmount(){
+    public Cashpoint getCashpointWithLowestCustomerAmount() {
         Cashpoint temp = cashpoints.get(0);
-        for (Cashpoint cp : cashpoints){
-            if(cp.isOpen() && temp.getQueueSize() > cp.getQueueSize()){
+        for (Cashpoint cp : cashpoints) {
+            if (cp.isOpen() && temp.getQueueSize() > cp.getQueueSize()) {
                 temp = cp;
             }
         }
@@ -62,10 +67,10 @@ public class CashpointService {
     }
 
     // returns cashpoint  with highest customer amount
-    public Cashpoint getCashpointWithHighestCustomerAmount(){
+    public Cashpoint getCashpointWithHighestCustomerAmount() {
         Cashpoint temp = cashpoints.get(0);
-        for (Cashpoint cp : cashpoints){
-            if(cp.isOpen() && temp.getQueueSize() < cp.getQueueSize()){
+        for (Cashpoint cp : cashpoints) {
+            if (cp.isOpen() && temp.getQueueSize() < cp.getQueueSize()) {
                 temp = cp;
             }
         }
@@ -73,32 +78,42 @@ public class CashpointService {
     }
 
     // gets value of cashpoint with highest customer amount
-    public int getHighestCustomerAmount(){
+    public int getHighestCustomerAmount() {
         return getCashpointWithHighestCustomerAmount().getQueueSize();
     }
 
     // return cashopint with id = <param id>
-    public Cashpoint getCashpointById(int id){
-        for(int i = 0; i < 6; i++){
-            if(cashpoints.get(i).getId() == id) {
+    public Cashpoint getCashpointById(int id) {
+        for (int i = 0; i < 6; i++) {
+            if (cashpoints.get(i).getId() == id) {
                 return cashpoints.get(i);
             }
         }
         return null;
     }
 
-    public void checkForCashpointToOpen(){
-        for(Cashpoint c : cashpoints){
-            if(c.getQueueSize() > 5) {
-                openCashpoint();
-                return; // important, do not delete --> same cashpoint would be opened 5 times
+    // initialtes new cashpoint if all open cashpoints are busy
+    public void checkForCashpointToOpen() {
+        boolean success = true;
+
+        // checks if every opened cashpoint has 6 or more customers
+        for (Cashpoint c : cashpoints) {
+            if (c.getQueueSize() > 5) {
+                success = success && true;
+            } else if (c.isOpen()) {
+                success = false;
             }
+        }
+        if (success) {
+            openCashpoint();
         }
     }
 
-    public boolean isAnyCashpointOpen(){
-        for(Cashpoint cp : cashpoints){
-            if(cp.isOpen()) {
+    // return true is any cashpoint is open
+    // returns false if all cashpoints are closed
+    public boolean isAnyCashpointOpen() {
+        for (Cashpoint cp : cashpoints) {
+            if (cp.isOpen()) {
                 return true;
             }
         }
@@ -106,7 +121,7 @@ public class CashpointService {
     }
 
     // return all cashpoints as arraylist
-    public ArrayList<Cashpoint> getCashpoints(){
+    public ArrayList<Cashpoint> getCashpoints() {
         return this.cashpoints;
     }
 }
