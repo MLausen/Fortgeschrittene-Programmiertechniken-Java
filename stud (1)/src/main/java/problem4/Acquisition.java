@@ -8,6 +8,7 @@ import java.util.concurrent.locks.Lock;
 // TODO replace 100 with 1000
 public class Acquisition implements Runnable {
     Lock lock;
+
     public Acquisition(Lock rLock){
         this.lock = rLock;
     }

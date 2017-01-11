@@ -3,6 +3,8 @@ package problem4;
 import Helper.ErrorDialog;
 
 import java.util.ArrayList;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * Created by Team 10
@@ -16,12 +18,14 @@ public class CashpointService {
     private CashpointService() {
         cashpoints = new ArrayList<Cashpoint>();
 
-        cashpoints.add(new Cashpoint(1));
-        cashpoints.add(new Cashpoint(2));
-        cashpoints.add(new Cashpoint(3));
-        cashpoints.add(new Cashpoint(4));
-        cashpoints.add(new Cashpoint(5));
-        cashpoints.add(new Cashpoint(6));
+        Lock rLock = new ReentrantLock();
+
+        cashpoints.add(new Cashpoint(1, rLock));
+        cashpoints.add(new Cashpoint(2, rLock));
+        cashpoints.add(new Cashpoint(3, rLock));
+        cashpoints.add(new Cashpoint(4, rLock));
+        cashpoints.add(new Cashpoint(5, rLock));
+        cashpoints.add(new Cashpoint(6, rLock));
     }
 
     public static CashpointService getInstance() {

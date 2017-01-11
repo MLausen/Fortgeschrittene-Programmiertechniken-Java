@@ -3,6 +3,7 @@ package problem4;
 import Helper.ErrorDialog;
 
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.locks.Lock;
 
 /**
  * Created by Team 10
@@ -14,9 +15,13 @@ public class Cashpoint implements Runnable{
     private boolean isOpen;
     private int id;
 
-    public Cashpoint(int id){
+    Lock lock;
+
+    public Cashpoint(int id, Lock lock){
         this.id = id;
         isOpen = false;
+
+        this.lock = lock;
     }
 
     @Override
@@ -33,8 +38,10 @@ public class Cashpoint implements Runnable{
 
         // IndexoutofBounds
         while(queue.size() > 0) {
-            //lock?
+            // lock to add payed price to revenue and remove customer
+            lock.lock();
             removeCustomer();
+            lock.unlock();
 
             try {
                 int sleepTime = 100 * ThreadLocalRandom.current().nextInt(6, 11); // range 6, 7, 8, 9, 10

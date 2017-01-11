@@ -10,6 +10,7 @@ public class Balance {
 
     // <map key="cashpoint.id" value="revenue">
     private HashMap<Integer, Double> cashpointToRevenue;
+    private double revenueSum = 0.0d;
 
     public Balance(){
         cashpointToRevenue = new HashMap<>();
@@ -45,34 +46,47 @@ public class Balance {
             }
         });
 
-        System.out.println("- cashpoint " + entryList.get(0).getKey() + " with revenue "  + entryList.get(0).getValue() + " -");
-        System.out.println("- cashpoint " + entryList.get(1).getKey() + " with revenue "  + entryList.get(1).getValue() + " -");
-        System.out.println("- cashpoint " + entryList.get(2).getKey() + " with revenue "  + entryList.get(2).getValue() + " -");
-        System.out.println("- cashpoint " + entryList.get(3).getKey() + " with revenue "  + entryList.get(3).getValue() + " -");
-        System.out.println("- cashpoint " + entryList.get(4).getKey() + " with revenue "  + entryList.get(4).getValue() + " -");
-        System.out.println("- cashpoint " + entryList.get(5).getKey() + " with revenue "  + entryList.get(5).getValue() + " -");
+        System.out.println("- cashpoint " + entryList.get(0).getKey() + " with revenue "  + entryList.get(0).getValue() + "€ -");
+        System.out.println("- cashpoint " + entryList.get(1).getKey() + " with revenue "  + entryList.get(1).getValue() + "€ -");
+        System.out.println("- cashpoint " + entryList.get(2).getKey() + " with revenue "  + entryList.get(2).getValue() + "€ -");
+        System.out.println("- cashpoint " + entryList.get(3).getKey() + " with revenue "  + entryList.get(3).getValue() + "€ -");
+        System.out.println("- cashpoint " + entryList.get(4).getKey() + " with revenue "  + entryList.get(4).getValue() + "€ -");
+        System.out.println("- cashpoint " + entryList.get(5).getKey() + " with revenue "  + entryList.get(5).getValue() + "€ -");
+
+        System.out.println("intermediate status: " + getRevenueSum() + "€");
 
         return entryList;
     }
 
     // add payed value to revenue of cashpoint with <param value="id">
+    // add payed value to summarized revenue
     public void addValue(int id, double price){
-        double newValue = price + cashpointToRevenue.get(id);
-        // two digits
+        this.setRevenueSum(price);
+
+        double newValue = roundToPriceFormat(price, cashpointToRevenue.get(id));
+        cashpointToRevenue.replace(id, newValue);
+
+        this.getCashpointsDescByRevenue();
+    }
+
+    // adds price to revenue
+    public void setRevenueSum(double price){
+        this.revenueSum = roundToPriceFormat(price, this.revenueSum);
+    }
+
+    // returns intermediate status of revenue of all cashpoints summarized
+    public double getRevenueSum(){
+        return this.revenueSum;
+    }
+    
+    // round to two digits format
+    public double roundToPriceFormat(double price, double sum){
+        double newValue = price + sum;
+
         newValue = newValue * 100;
         newValue = Math.round(newValue);
         newValue = newValue / 100;
 
-        cashpointToRevenue.replace(id, newValue);
-        this.getCashpointsDescByRevenue();
-    }
-
-    // get revenue of whole day
-    public double getRevenueSum(){
-        double sum = 0;
-        for(Double d : cashpointToRevenue.values()){
-            sum += d;
-        }
-        return sum;
+        return newValue;
     }
 }
