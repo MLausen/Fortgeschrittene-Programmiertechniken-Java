@@ -8,7 +8,6 @@ import java.util.concurrent.locks.Lock;
 /**
  * Created by Team 10
  */
-// TODO replace 600 with 6000, 100 with 1000
 public class Cashpoint implements Runnable{
     private WaitingQueue queue = new WaitingQueue();
 
@@ -29,7 +28,7 @@ public class Cashpoint implements Runnable{
         isOpen = true;
 
         try {
-            Thread.sleep(600);
+            Thread.sleep(6000);
         } catch (InterruptedException ie) {
             ie.printStackTrace();
         }
@@ -44,7 +43,7 @@ public class Cashpoint implements Runnable{
             lock.unlock();
 
             try {
-                int sleepTime = 100 * ThreadLocalRandom.current().nextInt(6, 11); // range 6, 7, 8, 9, 10
+                int sleepTime = 1000 * ThreadLocalRandom.current().nextInt(6, 11); // range 6, 7, 8, 9, 10
                 System.out.println("Cashpoint " + id + " sleep: "  + sleepTime);
                 Thread.sleep(sleepTime);
             } catch (InterruptedException ie) {

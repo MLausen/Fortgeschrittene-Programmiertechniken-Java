@@ -5,7 +5,6 @@ import java.util.concurrent.locks.Lock;
 /**
  * Created by Tean 10
  */
-// TODO replace 100 with 1000
 public class Acquisition implements Runnable {
     Lock lock;
 
@@ -30,7 +29,7 @@ public class Acquisition implements Runnable {
             lock.unlock();
 
             try {
-                int sleepTime = 100 * ThreadLocalRandom.current().nextInt(0, 3); // range 0, 1, 2
+                int sleepTime = 1000 * ThreadLocalRandom.current().nextInt(0, 3); // range 0, 1, 2
                 System.out.println("Acquisition sleep: "  + sleepTime);
                 Thread.sleep(sleepTime);
             } catch (InterruptedException ie) {
