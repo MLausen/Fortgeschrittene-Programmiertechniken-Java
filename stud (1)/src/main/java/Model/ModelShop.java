@@ -6,10 +6,7 @@ import fpt.com.Product;
 import fpt.com.SerializableStrategy;
 import javafx.collections.ModifiableObservableListBase;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.util.List;
 
 /**
@@ -75,6 +72,8 @@ public class ModelShop extends ModifiableObservableListBase<Product> {
         } catch (NullPointerException e) {
             // returns nullpointer if file path not found and file null
             System.out.println("debug log on Modelshop serialisation()\n" + e.toString());
+        }catch (FileNotFoundException e) {
+            System.out.println("debug log on Modelshop serialisation()\n" + e.toString());
         }
 
         if (fos != null) {
@@ -99,8 +98,10 @@ public class ModelShop extends ModifiableObservableListBase<Product> {
         FileInputStream fis = null;
         try {
             fis = new FileInputStream(path);
-        } catch (NullPointerException e) {
+        } catch (NullPointerException e){
             // returns nullpointer if file path not found and file null
+            ErrorDialog.error("You have to save before loading.");
+        }catch (FileNotFoundException e) {
             ErrorDialog.error("You have to save before loading.");
         }
         if (fis != null) {
