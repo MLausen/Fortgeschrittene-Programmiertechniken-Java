@@ -24,7 +24,7 @@ public class Product implements fpt.com.Product, Externalizable {
     private static final long serialVersionUID = 701L;
 
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY, generator = "products_SEQ")
+    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "products_SEQ")
     private long id;
 
     @Persistent
@@ -93,7 +93,6 @@ public class Product implements fpt.com.Product, Externalizable {
     public ObservableValue<Number> quantityProperty() {
         return quantity;
     }
-
 
 
     @Override

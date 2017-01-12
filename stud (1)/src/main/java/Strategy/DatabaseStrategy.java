@@ -11,7 +11,6 @@ import java.util.ArrayList;
 
 /**
  * Created by Team 10
- * controller element of View.ViewShop
  */
 
 public class DatabaseStrategy extends AbstractDatabaseStrategy {
@@ -19,26 +18,17 @@ public class DatabaseStrategy extends AbstractDatabaseStrategy {
     int counter = 0;
     ArrayList<Model.Product> products;
 
-
     @Override
     public Product readObject() {
         if (counter < products.size()) return products.get(counter++);
         return null;
     }
 
-
     @Override
     public void writeObject(Product obj) throws IOException {
-
         if (obj.getId() == 0) {
             openJPA.insert(obj.getName(), obj.getPrice(), obj.getQuantity());
         }
-
-    }
-
-    @Override
-    public void close() throws IOException {
-        openJPA.close();
     }
 
     @Override
@@ -55,5 +45,10 @@ public class DatabaseStrategy extends AbstractDatabaseStrategy {
         if (input != null) {
             products = openJPA.readList();
         }
+    }
+
+    @Override
+    public void close() throws IOException {
+        openJPA.close();
     }
 }

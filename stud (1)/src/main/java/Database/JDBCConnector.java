@@ -7,17 +7,19 @@ import java.sql.*;
 
 /**
  * Created by Team 10
- * controller element of View.ViewShop
- */
+ * singleton pattern  - DB connection/access with JDBC
+ * */
 public class JDBCConnector {
-    private Connection con = null;
+    // constants for DB connection
+    private static final String TABLE_PRODUCTS_FPT = "jdbc:postgresql://java.is.uni-due.de/ws1011";
+    private static final String TABLE_USERNAME = "ws1011";
+    private static final String TABLE_PW = "ftpw10";
+
     private static JDBCConnector instance;
-    private static String TABLE_PRODUCTS_FPT = "jdbc:postgresql://java.is.uni-due.de/ws1011";
-    private static String TABLE_USERNAME = "ws1011";
-    private static String TABLE_PW = "ftpw10";
+
+    private Connection con = null;
 
     public JDBCConnector() {
-
         try {
             DatabaseMetaData dbmd = createConnection().getMetaData();
 
@@ -29,18 +31,20 @@ public class JDBCConnector {
             //all database table
             String[] types = {"TABLE"};
             ResultSet resultSet = dbmd.getTables(null, null, "%", types);
+
+
             while (resultSet.next()) {
                 String tableName = resultSet.getString(3);
                 String tableCatalog = resultSet.getString(1);
                 String tableSchema = resultSet.getString(2);
                 System.out.println("Table : " + tableName + " , " + "nCatalog : " + tableCatalog + " , " + "nSchema : " + tableSchema);
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
+    // sinlge instance to connect db
     public static JDBCConnector getInstance() {
         if (JDBCConnector.instance == null) {
             JDBCConnector.instance = new JDBCConnector();
@@ -48,7 +52,9 @@ public class JDBCConnector {
         return JDBCConnector.instance;
     }
 
+    // returns db connection
     public Connection createConnection() throws SQLException {
+        // database connection should not be set twice
         if (con != null) {
             return con;
         } else {
@@ -63,6 +69,7 @@ public class JDBCConnector {
         }
     }
 
+    // insert new entry
     public long insert(String name, double price, int quantity) throws SQLException {
         long id = -1L;
         //pst will automatically close
@@ -85,6 +92,7 @@ public class JDBCConnector {
         return id;
     }
 
+    // insert new product into DB by calling overloaded method insert(String s, double p, int q)
     public void insert(Product product) throws SQLException {
         long id = this.insert(product.getName(), product.getPrice(), product.getQuantity());
         product.setId(id);
@@ -92,7 +100,7 @@ public class JDBCConnector {
 
     public Product read(long id) {
         Product product = new Model.Product();
-        //prst will automatically close
+        //prst will be closed automatically
         try (PreparedStatement prst = createConnection().prepareStatement("SELECT id,name,price,quantity FROM products WHERE id=?")) {
             prst.setLong(1, id);
             ResultSet rs = prst.executeQuery();
@@ -108,7 +116,7 @@ public class JDBCConnector {
         return product;
     }
 
-    //we can use it as finally
+    // used as finally
     public void close() {
         if (con != null) {
             try {

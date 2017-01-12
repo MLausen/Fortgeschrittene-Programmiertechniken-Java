@@ -11,14 +11,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/*
+* Created by Team 10
+* singleton pattern - DB connection/access with OpenJPA
+* */
 public class OpenJPA {
+    private static OpenJPA instance;
+
     EntityManagerFactory factory;
     EntityManager entityManager;
     EntityTransaction transaction;
-    private static OpenJPA instance;
 
     public OpenJPA() {
-        //factory = Persistence.createEntityManagerFactory("openjpa", System.getProperties());
         factory = getWithoutConfig();
         entityManager = factory.createEntityManager();
         transaction = entityManager.getTransaction();
@@ -31,6 +35,7 @@ public class OpenJPA {
         return OpenJPA.instance;
     }
 
+    // define persistance
     public EntityManagerFactory getWithoutConfig() {
         Map<String, String> map = new HashMap<String, String>();
 
@@ -54,8 +59,13 @@ public class OpenJPA {
             }
             map.put("openjpa.MetaDataFactory", "jpa(Types=" + Model.Product.class.getName() + ")");
         }
-
         return OpenJPAPersistence.getEntityManagerFactory(map);
+    }
+
+    public void open() {
+        if (!factory.isOpen()) factory = getWithoutConfig();
+        if (!entityManager.isOpen()) entityManager = factory.createEntityManager();
+        transaction = entityManager.getTransaction();
     }
 
     public Product read(long id) {
@@ -85,7 +95,6 @@ public class OpenJPA {
         return product.getId();
     }
 
-
     public ArrayList<Model.Product> readList() {
         begin();
         ArrayList<Model.Product> productsList = new ArrayList<>();
@@ -103,7 +112,6 @@ public class OpenJPA {
         }
         commit();
         return productsList;
-
     }
 
     public void begin() {
@@ -114,16 +122,9 @@ public class OpenJPA {
         if (transaction.isActive()) transaction.commit();
     }
 
-
     public void close() {
         if (entityManager.isOpen()) entityManager.close();
         if (factory.isOpen()) factory.close();
         commit();
-    }
-
-    public void open() {
-        if (!factory.isOpen()) factory = getWithoutConfig();
-        if (!entityManager.isOpen()) entityManager = factory.createEntityManager();
-        transaction = entityManager.getTransaction();
     }
 }
