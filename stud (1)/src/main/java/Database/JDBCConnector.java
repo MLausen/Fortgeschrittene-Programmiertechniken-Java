@@ -101,14 +101,9 @@ public class JDBCConnector {
 
     public Product read(long id) {
         Product product = new Model.Product();
-<<<<<<< Updated upstream
-        //prst will be closed automatically
-        try (PreparedStatement prst = createConnection().prepareStatement("SELECT id,name,price,quantity FROM products WHERE id=?")) {
-=======
         //prst will automatically close
         try (PreparedStatement prst = createConnection().prepareStatement("SELECT id,name,price,quantity FROM products WHERE id=?");
          ResultSet rs = prst.executeQuery()) {
->>>>>>> Stashed changes
             prst.setLong(1, id);
 
             while (rs.next()) {
