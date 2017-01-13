@@ -118,7 +118,7 @@ public class ControllerShop {
                 path = "xproducts.xml";
                 return new XStreamStrategy();
             case ViewShop.JPA_SER:
-                path = "products.xml";
+                path = "pom.xml";
                 return new DatabaseStrategy();
             default:
                 ErrorDialog.error("Please select one of the saving methods");

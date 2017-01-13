@@ -45,14 +45,19 @@ public class Balance {
                 return 0;
             }
         });
-
-        System.out.println("- cashpoint " + entryList.get(0).getKey() + " with revenue "  + entryList.get(0).getValue() + "€ -");
-        System.out.println("- cashpoint " + entryList.get(1).getKey() + " with revenue "  + entryList.get(1).getValue() + "€ -");
+            for(int i =0;i<6;i++) {
+                if((id-1)!= i){
+                    System.out.println("- cashpoint " + entryList.get(i).getKey() + " with revenue " + entryList.get(i).getValue() + "€ -");
+                }else {
+                    System.out.println("- cashpoint " + entryList.get(i).getKey() + " with revenue " + "\u001B[32m" +
+                            entryList.get(i).getValue() + "€ -" + "\u001B[0m");
+                }
+        /*System.out.println("- cashpoint " + entryList.get(1).getKey() + " with revenue "  + entryList.get(1).getValue() + "€ -");
         System.out.println("- cashpoint " + entryList.get(2).getKey() + " with revenue "  + entryList.get(2).getValue() + "€ -");
         System.out.println("- cashpoint " + entryList.get(3).getKey() + " with revenue "  + entryList.get(3).getValue() + "€ -");
         System.out.println("- cashpoint " + entryList.get(4).getKey() + " with revenue "  + entryList.get(4).getValue() + "€ -");
-        System.out.println("- cashpoint " + entryList.get(5).getKey() + " with revenue "  + entryList.get(5).getValue() + "€ -");
-
+        System.out.println("- cashpoint " + entryList.get(5).getKey() + " with revenue "  + entryList.get(5).getValue() + "€ -");*/
+            }
         System.out.println("intermediate status: " + getRevenueSum() + "€");
 
         return entryList;
@@ -66,7 +71,7 @@ public class Balance {
         double newValue = roundToPriceFormat(price, cashpointToRevenue.get(id));
         cashpointToRevenue.replace(id, newValue);
 
-        this.getCashpointsDescByRevenue();
+        this.getCashpointsDescByRevenue(id);
     }
 
     // adds price to revenue

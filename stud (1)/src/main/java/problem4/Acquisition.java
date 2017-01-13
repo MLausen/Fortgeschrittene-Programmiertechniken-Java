@@ -17,14 +17,16 @@ public class Acquisition implements Runnable {
         System.out.println("run() Acquisition");
 
         // get new customer while no of the cashpoints has a queue with 8 or more people
-        while(CashpointService.getInstance().getHighestCustomerAmount() < 9) {
+        while(true) {
             // lock thread to not change cashpoint state while acquisition and assigning customer to cashpoint
             lock.lock();
 
             Customer customer = new Customer();
             CashpointService.getInstance().checkForCashpointToOpen();
             CashpointService.getInstance().getCashpointWithLowestCustomerAmount().addCustomer(customer);
-
+            if(CashpointService.getInstance().getHighestCustomerAmount() > 7){
+                break;
+            }
             // unlock thread after assigning customer to cashpoint and checking for a new cashpoint to open
             lock.unlock();
 
