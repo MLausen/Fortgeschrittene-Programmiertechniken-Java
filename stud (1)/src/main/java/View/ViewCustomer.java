@@ -2,17 +2,19 @@ package View;
 
 import Model.ModelShop;
 import fpt.com.Product;
-import javafx.geometry.Pos;
-import javafx.scene.control.*;
+import javafx.application.Platform;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 
 import java.io.IOException;
 import java.net.*;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Scanner;
 
@@ -23,18 +25,17 @@ public class ViewCustomer extends BorderPane {
     TableView<fpt.com.Product> tableProducts = new TableView<>();
     TableView<fpt.com.Product> tableOrders = new TableView<>();
 
-    Button b ;
     Button buy ;
-    HBox buybox;
-
+    BorderPane box;
+    Label timeLable;
     private Thread timeRequestThread;
     private Thread timeResponseThread;
 
     public ViewCustomer(){
         buy = new Button("Buy");
-        buybox = new HBox(buy);
-        setBottom(buybox);
-        buybox.setAlignment(Pos.BOTTOM_RIGHT);
+        timeLable = new Label();
+        box = new BorderPane(null,null,buy,null,timeLable);
+        setBottom(box);
 
         // products table columns
         TableColumn<Product, String> nameColumn = (TableColumn<Product, String>) creatClolumn("Name");
@@ -85,7 +86,7 @@ public class ViewCustomer extends BorderPane {
                 }
 
                 // socket for client
-                try (DatagramSocket dSocket = new DatagramSocket(5555);) {
+                try (DatagramSocket dSocket = new DatagramSocket()) {
 
                     try {
                         int i = 0;
@@ -106,9 +107,12 @@ public class ViewCustomer extends BorderPane {
                             packet = new DatagramPacket(answer, answer.length);
                             // waiting for response
                             dSocket.receive(packet);
-
-                            System.out.println(new String(packet.getData(), 0, packet
-                                    .getLength()));
+                            String timeText =new String(packet.getData(), 0, packet
+                                    .getLength());
+                            Platform.runLater(() -> {
+                                // code that updates GUI
+                                updateTimeLable(timeText);
+                            });
                             try {
                                 Thread.sleep(1000);
                             } catch (InterruptedException e) {
@@ -128,12 +132,16 @@ public class ViewCustomer extends BorderPane {
         };
     }
 
+    private void updateTimeLable(String time) {
+        timeLable.setText(time);
+    }
+
     // method to get a timeresponse by a server via udp-package
     public void timeResponse(){
         this.timeResponseThread = new Thread("Time Response") {
             public void run() {
                 // server socket with port 6667
-                try (DatagramSocket socket = new DatagramSocket(6667);) {
+                try (DatagramSocket socket = new DatagramSocket(6667)) {
                     while (true) {
 
                         // new package
@@ -151,23 +159,25 @@ public class ViewCustomer extends BorderPane {
                         int len = packet.getLength();
                         byte[] data = packet.getData();
 
-                        System.out.printf(
-                                "Anfrage von %s vom Port %d mit der Länge %d:%n%s%n",
-                                address, port, len, new String(data, 0, len));
+
 
                         // data to string
                         String da = new String(packet.getData());
-                        // dividing datas by :
+
+                        // dividing commands by :
                         try (Scanner sc = new Scanner(da).useDelimiter(":")) {
                             // filtering first command
                             String keyword = sc.next();
 
                             if (keyword.equals("TIME")) {
+                                System.out.printf(
+                                        "TIME-Anfrage von %s vom Port %d%n",
+                                        address, port);
+                                DateFormat df = new SimpleDateFormat("dd.MM.yy HH:mm:ss");
+                                Date dateobj = new Date();
+                                byte[] myDate = df.format(dateobj).getBytes();
 
-                                Date dt = new Date();
-                                byte[] myDate = dt.toString().getBytes();
-
-                                // package with new date
+                                // package with new date to the same Port and address
                                 packet = new DatagramPacket(myDate, myDate.length,
                                         address, port);
                                 // sending package
@@ -178,7 +188,7 @@ public class ViewCustomer extends BorderPane {
                                 myDate = new String("Command unknown").getBytes();
 
                                 // package for invalid keyword
-                                // preparing for response
+                                // preparing for response to the same Port and address
                                 packet = new DatagramPacket(myDate, myDate.length,
                                         address, port);
                                 // sending package
