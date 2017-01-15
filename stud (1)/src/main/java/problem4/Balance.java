@@ -29,7 +29,7 @@ public class Balance {
     }
 
     // sort cashpoint descending by revenue
-    public List<Map.Entry<Integer, Double>> getCashpointsDescByRevenue(){
+    public List<Map.Entry<Integer, Double>> getCashpointsDescByRevenue(int id){
         Set<Map.Entry<Integer, Double>> entries = cashpointToRevenue.entrySet();
         List<Map.Entry<Integer, Double>> entryList = new ArrayList<>(entries);
         Collections.sort(entryList, new Comparator<Map.Entry<Integer, Double>>() {
