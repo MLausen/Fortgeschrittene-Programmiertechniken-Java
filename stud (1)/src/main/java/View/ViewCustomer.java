@@ -3,6 +3,8 @@ package View;
 import Model.ModelShop;
 import fpt.com.Product;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
@@ -11,7 +13,11 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 
+import java.awt.*;
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -25,16 +31,23 @@ public class ViewCustomer extends BorderPane {
     TableView<fpt.com.Product> tableProducts = new TableView<>();
     TableView<fpt.com.Product> tableOrders = new TableView<>();
 
-    Button buy ;
+    boolean login;
+
+    Button buy;
+    Button add;
     BorderPane box;
     Label timeLable;
     private Thread timeRequestThread;
     private Thread timeResponseThread;
+    private Thread loginThread;
 
-    public ViewCustomer(){
+    public ViewCustomer() {
         buy = new Button("Buy");
+        add = new Button("Add");
         timeLable = new Label();
-        box = new BorderPane(null,null,buy,null,timeLable);
+        box = new BorderPane(null, null, new HBox(20, add, buy), null, timeLable);
+
+
         setBottom(box);
 
         // products table columns
@@ -49,13 +62,15 @@ public class ViewCustomer extends BorderPane {
         TableColumn<fpt.com.Product, Long> quantityColumnOrder = (TableColumn<Product, Long>) creatClolumn("Buy Count");
 
         //addcloumns to tables
-        tableProducts.getColumns().addAll(nameColumn, priceColumn,idColumn, quantityColumn);
-        tableOrders.getColumns().addAll(nameColumnOrder , priceColumnOrder , quantityColumnOrder);
+        tableProducts.getColumns().addAll(nameColumn, priceColumn, idColumn, quantityColumn);
+        tableOrders.getColumns().addAll(nameColumnOrder, priceColumnOrder, quantityColumnOrder);
 
         // positioning
-        HBox box = new HBox(tableProducts,tableOrders);
+        HBox box = new HBox(tableProducts, tableOrders);
         setCenter(box);
 
+        loginResponse();
+        loginThread.start();
         timeRequest();
         timeRequestThread.start();
         timeResponse();
@@ -63,18 +78,19 @@ public class ViewCustomer extends BorderPane {
     }
 
     // method used in Controller to add Products from Model to the table in View
-    public void setProducts(ModelShop x ) {
+    public void setProducts(ModelShop x) {
         tableProducts.setItems(x);
     }
+
     // to create cloumns
-    private  TableColumn<Product,?> creatClolumn(String name){
-        TableColumn<Product,?> xColumn = new TableColumn<>(""+name);
-        xColumn.setCellValueFactory(new PropertyValueFactory<>(""+name));
+    private TableColumn<Product, ?> creatClolumn(String name) {
+        TableColumn<Product, ?> xColumn = new TableColumn<>("" + name);
+        xColumn.setCellValueFactory(new PropertyValueFactory<>("" + name));
         return xColumn;
     }
 
     // method to send a request to a server by a client via udp-package
-    public void timeRequest(){
+    public void timeRequest() {
         this.timeRequestThread = new Thread("Time Request") {
             public void run() {
                 // own address
@@ -89,8 +105,7 @@ public class ViewCustomer extends BorderPane {
                 try (DatagramSocket dSocket = new DatagramSocket()) {
 
                     try {
-                        int i = 0;
-                        while (i < 10) {
+                        while (true) {
                             String command = "TIME:";
 
                             byte buffer[] = null;
@@ -107,11 +122,11 @@ public class ViewCustomer extends BorderPane {
                             packet = new DatagramPacket(answer, answer.length);
                             // waiting for response
                             dSocket.receive(packet);
-                            String timeText =new String(packet.getData(), 0, packet
+                            String timeText = new String(packet.getData(), 0, packet
                                     .getLength());
                             Platform.runLater(() -> {
                                 // code that updates GUI
-                                updateTimeLable(timeText);
+                                updateTimeLabel(timeText);
                             });
                             try {
                                 Thread.sleep(1000);
@@ -119,7 +134,6 @@ public class ViewCustomer extends BorderPane {
                                 e.printStackTrace();
                             }
 
-                            i++;
                         }
                     } catch (IOException e1) {
                         e1.printStackTrace();
@@ -132,12 +146,9 @@ public class ViewCustomer extends BorderPane {
         };
     }
 
-    private void updateTimeLable(String time) {
-        timeLable.setText(time);
-    }
 
     // method to get a timeresponse by a server via udp-package
-    public void timeResponse(){
+    public void timeResponse() {
         this.timeResponseThread = new Thread("Time Response") {
             public void run() {
                 // server socket with port 6667
@@ -156,10 +167,6 @@ public class ViewCustomer extends BorderPane {
                         // read data
                         InetAddress address = packet.getAddress();
                         int port = packet.getPort();
-                        int len = packet.getLength();
-                        byte[] data = packet.getData();
-
-
 
                         // data to string
                         String da = new String(packet.getData());
@@ -171,9 +178,9 @@ public class ViewCustomer extends BorderPane {
 
                             if (keyword.equals("TIME")) {
                                 System.out.printf(
-                                        "TIME-Anfrage von %s vom Port %d%n",
+                                        "Time-Request from %s  Port %d%n",
                                         address, port);
-                                DateFormat df = new SimpleDateFormat("dd.MM.yy HH:mm:ss");
+                                DateFormat df = new SimpleDateFormat("dd.MM.yy   HH:mm:ss");
                                 Date dateobj = new Date();
                                 byte[] myDate = df.format(dateobj).getBytes();
 
@@ -205,4 +212,96 @@ public class ViewCustomer extends BorderPane {
             }
         };
     }
+
+    public void addEventHandler(EventHandler<ActionEvent> eventHandler) {
+        buy.addEventHandler(ActionEvent.ACTION, eventHandler);
+    }
+
+
+    public void loginRequest() {
+        EventQueue.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+
+                LoginView loginView = new LoginView();
+                if (!(loginView.getChoice() == 0)) { //stop operation if cancel
+                    return;
+                }
+
+                try (Socket serverCon = new Socket("localhost", 6666);
+                     DataOutputStream out = new DataOutputStream(serverCon.getOutputStream());
+                     BufferedReader in = new BufferedReader(new InputStreamReader(serverCon.getInputStream()))) {
+
+                    if (loginView.getName() != null && loginView.getPass() != null) { //not empty
+
+                        out.writeBytes(loginView.getName() + '\n');
+                        out.writeBytes(loginView.getPass() + '\n');
+
+                    }
+                    String loginFeedback = in.readLine();
+                    System.out.println(loginFeedback);
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    public void loginResponse() {
+
+        this.loginThread = new Thread("Login Request") {
+            public void run() {
+                try (ServerSocket server = new ServerSocket(6666)) {
+                    while (true) {
+
+                        try (Socket client = server.accept();
+                             BufferedReader in = new BufferedReader(new InputStreamReader(client.getInputStream()));
+                             DataOutputStream out = new DataOutputStream(client.getOutputStream());) {
+
+                            System.out.printf("Login-Request from %s  Port %d%n", client.getInetAddress(), client.getLocalPort());
+
+                            String username = in.readLine();
+                            String password = in.readLine();
+
+                            if (adminInput(username, password)) {
+                                login = true;
+                                out.writeBytes("Logged in successfully as " + username);
+                            } else {
+                                out.writeBytes("Invalid Username and/or password.");
+                            }
+
+                        } catch (IOException e1) {
+                            e1.printStackTrace();
+
+                        }
+                    }
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+
+                }
+            }
+        };
+    }
+
+
+    private void updateTimeLabel(String time) {
+        timeLable.setText(time);
+    }
+
+    private boolean adminInput(String username, String password) {
+        if (username.equals("admin") && password.equals("admin"))
+            return true;
+        return false;
+    }
+
+
+    public boolean loggedIn() {
+        return login;
+    }
+
+    public Product selectedProduct() {
+        return tableProducts.getSelectionModel().getSelectedItem();
+    }
 }
+
