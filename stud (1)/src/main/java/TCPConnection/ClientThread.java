@@ -29,7 +29,11 @@ public class ClientThread extends Thread {
                 } else {
                     out.write("Invalid Username and/or password.".getBytes());
                 }
+
                 out.flush();
+
+                System.out.println("Connecting with " + name + " timed out");
+                socket.close();
 
         } catch (IOException e1) {
             e1.printStackTrace();
