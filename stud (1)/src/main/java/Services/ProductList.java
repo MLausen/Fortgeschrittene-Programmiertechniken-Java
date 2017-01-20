@@ -39,7 +39,10 @@ public class ProductList implements fpt.com.ProductList {
         }
         return success;
     }
+    public void decreaseQuantitiy(Product p) {
+            findProductByName(p.getName()).setQuantity(p.getQuantity() - 1);
 
+    }
     @Override
     public boolean delete(Product product) {
         boolean success = false;

@@ -31,8 +31,6 @@ public class ClientThread extends Thread {
                 }
                 out.flush();
 
-                System.out.println("Connecting with " + name + " timed out");
-                socket.close();
         } catch (IOException e1) {
             e1.printStackTrace();
         }

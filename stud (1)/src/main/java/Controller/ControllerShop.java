@@ -1,8 +1,6 @@
 package Controller;
 
 
-import Database.JDBCConnector;
-import Database.OpenJPA;
 import Helper.ErrorDialog;
 import Model.ModelShop;
 import Strategy.BinaryStrategy;

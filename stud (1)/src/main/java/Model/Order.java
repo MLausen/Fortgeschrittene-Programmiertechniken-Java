@@ -1,74 +1,45 @@
 package Model;
 
-import fpt.com.*;
 import fpt.com.Product;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+import javafx.collections.ModifiableObservableListBase;
 
-import java.util.HashMap;
-import java.util.Iterator;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * Created by Team 10
+ * Created by Sufian Vaio on 20.01.2017.
  */
-public class Order implements fpt.com.Order {
-    // Product with quantity of order
-    HashMap<fpt.com.Product, Integer> orderMap = new HashMap<fpt.com.Product, Integer>();
+public class Order extends ModifiableObservableListBase<Product> implements fpt.com.Order {
+    List<Product> ordersList;
 
-    @Override
-    public boolean add(fpt.com.Product e) {
-        if (e.getQuantity() > 0) { // if available
-            int quantity = 1;
-            for (fpt.com.Product p : orderMap.keySet()) {
-                if (e.equals(p)) {
-                    quantity = orderMap.get(p) + 1;
+
+    public Order() {
+        ordersList = new ArrayList<Product>();
+    }
+
+
+    public boolean add(Product product) {
+        if(product != null) {
+            for (Product p : ordersList) {
+                if (product.getName().equals(p.getName())) {
+                    p.setQuantity(p.getQuantity() + product.getQuantity());
+                    p.setPrice(Math.round((p.getPrice() + product.getPrice()) * 100) / (double) 100);
+                    return false;
                 }
             }
-
-            // quantity of product x in order
-            orderMap.put(e, quantity);
-
-            // reduce availability of products in whole store
-            e.setQuantity(e.getQuantity() - 1);
-
-            return true;
         }
+        super.add(product);
+        return true;
+    }
+
+    @Override
+    public boolean delete(Product p) {
         return false;
     }
 
-    @Override
-    public boolean delete(fpt.com.Product e) {
-        for (fpt.com.Product p : orderMap.keySet()) {
-            if (e.getId() == p.getId()) {
-                orderMap.remove(p);
-
-                // add quantity of order to availability
-                e.setQuantity(e.getQuantity() + orderMap.get(p));
-
-                return true;
-            }
-        }
-        return false;
-    }
-
-    @Override
-    public int size() {
-        return orderMap.size();
-    }
-
-    @Override
-    public fpt.com.Product findProductById(long id) {
-        for (fpt.com.Product p : orderMap.keySet()) {
-            if (id == p.getId()) {
-                return p;
-            }
-        }
-        return null;
-    }
-
-    @Override
-    public fpt.com.Product findProductByName(String name) {
-        for (fpt.com.Product p : orderMap.keySet()) {
-            if (name.equals(p.getName())) {
+    public Product findProductByName(String name) {
+        for (Product p : ordersList) {
+            if (p.getName().equals(name)) {
                 return p;
             }
         }
@@ -78,25 +49,50 @@ public class Order implements fpt.com.Order {
     @Override
     public double getSum() {
         double sum = 0;
-        for (fpt.com.Product p : orderMap.keySet()) {
-            for (int i = 0; i < orderMap.get(p); i++) {
-                sum += p.getPrice();
-            }
+        for (Product p : ordersList) {
+            sum += p.getPrice();
         }
+        sum = Math.round(sum * 100) / (double) 100;
         return sum;
     }
 
+
     @Override
     public int getQuantity() {
-        int counter = 0;
-        for (fpt.com.Product p : orderMap.keySet()) {
-            counter += orderMap.get(p);
+        int count =0;
+        for(Product p : ordersList){
+            count += p.getQuantity();
         }
-        return counter;
+        return count;
     }
 
     @Override
-    public Iterator<Product> iterator() {
-        throw new NotImplementedException();
+    public Product get(int index) {
+        return ordersList.get(index);
+    }
+
+    @Override
+    public int size() {
+        return ordersList.size();
+    }
+
+    @Override
+    public Product findProductById(long id) {
+        return null;
+    }
+
+    @Override
+    protected void doAdd(int index, Product element) {
+        ordersList.add(index, element);
+    }
+
+    @Override
+    protected Product doSet(int index, Product element) {
+        return ordersList.set(index, element);
+    }
+
+    @Override
+    protected Product doRemove(int index) {
+        return ordersList.remove(index);
     }
 }

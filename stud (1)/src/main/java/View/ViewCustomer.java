@@ -1,6 +1,7 @@
 package View;
 
 import Model.ModelShop;
+import Model.Order;
 import fpt.com.Product;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -32,6 +33,7 @@ public class ViewCustomer extends BorderPane {
     Button add;
     BorderPane box;
     Label timeLable;
+    Label total;
     private Thread timeRequestThread;
     private Thread timeResponseThread;
 
@@ -40,21 +42,24 @@ public class ViewCustomer extends BorderPane {
         buy = new Button("Buy");
         add = new Button("Add");
         timeLable = new Label();
-        box = new BorderPane(null, null, new HBox(20, add, buy), null, timeLable);
+        total = new Label("");
+        buy.setId("buy");
+        add.setId("add");
+        box = new BorderPane(null, null, new HBox(10, total, add, buy), null, timeLable);
 
 
         setBottom(box);
 
         // products table columns
-        TableColumn<Product, String> nameColumn = (TableColumn<Product, String>) creatClolumn("Name");
-        TableColumn<Product, Double> priceColumn = (TableColumn<Product, Double>) creatClolumn("Price");
-        TableColumn<Product, Integer> quantityColumn = (TableColumn<Product, Integer>) creatClolumn("Quantity");
-        TableColumn<Product, Long> idColumn = (TableColumn<Product, Long>) creatClolumn("Id");
+        TableColumn<Product, String> nameColumn = (TableColumn<Product, String>) creatClolumn("Name","name");
+        TableColumn<Product, Double> priceColumn = (TableColumn<Product, Double>) creatClolumn("Price","price");
+        TableColumn<Product, Integer> quantityColumn = (TableColumn<Product, Integer>) creatClolumn("Quantity","quantity");
+        TableColumn<Product, Long> idColumn = (TableColumn<Product, Long>) creatClolumn("Id","id");
 
         // order table columns
-        TableColumn<Product, String> nameColumnOrder = (TableColumn<Product, String>) creatClolumn("Name");
-        TableColumn<fpt.com.Product, Double> priceColumnOrder = (TableColumn<Product, Double>) creatClolumn("Price");
-        TableColumn<fpt.com.Product, Long> quantityColumnOrder = (TableColumn<Product, Long>) creatClolumn("Buy Count");
+        TableColumn<Product, String> nameColumnOrder = (TableColumn<Product, String>) creatClolumn("Name","name");
+        TableColumn<Product, Double> priceColumnOrder = (TableColumn<Product, Double>) creatClolumn("Price","price");
+        TableColumn<Product, Integer> quantityColumnOrder = (TableColumn<Product, Integer>) creatClolumn("Count","quantity");
 
         //addcloumns to tables
         tableProducts.getColumns().addAll(nameColumn, priceColumn, idColumn, quantityColumn);
@@ -77,9 +82,9 @@ public class ViewCustomer extends BorderPane {
     }
 
     // to create cloumns
-    private TableColumn<Product, ?> creatClolumn(String name) {
+    private TableColumn<Product, ?> creatClolumn(String name,String propertyName) {
         TableColumn<Product, ?> xColumn = new TableColumn<>("" + name);
-        xColumn.setCellValueFactory(new PropertyValueFactory<>("" + name));
+        xColumn.setCellValueFactory(new PropertyValueFactory<>("" + propertyName));
         return xColumn;
     }
 
@@ -209,11 +214,23 @@ public class ViewCustomer extends BorderPane {
 
     public void addEventHandler(EventHandler<ActionEvent> eventHandler) {
         buy.addEventHandler(ActionEvent.ACTION, eventHandler);
+        add.addEventHandler(ActionEvent.ACTION, eventHandler);
     }
-
 
     private void updateTimeLabel(String time) {
         timeLable.setText(time);
+    }
+
+    public void totalSum(String text) {
+        total.setText(text);
+    }
+
+    public void setOrders(Order orders) {
+        tableOrders.setItems(orders);
+    }
+
+    public Product selectedProduct() {
+        return tableProducts.getSelectionModel().getSelectedItem();
     }
 
 }
