@@ -21,12 +21,6 @@ public class Client {
     }
 
     public boolean loginRequest() {
-        // if we should keep the customer view running in parallel while making login authorization
-        // then we have to make it as a queue thread and make a thread for the order which has to wait till the login thread ends.
-        /*EventQueue.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-            }});*/
         //TODO ask in the exercise if it is okay to use I/o Streams with BufferdReader / DataOutputStream
         ViewLogin viewLogin = new ViewLogin();
         if (!(viewLogin.getChoice() == 0)) { //stop operation if cancel or close
