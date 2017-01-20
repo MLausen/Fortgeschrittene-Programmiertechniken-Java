@@ -2,6 +2,7 @@ package Controller;
 
 import Model.ModelShop;
 import View.ViewCustomer;
+import TCPConnection.Client;
 
 /**
  * Created Team 10
@@ -9,7 +10,7 @@ import View.ViewCustomer;
 
 public class ControllerCustomerView {
     private ModelShop modelShop;
-
+    private Client client = new Client();
 
     // defines controller for customer view
     public void link(ModelShop model, ViewCustomer viewCustomer) {
@@ -17,16 +18,13 @@ public class ControllerCustomerView {
         // link ProductList from ModelShop to Customer View
         viewCustomer.setProducts(modelShop);
         viewCustomer.addEventHandler(event -> {
-            buyOperation(viewCustomer);
+            buyOperation();
         });
     }
 
-    private void buyOperation(ViewCustomer viewCustomer) {
-        viewCustomer.loginRequest();
-        if(viewCustomer.loggedIn()){
-
+    private void buyOperation() {
+        if(client.loginRequest()){
+            System.out.println("Hallo i can send orders");
         }
-
     }
-
 }

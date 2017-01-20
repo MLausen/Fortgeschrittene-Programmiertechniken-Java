@@ -13,11 +13,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 
-import java.awt.*;
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -31,7 +27,6 @@ public class ViewCustomer extends BorderPane {
     TableView<fpt.com.Product> tableProducts = new TableView<>();
     TableView<fpt.com.Product> tableOrders = new TableView<>();
 
-    boolean login;
 
     Button buy;
     Button add;
@@ -39,7 +34,7 @@ public class ViewCustomer extends BorderPane {
     Label timeLable;
     private Thread timeRequestThread;
     private Thread timeResponseThread;
-    private Thread loginThread;
+
 
     public ViewCustomer() {
         buy = new Button("Buy");
@@ -69,8 +64,7 @@ public class ViewCustomer extends BorderPane {
         HBox box = new HBox(tableProducts, tableOrders);
         setCenter(box);
 
-        loginResponse();
-        loginThread.start();
+
         timeRequest();
         timeRequestThread.start();
         timeResponse();
@@ -218,90 +212,9 @@ public class ViewCustomer extends BorderPane {
     }
 
 
-    public void loginRequest() {
-        EventQueue.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-
-                LoginView loginView = new LoginView();
-                if (!(loginView.getChoice() == 0)) { //stop operation if cancel
-                    return;
-                }
-
-                try (Socket serverCon = new Socket("localhost", 6666);
-                     DataOutputStream out = new DataOutputStream(serverCon.getOutputStream());
-                     BufferedReader in = new BufferedReader(new InputStreamReader(serverCon.getInputStream()))) {
-
-                    if (loginView.getName() != null && loginView.getPass() != null) { //not empty
-
-                        out.writeBytes(loginView.getName() + '\n');
-                        out.writeBytes(loginView.getPass() + '\n');
-
-                    }
-                    String loginFeedback = in.readLine();
-                    System.out.println(loginFeedback);
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
-
-    public void loginResponse() {
-
-        this.loginThread = new Thread("Login Request") {
-            public void run() {
-                try (ServerSocket server = new ServerSocket(6666)) {
-                    while (true) {
-
-                        try (Socket client = server.accept();
-                             BufferedReader in = new BufferedReader(new InputStreamReader(client.getInputStream()));
-                             DataOutputStream out = new DataOutputStream(client.getOutputStream());) {
-
-                            System.out.printf("Login-Request from %s  Port %d%n", client.getInetAddress(), client.getLocalPort());
-
-                            String username = in.readLine();
-                            String password = in.readLine();
-
-                            if (adminInput(username, password)) {
-                                login = true;
-                                out.writeBytes("Logged in successfully as " + username);
-                            } else {
-                                out.writeBytes("Invalid Username and/or password.");
-                            }
-
-                        } catch (IOException e1) {
-                            e1.printStackTrace();
-
-                        }
-                    }
-                } catch (IOException e1) {
-                    e1.printStackTrace();
-
-                }
-            }
-        };
-    }
-
-
     private void updateTimeLabel(String time) {
         timeLable.setText(time);
     }
 
-    private boolean adminInput(String username, String password) {
-        if (username.equals("admin") && password.equals("admin"))
-            return true;
-        return false;
-    }
-
-
-    public boolean loggedIn() {
-        return login;
-    }
-
-    public Product selectedProduct() {
-        return tableProducts.getSelectionModel().getSelectedItem();
-    }
 }
 
