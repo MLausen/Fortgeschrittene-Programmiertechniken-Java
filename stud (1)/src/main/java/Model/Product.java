@@ -47,7 +47,6 @@ public class Product implements fpt.com.Product, Externalizable {
         this.name.set(name);
         this.quantity.set(quantity);
         this.price.set(price);
-
     }
 
     public long getId() {
@@ -93,7 +92,6 @@ public class Product implements fpt.com.Product, Externalizable {
     public ObservableValue<Number> quantityProperty() {
         return quantity;
     }
-
 
     @Override
     public void writeExternal(ObjectOutput out) throws IOException {

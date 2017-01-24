@@ -108,7 +108,6 @@ public class OpenJPA {
             p.setQuantity(products.get(i).getQuantity());
             p.setPrice(products.get(i).getPrice());
             productsList.add(p);
-
         }
         commit();
         return productsList;
