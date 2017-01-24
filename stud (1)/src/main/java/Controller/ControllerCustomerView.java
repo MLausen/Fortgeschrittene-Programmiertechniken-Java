@@ -15,9 +15,9 @@ import javafx.scene.control.Button;
 
 public class ControllerCustomerView {
     private ModelShop modelShop;
-    private Client client = new Client();
     private ViewCustomer viewCustomer;
     private Order order;
+    Client client;
 
     // defines controller for customer view
     public void link(ModelShop model, ViewCustomer view, Order o) {
@@ -34,7 +34,12 @@ public class ControllerCustomerView {
                     addElement();
                     break;
                 case "buy":
-                    buyOperation();
+                    try {
+                        client = new Client(order);
+                        buyOperation();
+                    } catch (ClassNotFoundException e1) {
+                        e1.printStackTrace();
+                    }
                     break;
             }
         });
@@ -49,12 +54,11 @@ public class ControllerCustomerView {
         } else {
             ErrorDialog.error("not available now");
         }
-        }
+    }
 
-    private void buyOperation() {
-        if (client.loginRequest()) {
+    private void buyOperation() throws ClassNotFoundException {
+        if (client.buyRequest()) {
             viewCustomer.totalSum("Sent Successfully  ✓");
-            client.sendOrder(order); // Todo send Order to the warehouse and calculate the sum and the quantity for all orders
             order.clear();
         }
     }

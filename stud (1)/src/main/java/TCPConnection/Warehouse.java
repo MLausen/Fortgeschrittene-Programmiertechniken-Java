@@ -1,5 +1,7 @@
 package TCPConnection;
 
+import Model.Order;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -8,8 +10,10 @@ import java.net.Socket;
  * Created by Sufian Vaio on 18.01.2017.
  */
 public class Warehouse {
+    static Order order = new Order();
+
     public static void main(String[] args){
-        try (ServerSocket server = new ServerSocket(6666);) {
+        try (ServerSocket server = new ServerSocket(6666)) {
             int connections = 0;
 
             while (true) {
