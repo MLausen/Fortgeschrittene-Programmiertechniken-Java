@@ -36,19 +36,21 @@ public class ModelShop extends ModifiableObservableListBase<Product> {
 
     @Override
     public void add(int index, Product product) {
-       /* if (product != null) {
-            for (Product p : delegate) {
+      if (product != null) {
+            for (Product p : getList()) {
                 if (product.getName().equals(p.getName())) {
                     p.setQuantity(p.getQuantity() + product.getQuantity());
                     System.out.println("UPDATES Product named: " + product.getName());
                     return; // leave method to not add duplicate product with same name
                 }
             }
-        }*/ // we cant sum duplicates anymore because the database is desgined not  to merge Entities
-        // should only be added, if no product with same name found
+        }
         super.add(index, product);
     }
 
+    public void decreaseQuantity(Product p){
+        ProductList.getInstance().decreaseQuantitiy(p);
+    }
     @Override
     protected void doAdd(int index, Product element) {
         delegate.add(index, element);

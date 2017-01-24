@@ -1,6 +1,7 @@
 import Controller.ControllerCustomerView;
 import Controller.ControllerShop;
 import Model.ModelShop;
+import Model.Order;
 import View.ViewCustomer;
 import View.ViewShop;
 import javafx.application.Application;
@@ -21,7 +22,7 @@ public class Main extends Application {
     public void start(Stage CustomerStage) throws Exception {
         // define model for application
         ModelShop model = new ModelShop();
-
+        Order order= new Order();
         // define start views
         ViewShop viewShop = new ViewShop();
         ViewCustomer viewCustomer = new ViewCustomer();
@@ -45,6 +46,6 @@ public class Main extends Application {
 
         // link view and controller
         controllerShop.link(model, viewShop);
-        controllerCustomerView.link(model, viewCustomer);
+        controllerCustomerView.link(model, viewCustomer,order);
     }
 }

@@ -1,14 +1,11 @@
 package View;
 
-import com.sun.javafx.scene.control.skin.ChoiceBoxSkin;
 import fpt.com.Product;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -84,7 +81,7 @@ public class ViewShop extends BorderPane {
         priceColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
 
         //Quantity column
-        TableColumn<fpt.com.Product, String> quantityColumn = new TableColumn<>("Quantity");
+        TableColumn<fpt.com.Product, Integer> quantityColumn = new TableColumn<>("Quantity");
         quantityColumn.setMinWidth(100);
         quantityColumn.setCellValueFactory(new PropertyValueFactory<>("quantity"));
 

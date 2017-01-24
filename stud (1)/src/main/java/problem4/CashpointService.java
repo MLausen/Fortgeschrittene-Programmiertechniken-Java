@@ -52,6 +52,8 @@ public class CashpointService {
 
         if (current == null) {
             System.err.println("Sorry, every cashpoint is busy");
+            for(Cashpoint c :cashpoints)
+            System.err.println("Cashpoint "+c.getId()+" has  ["+ c.getQueueSize()+"] customers");
         } else {
             System.out.println("started new thread");
             current.start();

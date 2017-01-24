@@ -5,6 +5,7 @@ import fpt.com.Product;
 
 import java.sql.*;
 
+
 /**
  * Created by Team 10
  * singleton pattern  - DB connection/access with JDBC
@@ -74,14 +75,14 @@ public class JDBCConnector {
         //pst will automatically close
         try (PreparedStatement pst = createConnection()
                 .prepareStatement("INSERT INTO products(name,price,quantity) VALUES (?,?,?)",
-                        Statement.RETURN_GENERATED_KEYS);) {
+                        Statement.RETURN_GENERATED_KEYS); ResultSet rs = pst.getGeneratedKeys();) {
             pst.setString(1, name);
             pst.setDouble(2, price);
             pst.setInt(3, quantity);
 
             pst.executeUpdate();
 
-            ResultSet rs = pst.getGeneratedKeys();
+
             if (rs.next()) {
                 id = rs.getLong(1);
             }
@@ -99,10 +100,11 @@ public class JDBCConnector {
 
     public Product read(long id) {
         Product product = new Model.Product();
-        //prst will be closed automatically
-        try (PreparedStatement prst = createConnection().prepareStatement("SELECT id,name,price,quantity FROM products WHERE id=?")) {
+        //prst will automatically close
+        try (PreparedStatement prst = createConnection().prepareStatement("SELECT id,name,price,quantity FROM products WHERE id=?");
+         ResultSet rs = prst.executeQuery()) {
             prst.setLong(1, id);
-            ResultSet rs = prst.executeQuery();
+
             while (rs.next()) {
                 product.setId(Long.parseLong(rs.getString(1)));
                 product.setName(rs.getString(2));
