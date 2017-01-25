@@ -16,10 +16,13 @@ public class Warehouse {
         try (ServerSocket server = new ServerSocket(6666)) {
             int connections = 0;
 
+            //always running
             while (true) {
                 try {
+                    //wait until some client call the address and has the same port
                     Socket socket = server.accept();
                     connections++;
+                    //create a thread which response to that client
                     new ClientThread(connections, socket).start();
                 } catch (IOException e) {
                     e.printStackTrace();

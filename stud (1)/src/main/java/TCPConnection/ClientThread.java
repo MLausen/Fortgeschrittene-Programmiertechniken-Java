@@ -25,7 +25,8 @@ public class ClientThread extends Thread {
 
     public void run() {
 
-        connect();
+        //print the new connection information
+        printConnection();
         try (ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
              ObjectInputStream in = new ObjectInputStream(socket.getInputStream())) {
 
@@ -42,23 +43,30 @@ public class ClientThread extends Thread {
     }
 
     private synchronized void receiveOrder(ObjectInputStream in, ObjectOutputStream out) throws IOException, ClassNotFoundException {
+        //receive the order, copy all items to the warehouse order list then print order items
         Order newOrder = (Order) in.readObject();
-
-            System.out.println("------------Order------------");
-            for (int i = 0; i < newOrder.size(); i++) {
-                Warehouse.order.add(new Product(newOrder.get(i).getName(), newOrder.get(i).getPrice(), newOrder.get(i).getQuantity()));
-                System.out.printf("%-15s  %-5s %-1s%n",newOrder.get(i).getName() , newOrder.get(i).getQuantity() ,newOrder.get(i).getPrice() + " €");
+            if(newOrder.size() > 0) {
+                System.out.println("------------Order------------");
+                for (int i = 0; i < newOrder.size(); i++) {
+                    Warehouse.order.add(new Product(newOrder.get(i).getName(), newOrder.get(i).getPrice(), newOrder.get(i).getQuantity()));
+                    System.out.printf("%-15s  %-5s %-1s%n", newOrder.get(i).getName(), newOrder.get(i).getQuantity(), newOrder.get(i).getPrice() + " €");
+                }
+                //print the updated order list in warehouse with total income and quantity
+                System.out.println("==========all orders=========");
+                for (int i = 0; i < Warehouse.order.size(); i++) {
+                    System.out.printf("%-15s  %-5s %-1s%n", Warehouse.order.get(i).getName(), Warehouse.order.get(i).getQuantity(), Warehouse.order.get(i).getPrice() + " €");
+                }
+                System.out.println("============================");
+                System.out.println("total sell  : " + Warehouse.order.getSum() + " €");
+                System.out.println("total count : " + Warehouse.order.getQuantity());
+                //send positive feedback
+                out.writeObject("Your order is on the way to the Warehouse");
+                out.flush();
+            }else{
+                //send negative feedback if the list were empty
+                out.writeObject("sorry .. your order List is empty");
+                out.flush();
             }
-            System.out.println("==========all orders=========");
-            for (int i = 0; i < Warehouse.order.size(); i++) {
-                System.out.printf("%-15s  %-5s %-1s%n",Warehouse.order.get(i).getName() , Warehouse.order.get(i).getQuantity(), Warehouse.order.get(i).getPrice()+ " €");
-            }
-            System.out.println("============================");
-            System.out.println("total sell  : " + Warehouse.order.getSum() + " €");
-            System.out.println("total count : " + Warehouse.order.getQuantity());
-
-            out.writeObject("Your order is on the way to the Warehouse");
-            out.flush();
 
     }
 
@@ -70,7 +78,7 @@ public class ClientThread extends Thread {
         }
     }
 
-    private void connect() {
+    private void printConnection() {
         System.out.printf("Login-Request from %s  Port %d%n", socket.getInetAddress(), socket.getLocalPort());
         System.out.println("Connection to " + name);
 
@@ -78,9 +86,11 @@ public class ClientThread extends Thread {
 
 
     private void login(ObjectInputStream in, ObjectOutputStream out) throws IOException, ClassNotFoundException {
+        //read what has the client sent
         String username = (String) in.readObject();
         String password = (String) in.readObject();
 
+        //authorize admin admin and send feedback then flush
         if (username.equals("admin") && password.equals("admin")) {
             login = true;
             out.writeObject("Logged in successfully as " + username);
@@ -92,6 +102,7 @@ public class ClientThread extends Thread {
     }
 
     private void closeSockets() throws IOException {
+        //close & print
         System.out.println("Connecting with " + name + " timed out");
         socket.close();
     }
