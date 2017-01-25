@@ -33,7 +33,6 @@ public class JDBCConnector {
             String[] types = {"TABLE"};
             ResultSet resultSet = dbmd.getTables(null, null, "%", types);
 
-
             while (resultSet.next()) {
                 String tableName = resultSet.getString(3);
                 String tableCatalog = resultSet.getString(1);
