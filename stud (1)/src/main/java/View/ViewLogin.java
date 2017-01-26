@@ -13,15 +13,15 @@ import java.util.Optional;
  * Created by Sufian Vaio on 17.01.2017.
  */
 public class ViewLogin {
+    private TextField username;
+    private PasswordField password;
+    private Dialog<Pair<String, String>> dialog;
+    private ButtonType loginButtonType;
 
-    TextField username;
-    PasswordField password;
-    Dialog <Pair<String, String>>  dialog ;
-    ButtonType loginButtonType;
     Optional<Pair<String, String>> result;
     int options;
-    public ViewLogin() {
 
+    public ViewLogin() {
         dialog = new Dialog<>();
         dialog.setTitle("Login Dialog");
         dialog.setHeaderText("Please login first");
@@ -29,15 +29,14 @@ public class ViewLogin {
         loginButtonType = new ButtonType("Login", ButtonBar.ButtonData.OK_DONE);
         dialog.getDialogPane().getButtonTypes().addAll(loginButtonType, ButtonType.CANCEL);
 
-
         GridPane grid = new GridPane();
         grid.setHgap(10);
         grid.setVgap(10);
         grid.setPadding(new Insets(20, 150, 10, 10));
 
-         username = new TextField();
+        username = new TextField();
         username.setPromptText("Username");
-         password = new PasswordField();
+        password = new PasswordField();
         password.setPromptText("Password");
 
         grid.add(new Label("Username:"), 0, 0);
@@ -47,27 +46,24 @@ public class ViewLogin {
 
         dialog.getDialogPane().setContent(grid);
 
-        Platform.runLater(() ->{});
+        Platform.runLater(() -> {
+        });
 
         dialog.setResultConverter(dialogButton -> {
             if (dialogButton == loginButtonType) {
                 options = 0;
                 return new Pair<>(username.getText(), password.getText());
-            }else{
-                options =1;
+            } else {
+                options = 1;
             }
             return null;
         });
 
         result = dialog.showAndWait();
-
-
     }
-
 
     public int getChoice() {
         return options;
-
     }
 
     public String getName() {

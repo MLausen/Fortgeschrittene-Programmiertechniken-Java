@@ -12,7 +12,7 @@ import java.net.Socket;
 public class Warehouse {
     static Order order = new Order();
 
-    public static void main(String[] args){
+    public static void main(String[] args) {
         try (ServerSocket server = new ServerSocket(6666)) {
             int connections = 0;
 
@@ -31,7 +31,5 @@ public class Warehouse {
         } catch (IOException e1) {
             e1.printStackTrace();
         }
-
     }
-    }
-
+}

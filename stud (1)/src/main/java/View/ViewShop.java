@@ -17,7 +17,6 @@ import javafx.scene.layout.HBox;
 public class ViewShop extends BorderPane {
     TableView<fpt.com.Product> table = new TableView<>();
 
-    // TODO create String file
     public static final String ADD_BUTTON_ID ="addButton";
     public static final String DEL_BUTTON_ID = "deleteButton";
     public static final String SAVE_BUTTON_ID = "saveButton";

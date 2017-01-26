@@ -28,38 +28,41 @@ public class ViewCustomer extends BorderPane {
     TableView<fpt.com.Product> tableProducts = new TableView<>();
     TableView<fpt.com.Product> tableOrders = new TableView<>();
 
+    // view components
+    private Button buy;
+    private Button add;
+    private Label timeLable;
+    private Label total;
+    private BorderPane box;
 
-    Button buy;
-    Button add;
-    BorderPane box;
-    Label timeLable;
-    Label total;
+    // threads
     private Thread timeRequestThread;
     private Thread timeResponseThread;
 
-
     public ViewCustomer() {
         buy = new Button("Buy");
+        buy.setId("buy");
+
         add = new Button("Add");
+        add.setId("add");
+
         timeLable = new Label();
         total = new Label("");
-        buy.setId("buy");
-        add.setId("add");
-        box = new BorderPane(null, null, new HBox(10, total, add, buy), null, timeLable);
 
+        box = new BorderPane(null, null, new HBox(10, total, add, buy), null, timeLable);
 
         setBottom(box);
 
         // products table columns
-        TableColumn<Product, String> nameColumn = (TableColumn<Product, String>) creatClolumn("Name","name");
-        TableColumn<Product, Double> priceColumn = (TableColumn<Product, Double>) creatClolumn("Price","price");
-        TableColumn<Product, Integer> quantityColumn = (TableColumn<Product, Integer>) creatClolumn("Quantity","quantity");
-        TableColumn<Product, Long> idColumn = (TableColumn<Product, Long>) creatClolumn("Id","id");
+        TableColumn<Product, String> nameColumn = (TableColumn<Product, String>) creatClolumn("Name", "name");
+        TableColumn<Product, Double> priceColumn = (TableColumn<Product, Double>) creatClolumn("Price", "price");
+        TableColumn<Product, Integer> quantityColumn = (TableColumn<Product, Integer>) creatClolumn("Quantity", "quantity");
+        TableColumn<Product, Long> idColumn = (TableColumn<Product, Long>) creatClolumn("Id", "id");
 
         // order table columns
-        TableColumn<Product, String> nameColumnOrder = (TableColumn<Product, String>) creatClolumn("Name","name");
-        TableColumn<Product, Double> priceColumnOrder = (TableColumn<Product, Double>) creatClolumn("Price","price");
-        TableColumn<Product, Integer> quantityColumnOrder = (TableColumn<Product, Integer>) creatClolumn("Count","quantity");
+        TableColumn<Product, String> nameColumnOrder = (TableColumn<Product, String>) creatClolumn("Name", "name");
+        TableColumn<Product, Double> priceColumnOrder = (TableColumn<Product, Double>) creatClolumn("Price", "price");
+        TableColumn<Product, Integer> quantityColumnOrder = (TableColumn<Product, Integer>) creatClolumn("Count", "quantity");
 
         //addcloumns to tables
         tableProducts.getColumns().addAll(nameColumn, priceColumn, idColumn, quantityColumn);
@@ -69,7 +72,6 @@ public class ViewCustomer extends BorderPane {
         HBox box = new HBox(tableProducts, tableOrders);
         setCenter(box);
 
-
         timeRequest();
         timeRequestThread.start();
         timeResponse();
@@ -77,12 +79,12 @@ public class ViewCustomer extends BorderPane {
     }
 
     // method used in Controller to add Products from Model to the table in View
-    public void setProducts(ModelShop x) {
-        tableProducts.setItems(x);
+    public void setProducts(ModelShop items) {
+        tableProducts.setItems(items);
     }
 
     // to create cloumns
-    private TableColumn<Product, ?> creatClolumn(String name,String propertyName) {
+    private TableColumn<Product, ?> creatClolumn(String name, String propertyName) {
         TableColumn<Product, ?> xColumn = new TableColumn<>("" + name);
         xColumn.setCellValueFactory(new PropertyValueFactory<>("" + propertyName));
         return xColumn;
@@ -93,16 +95,15 @@ public class ViewCustomer extends BorderPane {
         this.timeRequestThread = new Thread("Time Request") {
             public void run() {
                 // own address
-                InetAddress ia = null;
+                InetAddress adress = null;
                 try {
-                    ia = InetAddress.getByName("localhost");
+                    adress = InetAddress.getByName("localhost");
                 } catch (UnknownHostException e2) {
                     e2.printStackTrace();
                 }
 
                 // socket for client
                 try (DatagramSocket dSocket = new DatagramSocket()) {
-
                     try {
                         while (true) {
                             String command = "TIME:";
@@ -112,7 +113,7 @@ public class ViewCustomer extends BorderPane {
 
                             // package for request
                             DatagramPacket packet = new DatagramPacket(buffer,
-                                    buffer.length, ia, 6667);
+                                    buffer.length, adress, 6667);
                             // sending package
                             dSocket.send(packet);
 
@@ -132,7 +133,6 @@ public class ViewCustomer extends BorderPane {
                             } catch (InterruptedException e) {
                                 e.printStackTrace();
                             }
-
                         }
                     } catch (IOException e1) {
                         e1.printStackTrace();
@@ -148,6 +148,11 @@ public class ViewCustomer extends BorderPane {
 
     // method to get a timeresponse by a server via udp-package
     public void timeResponse() {
+        // could happen?
+        if (this.timeResponseThread != null) {
+            return;
+        }
+
         this.timeResponseThread = new Thread("Time Response") {
             public void run() {
                 // server socket with port 6667
@@ -232,6 +237,4 @@ public class ViewCustomer extends BorderPane {
     public Product selectedProduct() {
         return tableProducts.getSelectionModel().getSelectedItem();
     }
-
 }
-

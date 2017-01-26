@@ -79,6 +79,11 @@
 			<artifactId>xstream</artifactId>
 			<version>1.4.7</version>
 		</dependency>
+		<dependency>
+			<groupId>G10</groupId>
+			<artifactId>u5u6</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 
 </project>

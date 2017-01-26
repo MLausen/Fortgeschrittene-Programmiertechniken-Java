@@ -24,9 +24,11 @@ public class ControllerCustomerView {
         this.modelShop = model;
         this.viewCustomer = view;
         this.order = o;
+
         // link ProductList from ModelShop to Customer View
         viewCustomer.setProducts(modelShop);
         viewCustomer.setOrders(order);
+
         viewCustomer.addEventHandler(e -> {
             String buttonID = ((Button) e.getSource()).getId();
             switch (buttonID) {
@@ -46,13 +48,18 @@ public class ControllerCustomerView {
     }
 
     private void addElement() {
-        if (viewCustomer.selectedProduct().getQuantity() > 0) {
-            Product d = new Product(viewCustomer.selectedProduct().getName(), viewCustomer.selectedProduct().getPrice(), 1);
-            order.add(d);
-            modelShop.decreaseQuantity(viewCustomer.selectedProduct());
-            viewCustomer.totalSum("total  " + order.getSum() + " €");
-        } else {
-            ErrorDialog.error("not available now");
+        if (viewCustomer.selectedProduct() != null) {
+            if (viewCustomer.selectedProduct().getQuantity() > 0) {
+                Product d = new Product(viewCustomer.selectedProduct().getName(), viewCustomer.selectedProduct().getPrice(), 1);
+                order.add(d);
+                modelShop.decreaseQuantity(viewCustomer.selectedProduct());
+                viewCustomer.totalSum("total  " + order.getSum() + " €");
+            } else {
+                ErrorDialog.error("not available now");
+            }
+        }
+        else{
+            ErrorDialog.error("select product first");
         }
     }
 

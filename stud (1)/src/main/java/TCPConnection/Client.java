@@ -21,7 +21,6 @@ public class Client {
         this.order = order;
     }
 
-
     public boolean buyRequest() throws ClassNotFoundException {
         //create login dialog
         ViewLogin viewLogin = new ViewLogin();
@@ -65,9 +64,8 @@ public class Client {
             ErrorDialog.error("Sorry..Server is Down");
         } catch (IOException e) {
             e.printStackTrace();
+            ErrorDialog.error("Make sure you entered username and password correctly");
         }
         return login;
     }
-
-
 }

@@ -12,11 +12,9 @@ import java.util.List;
 public class Order extends ModifiableObservableListBase<Product> implements fpt.com.Order {
     List<Product> ordersList;
 
-
     public Order() {
         ordersList = new ArrayList<Product>();
     }
-
 
     public boolean add(Product product) {
         if(product != null) {
