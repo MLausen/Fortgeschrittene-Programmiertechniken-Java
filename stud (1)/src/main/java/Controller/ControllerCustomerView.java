@@ -82,12 +82,12 @@ public class ControllerCustomerView {
     }
 
     private void buyOperation() throws ClassNotFoundException {
-       // ControllerLoginView crtlLogin = new ControllerLoginView();
-       // crtlLogin.link(modelShop, new ViewLogin());
+        ControllerLoginView crtlLogin = new ControllerLoginView();
+        crtlLogin.link(client, new ViewLogin());
 
-        if (client.buyRequest()) {
-            /*viewCustomer.totalSum("Sent Successfully  ✓");
-            order.clear();*/
+        if (client.login) {
+            viewCustomer.totalSum("Sent Successfully  ✓");
+            order.clear();
         }
     }
 
