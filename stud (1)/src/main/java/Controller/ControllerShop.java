@@ -24,7 +24,6 @@ public class ControllerShop {
     private ModelShop modelShop;
     private ViewShop viewShop;
 
-
     public ControllerShop() throws FileNotFoundException {   }
 
     // defines controller for shop view
