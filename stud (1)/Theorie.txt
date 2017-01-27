@@ -1,0 +1,59 @@
+Aufgabe 1 - Theorie
+
+blockierende Methoden:
+
+	public void removeSomeData(Socket s) { 
+		InputStreamReader r = new InputStreamReader(s.getInputStream()); 
+		BuﬀeredReader in = new BuﬀeredReader(r); 
+		in.readLine(); 
+	}
+	
+
+	- in.readLine() liest Zeile für Zeile vom Socket ab und schreibt diese in ein Console-Fenster
+	- Programmablauf/Netzwerkkommunikation stoppt (program stalling), solange der Server keine Daten zurückliefert
+	- man kann Wartezeit mit setSoTimeout() einstellen, wenn diese überschritten wird sollte eine
+	SocketTimeOutException geworfen werden
+
+	Eine Variante, um blockierende Methoden 
+	in den Griff zu bekommen, besteht darin, sie 
+	in einem eigenen Thread aufzurufen. Dadurch 
+	läuft das Programm trotz der blockierenden 
+	Methode weiter und kann den Abbruch mit geeig-
+	neten Maßnahmen veranlassen. 
+
+gültige Methodensignatur in RMI:
+
+	- public void someMethod() throws RemoteException {}
+	Alle Konstruktoren und Methoden werfen die RemoteException.
+	
+Was ist der Unterschied zu bisherigen Methodensignaturen (ohne RMI)?
+
+	- dass eine RemotException geworfen wird ^^
+	
+Wie wird ein Objekt bei der Registry angemeldet?
+
+	- über das Tool rmiregistry, bei dem der Server sein Remoteobjekt registrieren muss
+	
+Wie kann eine Referenz auf ein Objekt der Registry geholt werden
+
+	- jeder Eintrag besteht aus einem Namen und einer Objektreferenz
+	- Client kann dadurch eine erste Referenz auf ein entferntes Objekt als Einstiegspunkt erhalten
+	
+Was ist der Unterschied zwischen bind und rebind?
+
+	- bind(String name, Object obj): wirft eine alreadyBoundException, wenn es schon ein 
+	Objekt gibt, dass den Namen in der registry nutzt
+	- rebind(String name, Object obj): wird das Objekt, dass den Namen in der Registry nutzt, ersetzen.
+	Wenn ein Objekt mit dem Namen in der Registry nicht existiert, wird es dort eingeschrieben wie normal auch.
+	
+Wofür ist das Remote Interface?
+
+	- wird vom Interface Remote abgeleitet, damit gekennzeichnet ist, dass die deklarierten Methoden entfernt
+	aufgerufen werden
+	- das Remote Interface definiert die Sicht des Clienten auf das entfernte Object
+	- sowohl Server als auch Client müssen über das Remote Interface verfügen
+	
+	
+	
+	
+
