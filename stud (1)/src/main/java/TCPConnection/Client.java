@@ -37,21 +37,6 @@ public class Client {
             //wait till the server responses
            String loginFeedback = (String) in.readObject();
             System.out.println(loginFeedback);
-//            if (loginFeedback.substring(0, 22).equals("Logged in successfully")) {
-//                login = true;
-//            } else {
-//                login = false;
-//            }
-//            //print response
-//
-//
-//            //if positive response send the order
-//            if (login) {
-//                out.flush();
-//            }
-//            //wait the server's answer
-//            String feedback = (String) in.readObject();
-//            System.out.println(feedback);
 
             serverCon.setSoTimeout(50000);
         } catch (ConnectException e) {

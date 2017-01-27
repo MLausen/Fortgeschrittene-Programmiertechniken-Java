@@ -31,9 +31,6 @@ public class ClientThread extends Thread {
              ObjectInputStream in = new ObjectInputStream(socket.getInputStream())) {
 
            receiveOrder(in,out);
-
-
-
             closeSockets();
         } catch (IOException e1) {
             e1.printStackTrace();
