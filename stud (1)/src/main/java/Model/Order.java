@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Sufian Vaio on 20.01.2017.
+ * Created by Team 10
  */
 public class Order extends ModifiableObservableListBase<Product> implements fpt.com.Order {
     List<Product> ordersList;

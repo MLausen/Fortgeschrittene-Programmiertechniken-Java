@@ -7,7 +7,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 /**
- * Created by Sufian Vaio on 18.01.2017.
+ * Created by Team 10
  */
 public class Warehouse {
     static Order order = new Order();

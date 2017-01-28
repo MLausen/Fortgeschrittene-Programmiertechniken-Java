@@ -9,7 +9,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 /**
- * Created by Sufian Vaio on 17.01.2017.
+ * Created by Team 10
  */
 public class ClientThread extends Thread {
     private static final String USERNAME = "admin";

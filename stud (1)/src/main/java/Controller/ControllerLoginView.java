@@ -10,7 +10,7 @@ import javafx.util.Pair;
 import sun.swing.plaf.windows.ClassicSortArrowIcon;
 
 /**
- * Created by Melli on 27.01.2017.
+ * Created by Team 10
  */
 public class ControllerLoginView {
     private Client client;

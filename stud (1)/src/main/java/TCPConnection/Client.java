@@ -12,7 +12,7 @@ import java.net.Socket;
 import java.net.SocketException;
 
 /**
- * Created by Sufian Vaio on 17.01.2017.
+ * Created by Team 10
  */
 public class Client {
     public boolean login;
