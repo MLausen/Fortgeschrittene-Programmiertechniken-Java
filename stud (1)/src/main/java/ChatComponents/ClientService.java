@@ -3,5 +3,8 @@ package ChatComponents;
 /**
  * Created by Team 10
  */
-public class ClientService {
+public interface ClientService {
+    void send();
+
+    String getName();
 }
