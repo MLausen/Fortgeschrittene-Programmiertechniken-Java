@@ -27,11 +27,12 @@ public class ClientInitializer extends Application {
         url = "//localhost:1099/" + ServerDriver.NAME; // registry
         ChatService server = (ChatService) Naming.lookup(url);
 
-        ChatClient client = new ChatClient(clientCounter++, server);
+        ClientService client = new ChatClient(clientCounter++, server);
+        ThreadChatClient clientThread = new ThreadChatClient(client);
         Naming.rebind(client.getName(), client);
 
-        Thread clientThread = new Thread(client);
-        clientThread.start();
+        Thread thread = new Thread(clientThread);
+        thread.start();
 
         ClientView view = new ClientView(client.getName());
         ClientViewController ctrl = new ClientViewController(view, client);

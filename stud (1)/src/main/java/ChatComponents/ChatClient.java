@@ -17,7 +17,7 @@ import java.rmi.server.UnicastRemoteObject;
 /**
  * Created by Team 10
  */
-public class ChatClient extends UnicastRemoteObject implements ClientService, Runnable{
+public class ChatClient extends UnicastRemoteObject implements ClientService{
     private static final long serialVersionUID = 1L;
     private ChatService server;
     private Integer id = -1;
@@ -27,37 +27,6 @@ public class ChatClient extends UnicastRemoteObject implements ClientService, Ru
         this.server = (ChatService) server;
     }
 
-    @Override
-    public void run(){
-         // TODO
-        try {
-            this.server.login(this.getName());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        System.out.println("Client with ID " + id + " joins the chat.");
-        String message = "Hello, my name is " + getName();
-
-        int i = 0; // del
-        //while(true){
-        do{
-            try {
-                server.send(message);
-            } catch (RemoteException e) {
-                e.printStackTrace();
-                ErrorDialog.error("RemoteException");
-            }
-            i++;
-        }while(i < 20);
-
-        try {
-            this.server.logout(this.getName());
-        } catch (RemoteException e) {
-            e.printStackTrace();
-            ErrorDialog.error("RemoteException");
-        }
-    }
 
     // this is equal to receiving?!! <--check
     @Override
@@ -80,6 +49,9 @@ public class ChatClient extends UnicastRemoteObject implements ClientService, Ru
 
     public Integer getId() {
         return id;
+    }
+    public ChatService getServer() {
+        return server;
     }
 }
 
@@ -119,11 +91,11 @@ class ClientViewController{
     ClientView view;
     ChatClient model;
 
-    ClientViewController(ClientView view, ChatClient model){
+    ClientViewController(ClientView view, ClientService model){
         this.view = view;
-        this.model = model;
+        this.model = (ChatClient) model;
 
-        view.setOnSendHandeler();
+        //view.setOnSendHandeler();
     }
 
     private boolean onSendText(){
