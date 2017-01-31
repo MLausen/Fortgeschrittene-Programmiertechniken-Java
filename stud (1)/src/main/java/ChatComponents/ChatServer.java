@@ -2,8 +2,10 @@ package ChatComponents;
 
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.lang.reflect.Array;
 import java.net.MalformedURLException;
 import java.rmi.Naming;
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.server.UnicastRemoteObject;
@@ -15,15 +17,14 @@ import java.util.List;
  */
 public class ChatServer extends UnicastRemoteObject implements ChatService{
     private static final long serialVersionUID = 1L;
-    private List<ChatClient> clients;
+    private List<String> clients = new ArrayList<>();
 
     public ChatServer() throws RemoteException{
-        LocateRegistry.createRegistry(1099); // registered
         System.out.println("ChatServer just started.");
     }
 
-    public boolean logout(ChatClient client) throws RemoteException{
-        System.out.println("Client with ID " + client.getId() + " has left.");
+    public boolean logout(String client) throws RemoteException{
+        System.out.println("Client with ID " + client + " has left.");
         return this.clients.remove(client);
     }
 
@@ -32,20 +33,13 @@ public class ChatServer extends UnicastRemoteObject implements ChatService{
     }
 
     public List<String> getUserList(){
-        List<String> nameList = new ArrayList<String>();
-
-        for (ChatClient c : clients) {
-            nameList.add("" + c.getId());
-        }
-
-        return nameList;
+        return this.clients;
     }
 
     @Override
-    public boolean login(ChatClient client) throws RemoteException, MalformedURLException {
+    public boolean login(String client) throws RemoteException, MalformedURLException {
         //Naming.rebind("chat_server", this); copied lydia
-        Naming.rebind("//localhost:1099/" + ServerDriver.NAME, client);
-        Naming.rebind("//localhost:1099/" + ServerDriver.NAME, client);
+       // Naming.rebind("//localhost:1099/" + ServerDriver.NAME, client); --> old
         return this.clients.add(client);
     }
 
@@ -53,7 +47,13 @@ public class ChatServer extends UnicastRemoteObject implements ChatService{
     public synchronized boolean send(String message) throws RemoteException {
         // send to all other clients
         for(int i = 0; i < clients.size(); i++){
-            clients.get(i).send(message);
+            try {
+                ChatClient client = (ChatClient) Naming.lookup(clients.get(i));
+            } catch (NotBoundException e) {
+                e.printStackTrace();
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
         }
 
         return true; // del

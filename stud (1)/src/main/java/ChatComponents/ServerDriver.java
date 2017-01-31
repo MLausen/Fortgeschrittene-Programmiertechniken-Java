@@ -12,6 +12,8 @@ public class ServerDriver {
     public static final String NAME = "Team10_RMIChatServer";
 
     public static void main(String args[]) throws RemoteException, MalformedURLException {
-        Naming.rebind(ServerDriver.NAME, new ChatServer());
+        //Naming.rebind(ServerDriver.NAME, new ChatServer());
+        LocateRegistry.createRegistry(1099); // registered
+        Naming.rebind("//localhost:1099/" + ServerDriver.NAME, new ChatServer());
     }
 }

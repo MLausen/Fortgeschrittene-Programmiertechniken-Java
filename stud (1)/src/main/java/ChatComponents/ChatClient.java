@@ -31,11 +31,11 @@ public class ChatClient extends UnicastRemoteObject implements ClientService, Ru
         this.id = id;
         this.server = (ChatServer) server;// TODO
 
-        this.server.login(this);
+        this.server.login(this.getName());
 
         // TODO
         try {
-            new ClientView(this.getName());
+            ClientViewController ctrl = new ClientViewController(new ClientView(this.getName()));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -60,7 +60,7 @@ public class ChatClient extends UnicastRemoteObject implements ClientService, Ru
         }while(i < 20);
 
         try {
-            this.server.logout(this);
+            this.server.logout(this.getName());
         } catch (RemoteException e) {
             e.printStackTrace();
             ErrorDialog.error("RemoteException");

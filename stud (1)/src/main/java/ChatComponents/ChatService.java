@@ -9,11 +9,11 @@ import java.util.List;
  * Created by Team 10
  */
 public interface ChatService extends Remote {
-    boolean login(ChatClient client) throws RemoteException, MalformedURLException;
+    boolean login(String client) throws RemoteException, MalformedURLException;
 
-    boolean logout(ChatClient client) throws RemoteException;
+    boolean logout(String client) throws RemoteException;
 
     boolean send(String message) throws RemoteException;
 
-    List<String> getUserList();
+    List<String> getUserList() throws RemoteException;
 }
