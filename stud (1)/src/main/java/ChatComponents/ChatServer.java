@@ -1,13 +1,10 @@
 package ChatComponents;
 
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-
-import java.lang.reflect.Array;
 import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
-import java.rmi.registry.LocateRegistry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +34,7 @@ public class ChatServer extends UnicastRemoteObject implements ChatService{
     }
 
     @Override
-    public boolean login(String client) throws RemoteException, MalformedURLException {
+    public boolean login(String client) throws RemoteException {
         //Naming.rebind("chat_server", this); copied lydia
        // Naming.rebind("//localhost:1099/" + ServerDriver.NAME, client); --> old
         return this.clients.add(client);
@@ -48,7 +45,8 @@ public class ChatServer extends UnicastRemoteObject implements ChatService{
         // send to all other clients
         for(int i = 0; i < clients.size(); i++){
             try {
-                ChatClient client = (ChatClient) Naming.lookup(clients.get(i));
+                ClientService client = (ClientService) Naming.lookup(clients.get(i));
+                client.send(message);
             } catch (NotBoundException e) {
                 e.printStackTrace();
             } catch (MalformedURLException e) {

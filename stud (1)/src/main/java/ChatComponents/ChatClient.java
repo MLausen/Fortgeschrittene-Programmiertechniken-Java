@@ -1,16 +1,11 @@
 package ChatComponents;
 
 import Helper.ErrorDialog;
-import javafx.application.Application;
-import javafx.event.Event;
-import javafx.event.EventHandler;
-import javafx.event.EventType;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
@@ -29,25 +24,22 @@ public class ChatClient extends UnicastRemoteObject implements ClientService, Ru
 
     public ChatClient (Integer id, ChatService server) throws RemoteException, MalformedURLException{
         this.id = id;
-        this.server = (ChatServer) server;// TODO
-
-        this.server.login(this.getName());
-
-        // TODO
-        try {
-            ClientViewController ctrl = new ClientViewController(new ClientView(this.getName()));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        this.server = (ChatService) server;
     }
 
     @Override
     public void run(){
-        System.out.println("Client with ID " + id + " joins the chat.");
+         // TODO
+        try {
+            this.server.login(this.getName());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
+        System.out.println("Client with ID " + id + " joins the chat.");
         String message = "Hello, my name is " + getName();
 
-        int i = 0;
+        int i = 0; // del
         //while(true){
         do{
             try {
@@ -92,8 +84,6 @@ public class ChatClient extends UnicastRemoteObject implements ClientService, Ru
 }
 
 class ClientView extends GridPane {
-    private Stage stage;
-    private Scene scene;
     private TextArea inputField;
     private Label nameLabel;
     private TextField chatField;
@@ -102,16 +92,12 @@ class ClientView extends GridPane {
 
     ClientView(String name){
         this.name = name;
-        this.stage = new Stage();
         this.inputField = new TextArea("Gib eine Nachricht ein.");
         this.chatField = new TextField("Du hast den Chat betreten.");
         this.nameLabel = new Label(name + ":");
         this.sendButton = new Button("senden");
 
         this.createGrid();
-
-        this.scene = new Scene(this);
-        this.stage.setScene(scene);
     }
 
     public void setOnSendHandeler(){
@@ -123,17 +109,19 @@ class ClientView extends GridPane {
         this.setMinSize(200, 200);
         // col, row, colspan, rowspan
         this.add(chatField, 0, 0, 3, 3);
-        this.add(inputField, 1, 3, 2, 0);
-        this.add(sendButton, 4, 3, 0, 0);
-        this.add(nameLabel, 0, 3, 0, 0);
+        this.add(inputField, 1, 3, 2, 1);
+        this.add(sendButton, 4, 3, 1, 1);
+        this.add(nameLabel, 0, 3, 1, 1);
     }
 }
 
 class ClientViewController{
     ClientView view;
+    ChatClient model;
 
-    ClientViewController(ClientView view){
+    ClientViewController(ClientView view, ChatClient model){
         this.view = view;
+        this.model = model;
 
         view.setOnSendHandeler();
     }
