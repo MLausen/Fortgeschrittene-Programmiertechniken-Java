@@ -32,7 +32,7 @@ public class ChatClient extends UnicastRemoteObject implements ClientService{
     }
 
     public void receive(String message) {
-        System.out.println("Client " + id + " receives:");
+        System.out.println("Client " + id + " receives:" + message);
 
         if(chatArea.getText() != null){
             this.chatArea.setText(this.chatArea.getText()+ "\n" + message);
@@ -56,5 +56,17 @@ public class ChatClient extends UnicastRemoteObject implements ClientService{
 
     public void setGUIComponent(TextArea chat){
         this.chatArea = chat;
+        String clients = "";
+        try {
+            for(int i = 0; i < server.getUserList().size(); i++){
+                clients += server.getUserList().get(i) + "\n";
+            }
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+        if(clients.equals("")){
+            clients = "keine";
+        }
+        this.chatArea.setText(this.chatArea.getText() + "\nBisher anwesende Personen:\n" + clients);
     }
 }

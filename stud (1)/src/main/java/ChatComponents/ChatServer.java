@@ -25,24 +25,20 @@ public class ChatServer extends UnicastRemoteObject implements ChatService{
         return this.clients.remove(client);
     }
 
-    public boolean send(){
-        throw new NotImplementedException();
-    }
-
     public List<String> getUserList(){
         return this.clients;
     }
 
     @Override
     public boolean login(String client) throws RemoteException {
-        //Naming.rebind("chat_server", this); copied lydia
-       // Naming.rebind("//localhost:1099/" + ServerDriver.NAME, client); --> old
+        System.out.println("Client " + client + " logged in.");
         return this.clients.add(client);
     }
 
     @Override
     public synchronized boolean send(String message) throws RemoteException {
-        // send to all other clients
+        System.out.println("Send \"" + message + "\" to each client.");
+
         for(int i = 0; i < clients.size(); i++){
             try {
                 ClientService client = (ClientService) Naming.lookup(clients.get(i));
