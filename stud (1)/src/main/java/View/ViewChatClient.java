@@ -1,6 +1,5 @@
 package View;
 
-import Helper.ErrorDialog;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
@@ -10,15 +9,13 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.GridPane;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-
-import java.awt.event.ActionListener;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 
 /**
  * Created by Team 10
  */
-public class ViewChatClient extends GridPane {
+public class ViewChatClient extends BorderPane {
     private TextArea chatField;
     private Label nameLabel;
     private TextField inputField;
@@ -32,16 +29,12 @@ public class ViewChatClient extends GridPane {
         this.nameLabel = new Label(name + ":");
         this.sendButton = new Button("senden");
 
-        this.createGrid();
+        this.create();
     }
 
-    private void createGrid(){
-        this.setMinSize(200, 200);
-        // col, row, colspan, rowspan
-        this.add(chatField, 0, 0, 8, 4);
-        this.add(nameLabel, 0, 4, 1, 1);
-        this.add(inputField, 1, 4, 3, 1);
-        this.add(sendButton, 5, 4, 1, 1);
+    private void create(){
+        setCenter(chatField);
+        setBottom(new HBox(10,nameLabel,inputField,sendButton));
 
         chatField.setEditable(false);
         inputField.setPromptText("Gib eine Nachricht ein");
