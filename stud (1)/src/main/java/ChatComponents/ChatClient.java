@@ -49,7 +49,7 @@ public class ChatClient extends UnicastRemoteObject implements ClientService{
         return id;
     }
 
-    private void setId() throws RemoteException, MalformedURLException {
+    private synchronized void setId() throws RemoteException, MalformedURLException {
         int i = 1;
         while (true){
             if(server.getUserList().indexOf(new String(prefix + (i))) == -1){
