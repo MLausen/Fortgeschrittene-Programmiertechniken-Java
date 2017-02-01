@@ -16,7 +16,6 @@ import java.rmi.RemoteException;
  */
 public class ClientInitializer extends Application {
     public static String url;
-    public static Integer clientCounter = 1;
 
     public static void main(String args[]) throws RemoteException, MalformedURLException, NotBoundException {
         Application.launch(args);
@@ -27,19 +26,18 @@ public class ClientInitializer extends Application {
         url = "//localhost:1099/" + ServerDriver.NAME; // registry
         ChatService server = (ChatService) Naming.lookup(url);
 
-        ClientService client = new ChatClient(clientCounter++, server);
+        ClientService client = new ChatClient(ServerDriver.clientCount++, server);
         ThreadChatClient clientThread = new ThreadChatClient(client);
         Naming.rebind(client.getName(), client);
-
-        Thread thread = new Thread(clientThread);
-        thread.start();
 
         ViewChatClient view = new ViewChatClient(client.getName());
         ControllerChatClientView ctrl = new ControllerChatClientView(view, client);
 
         Scene scene = new Scene(view);
         stage.setScene(scene);
-
         stage.show();
+
+        Thread thread = new Thread(clientThread);
+        thread.start();
     }
 }

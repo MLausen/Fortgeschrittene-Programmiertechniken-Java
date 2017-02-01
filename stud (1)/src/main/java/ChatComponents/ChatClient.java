@@ -1,6 +1,7 @@
 package ChatComponents;
 
 import View.ViewChatClient;
+import javafx.scene.control.TextArea;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.net.MalformedURLException;
@@ -13,6 +14,7 @@ import java.rmi.server.UnicastRemoteObject;
 public class ChatClient extends UnicastRemoteObject implements ClientService{
     private static final long serialVersionUID = 1L;
     private ChatService server;
+    private TextArea chatArea;
     private Integer id = -1;
 
     public ChatClient (Integer id, ChatService server) throws RemoteException, MalformedURLException{
@@ -20,20 +22,24 @@ public class ChatClient extends UnicastRemoteObject implements ClientService{
         this.server = (ChatService) server;
     }
 
-
-    // this is equal to receiving?!! <--check
     @Override
     public void send(String message) {
-        System.out.println("Client " + id + " receives:");
-        System.out.println(message);
+        try {
+            server.send(message);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
     }
 
-    /*
     public void receive(String message) {
         System.out.println("Client " + id + " receives:");
         System.out.println(message);
+        if(chatArea.getText() != null){
+            this.chatArea.setText(this.chatArea.getText()+ "\n" + message);
+        }else{
+            this.chatArea.setText(message);
+        }
     }
-    */
 
     @Override
     public String getName() {
@@ -43,7 +49,12 @@ public class ChatClient extends UnicastRemoteObject implements ClientService{
     public Integer getId() {
         return id;
     }
+
     public ChatService getServer() {
         return server;
+    }
+
+    public void setGUIComponent(TextArea chat){
+        this.chatArea = chat;
     }
 }

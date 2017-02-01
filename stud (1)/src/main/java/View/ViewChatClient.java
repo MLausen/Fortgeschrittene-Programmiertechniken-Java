@@ -24,7 +24,7 @@ public class ViewChatClient extends GridPane {
 
     public ViewChatClient(String name){
         this.name = name;
-        this.inputField = new TextField("Gib eine Nachricht ein.");
+        this.inputField = new TextField();
         this.chatField = new TextArea("Du hast den Chat betreten.");
         this.nameLabel = new Label(name + ":");
         this.sendButton = new Button("senden");
@@ -45,13 +45,10 @@ public class ViewChatClient extends GridPane {
         this.add(sendButton, 5, 4, 1, 1);
 
         chatField.setEditable(false);
+        inputField.setPromptText("Gib eine Nachricht ein");
     }
 
     // auslagern in controller mit reflection?
-
-    public void addText(String message, String clientName){
-        this.chatField.setText(this.chatField.getText() + "\n" + clientName + ": " + message);
-    }
 
     public String getMessage(){
         return this.inputField.getText();
@@ -59,5 +56,9 @@ public class ViewChatClient extends GridPane {
 
     public void resetInputField(){
         this.inputField.setText("");
+    }
+
+    public TextArea getChatArea(){
+        return this.chatField;
     }
 }

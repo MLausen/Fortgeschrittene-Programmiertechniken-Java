@@ -7,7 +7,7 @@ import View.ViewChatClient;
 import java.rmi.RemoteException;
 
 /**
- * Created by Melli on 01.02.2017.
+ * Created by Team10
  */
 public class ControllerChatClientView {
     ViewChatClient view;
@@ -16,17 +16,18 @@ public class ControllerChatClientView {
     public ControllerChatClientView(ViewChatClient view, ClientService model){
         this.view = view;
         this.model = (ChatClient) model;
+        ((ChatClient) model).setGUIComponent(view.getChatArea());
 
         view.setOnSendHandeler(e->{
-            try {
-                view.addText(view.getMessage(), model.getName());
+            String message = view.getMessage();
+            if(message != null){
                 view.resetInputField();
-            } catch (RemoteException e1) {
-                e1.printStackTrace();
+                this.sendToServer(message);
             }
         });
     }
 
-
-
+    public void sendToServer(String message){
+        model.send(message);
+    }
 }

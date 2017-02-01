@@ -9,6 +9,7 @@ import java.rmi.RemoteException;
  */
 public class ThreadChatClient implements Runnable {
     ChatClient client;
+
     public ThreadChatClient(ClientService client){
         this.client = (ChatClient) client;
     }
@@ -24,17 +25,7 @@ public class ThreadChatClient implements Runnable {
         System.out.println("Client with ID " + client.getId() + " joins the chat.");
         String message = "Hello, my name is " + client.getName();
 
-        int i = 0; // del
-        //while(true){
-        do{
-            try {
-                client.getServer().send(message);
-            } catch (RemoteException e) {
-                e.printStackTrace();
-                ErrorDialog.error("RemoteException");
-            }
-            i++;
-        }while(i < 20);
+        while(client != null){}
 
         try {
             client.getServer().logout(client.getName());

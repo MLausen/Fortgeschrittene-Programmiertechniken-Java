@@ -46,7 +46,7 @@ public class ChatServer extends UnicastRemoteObject implements ChatService{
         for(int i = 0; i < clients.size(); i++){
             try {
                 ClientService client = (ClientService) Naming.lookup(clients.get(i));
-                client.send(message);
+                client.receive(message);
             } catch (NotBoundException e) {
                 e.printStackTrace();
             } catch (MalformedURLException e) {
