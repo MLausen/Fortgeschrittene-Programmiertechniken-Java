@@ -24,9 +24,10 @@ public class ThreadChatClient implements Runnable {
             e.printStackTrace();
         }
 
-        while(client.login == true){   }
+        while(client.login == true){
+            //System.out.println("active");
+        }
 
         System.out.println("ended client thread");
-        // TODO thread still active?
     }
 }
