@@ -3,10 +3,13 @@ package View;
 import Helper.ErrorDialog;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
@@ -30,10 +33,6 @@ public class ViewChatClient extends GridPane {
         this.sendButton = new Button("senden");
 
         this.createGrid();
-    }
-
-    public void setOnSendHandeler(EventHandler<ActionEvent> eventHandler){
-        sendButton.addEventHandler(ActionEvent.ACTION, eventHandler);
     }
 
     private void createGrid(){
@@ -60,5 +59,18 @@ public class ViewChatClient extends GridPane {
 
     public TextArea getChatArea(){
         return this.chatField;
+    }
+
+    public void setOnSendHandeler(EventHandler<ActionEvent> eventHandler){
+        sendButton.addEventHandler(ActionEvent.ACTION, eventHandler);
+    }
+
+    public void setKeyPressedHandler(Node node) {
+        node.addEventHandler(KeyEvent.KEY_PRESSED, ev -> {
+            if (ev.getCode() == KeyCode.ENTER) {
+                sendButton.fire();
+                ev.consume();
+            }
+        });
     }
 }

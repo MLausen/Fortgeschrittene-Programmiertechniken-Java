@@ -25,6 +25,8 @@ public class ControllerChatClientView {
                 this.sendToServer(message);
             }
         });
+
+        view.setKeyPressedHandler(view);
     }
 
     public void sendToServer(String message){
