@@ -1,8 +1,8 @@
 package ChatComponents;
 
-import Helper.ErrorDialog;
+import Controller.ControllerChatClientView;
+import View.ViewChatClient;
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
@@ -34,10 +34,12 @@ public class ClientInitializer extends Application {
         Thread thread = new Thread(clientThread);
         thread.start();
 
-        ClientView view = new ClientView(client.getName());
-        ClientViewController ctrl = new ClientViewController(view, client);
+        ViewChatClient view = new ViewChatClient(client.getName());
+        ControllerChatClientView ctrl = new ControllerChatClientView(view, client);
 
         Scene scene = new Scene(view);
         stage.setScene(scene);
+
+        stage.show();
     }
 }
