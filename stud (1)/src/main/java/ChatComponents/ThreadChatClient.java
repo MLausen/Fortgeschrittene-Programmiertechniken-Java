@@ -6,7 +6,7 @@ import javafx.stage.Stage;
 import java.rmi.RemoteException;
 
 /**
- * Created by Melli on 31.01.2017.
+ * Created by Team 10
  */
 public class ThreadChatClient implements Runnable {
     ChatClient client;
@@ -19,16 +19,13 @@ public class ThreadChatClient implements Runnable {
     public void run(){
         try {
             client.getServer().login(client.getName());
+            System.out.println("Client with ID " + client.getId() + " joins the chat.");
         } catch (RemoteException e) {
             e.printStackTrace();
         }
 
-        System.out.println("Client with ID " + client.getId() + " joins the chat.");
-        String message = "Hello, my name is " + client.getName();
+        while(client.login = true){   }
 
-        while(client.login = true){
-
-        }
         System.out.println("ended client thread");
         // TODO thread still active?
     }

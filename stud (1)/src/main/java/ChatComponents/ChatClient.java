@@ -1,9 +1,6 @@
 package ChatComponents;
 
-import View.ViewChatClient;
 import javafx.scene.control.TextArea;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-
 import java.net.MalformedURLException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
