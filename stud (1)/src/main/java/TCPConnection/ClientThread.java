@@ -49,7 +49,7 @@ public class ClientThread extends Thread {
 
     private synchronized void receiveOrder(ObjectInputStream in, ObjectOutputStream out) throws IOException, ClassNotFoundException {
         login(in,out);
-        String answer = "";
+
         //receive the order, copy all items to the warehouse order list then print order items
         if(login) {
 
@@ -57,9 +57,8 @@ public class ClientThread extends Thread {
                 System.out.println("------------Order------------");
                 for (int i = 0; i < newOrder.size(); i++) {
                     Warehouse.order.add(new Product(newOrder.get(i).getName(), newOrder.get(i).getPrice(), newOrder.get(i).getQuantity()));
-                   answer += String.format("%-15s  %-5s %-1s%n", newOrder.get(i).getName(), newOrder.get(i).getQuantity(), newOrder.get(i).getPrice() + " €");
+                    System.out.printf("%-15s  %-5s %-1s%n", newOrder.get(i).getName(), newOrder.get(i).getQuantity(), newOrder.get(i).getPrice() + " €");
                 }
-                System.out.println(answer);
                 //print the updated order list in warehouse with total income and quantity
                 System.out.println("==========all orders=========");
                 for (int i = 0; i < Warehouse.order.size(); i++) {
@@ -69,7 +68,7 @@ public class ClientThread extends Thread {
                 System.out.println("total sell  : " + Warehouse.order.getSum() + " €");
                 System.out.println("total count : " + Warehouse.order.getQuantity());
                 //send positive feedback
-                out.writeObject("Your order is on the way to the Warehouse"+ '\n'+answer);
+                out.writeObject("Your order is on the way to the Warehouse");
                 out.flush();
             } else {
                 //send negative feedback if the list were empty
