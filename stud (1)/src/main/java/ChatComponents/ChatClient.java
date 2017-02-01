@@ -13,14 +13,15 @@ import java.rmi.server.UnicastRemoteObject;
  */
 public class ChatClient extends UnicastRemoteObject implements ClientService{
     private static final long serialVersionUID = 1L;
+    private String prefix = "Person";
     private ChatService server;
     private TextArea chatArea;
     private Integer id = -1;
     public boolean login = true;
 
     public ChatClient (ChatService server) throws RemoteException, MalformedURLException{
-        this.id = server.getUserList().size() + 1;
         this.server = (ChatService) server;
+        setId();
     }
 
     @Override
@@ -44,11 +45,22 @@ public class ChatClient extends UnicastRemoteObject implements ClientService{
 
     @Override
     public String getName() {
-        return ("Person" + this.id);
+        return (prefix + this.id);
     }
 
     public Integer getId() {
         return id;
+    }
+
+    private void setId() throws RemoteException, MalformedURLException {
+        int i = 1;
+        while (true){
+            if(server.getUserList().indexOf(new String(prefix + (i))) == -1){
+                this.id = (i);
+                break;
+            }
+            i++;
+        }
     }
 
     public ChatService getServer() {

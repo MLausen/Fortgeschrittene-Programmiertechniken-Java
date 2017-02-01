@@ -22,6 +22,7 @@ public class ChatServer extends UnicastRemoteObject implements ChatService{
 
     public boolean logout(String client) throws RemoteException{
         System.out.println("Client with ID " + client + " has left.");
+        this.send("Client " + client + " hat den Chat verlassen.");
         return this.clients.remove(client);
     }
 
