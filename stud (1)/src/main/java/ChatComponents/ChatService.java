@@ -13,7 +13,7 @@ public interface ChatService extends Remote {
 
     boolean logout(String client) throws RemoteException;
 
-    boolean send(String message) throws RemoteException;
+    void send(String message) throws RemoteException;
 
     List<String> getUserList() throws RemoteException;
 }

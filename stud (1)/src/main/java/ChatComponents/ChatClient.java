@@ -16,6 +16,7 @@ public class ChatClient extends UnicastRemoteObject implements ClientService{
     private ChatService server;
     private TextArea chatArea;
     private Integer id = -1;
+    public boolean login = true;
 
     public ChatClient (ChatService server) throws RemoteException, MalformedURLException{
         this.id = server.getUserList().size() + 1;
@@ -32,7 +33,7 @@ public class ChatClient extends UnicastRemoteObject implements ClientService{
     }
 
     public void receive(String message) {
-        System.out.println("Client " + id + " receives:" + message);
+        System.out.println("Client " + id + " receives: " + message);
 
         if(chatArea.getText() != null){
             this.chatArea.setText(this.chatArea.getText()+ "\n" + message);
@@ -43,7 +44,7 @@ public class ChatClient extends UnicastRemoteObject implements ClientService{
 
     @Override
     public String getName() {
-        return ("Client" + this.id);
+        return ("Person" + this.id);
     }
 
     public Integer getId() {

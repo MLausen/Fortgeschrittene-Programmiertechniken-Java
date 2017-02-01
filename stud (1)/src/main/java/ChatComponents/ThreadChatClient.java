@@ -1,6 +1,7 @@
 package ChatComponents;
 
 import Helper.ErrorDialog;
+import javafx.stage.Stage;
 
 import java.rmi.RemoteException;
 
@@ -25,13 +26,10 @@ public class ThreadChatClient implements Runnable {
         System.out.println("Client with ID " + client.getId() + " joins the chat.");
         String message = "Hello, my name is " + client.getName();
 
-        while(client != null){}
+        while(client.login = true){
 
-        try {
-            client.getServer().logout(client.getName());
-        } catch (RemoteException e) {
-            e.printStackTrace();
-            ErrorDialog.error("RemoteException");
         }
+        System.out.println("ended client thread");
+        // TODO thread still active?
     }
 }

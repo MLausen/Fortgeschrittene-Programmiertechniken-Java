@@ -32,11 +32,13 @@ public class ChatServer extends UnicastRemoteObject implements ChatService{
     @Override
     public boolean login(String client) throws RemoteException {
         System.out.println("Client " + client + " logged in.");
+        this.send("Client " + client + " hat den Chat betreten.");
         return this.clients.add(client);
+
     }
 
     @Override
-    public synchronized boolean send(String message) throws RemoteException {
+    public synchronized void send(String message) throws RemoteException {
         System.out.println("Send \"" + message + "\" to each client.");
 
         for(int i = 0; i < clients.size(); i++){
@@ -49,7 +51,5 @@ public class ChatServer extends UnicastRemoteObject implements ChatService{
                 e.printStackTrace();
             }
         }
-
-        return true; // del
     }
 }
