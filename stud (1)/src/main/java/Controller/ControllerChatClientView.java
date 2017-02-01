@@ -3,7 +3,8 @@ package Controller;
 import ChatComponents.ChatClient;
 import ChatComponents.ClientService;
 import View.ViewChatClient;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+
+import java.rmi.RemoteException;
 
 /**
  * Created by Melli on 01.02.2017.
@@ -16,10 +17,16 @@ public class ControllerChatClientView {
         this.view = view;
         this.model = (ChatClient) model;
 
-        //view.setOnSendHandeler();
+        view.setOnSendHandeler(e->{
+            try {
+                view.addText(view.getMessage(), model.getName());
+                view.resetInputField();
+            } catch (RemoteException e1) {
+                e1.printStackTrace();
+            }
+        });
     }
 
-    private boolean onSendText(){
-        throw new NotImplementedException();
-    }
+
+
 }
