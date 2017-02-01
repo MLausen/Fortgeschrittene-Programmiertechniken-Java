@@ -2,7 +2,6 @@ package TCPConnection;
 
 import Helper.ErrorDialog;
 import Model.Order;
-import View.ViewLogin;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -22,7 +21,7 @@ public class Client {
         this.order = order;
     }
 
-    public boolean buyRequest(String username, String password) throws ClassNotFoundException {
+    public boolean buyRequest(String username, String password){
         //start to send by creating a new socket with the server address and port
         try (Socket serverCon = new Socket("localhost", 6666);
              ObjectOutputStream out = new ObjectOutputStream(serverCon.getOutputStream());
@@ -35,10 +34,20 @@ public class Client {
             out.flush();
 
             //wait till the server responses
-           String loginFeedback = (String) in.readObject();
+            String loginFeedback = null;
+            try {
+                loginFeedback = (String) in.readObject();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
             System.out.println(loginFeedback);
+            if (loginFeedback.substring(0, 10).equals("Your order is on the way to the Warehouse".substring(0, 10))){
+                for (int i = 0; i < order.size(); i++) {
+                    System.out.printf("%-15s  %-5s %-1s%n", order.get(i).getName(), order.get(i).getQuantity(), order.get(i).getPrice() + " €");
 
-            serverCon.setSoTimeout(50000);
+                }
+            order.clear();
+        }
         } catch (ConnectException e) {
             e.printStackTrace();
             ErrorDialog.error("Sorry..Server is Down");
