@@ -2,7 +2,6 @@ package ChatComponents;
 
 import Controller.ControllerChatClientView;
 import View.ViewChatClient;
-import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -16,15 +15,21 @@ import java.rmi.RemoteException;
 /**
  * Created by Team 10
  */
-public class ClientInitializer extends Application {
+public class ClientInitializer extends Stage {
     public static String url;
 
-    public static void main(String args[]) throws RemoteException, MalformedURLException, NotBoundException {
-        Application.launch(args);
-    }
+    private static ClientInitializer instance;
 
-    @Override
-    public void start(Stage stage) throws Exception {
+
+    public static ClientInitializer getInstance() throws RemoteException, NotBoundException, MalformedURLException {
+        if (ClientInitializer.instance == null) {
+            ClientInitializer.instance = new ClientInitializer();
+        }
+
+        return ClientInitializer.instance;
+    }
+        public ClientInitializer() throws RemoteException, MalformedURLException, NotBoundException {
+        this.setAlwaysOnTop(true);
         url = "//localhost:1099/" + ServerDriver.NAME; // registry
         ChatService server = (ChatService) Naming.lookup(url);
 
@@ -33,8 +38,8 @@ public class ClientInitializer extends Application {
         ControllerChatClientView ctrl = new ControllerChatClientView(view, client);
 
         Scene scene = new Scene(view);
-        stage.setScene(scene);
-        stage.show();
+        this.setScene(scene);
+        this.show();
 
         ThreadChatClient clientThread = new ThreadChatClient(client);
         Naming.rebind(client.getName(), client);
@@ -42,9 +47,8 @@ public class ClientInitializer extends Application {
         Thread thread = new Thread(clientThread);
         thread.start();
 
-        stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+        this.setOnCloseRequest(new EventHandler<WindowEvent>() {
             public void handle(WindowEvent we) {
-                stage.close();
                 try {
                     server.logout(client.getName());
                     Naming.unbind(client.getName());

@@ -1,5 +1,6 @@
 package Controller;
 
+import ChatComponents.ClientInitializer;
 import Helper.ErrorDialog;
 import Model.ModelShop;
 import Model.Order;
@@ -12,6 +13,8 @@ import javafx.scene.control.Button;
 
 import java.io.IOException;
 import java.net.*;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -64,7 +67,15 @@ public class ControllerCustomerView {
     }
 
     private void openChat() {
-        //TODO
+        try {
+             ClientInitializer.getInstance();
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (NotBoundException e) {
+            e.printStackTrace();
+        }
     }
 
     private void addElement() {
