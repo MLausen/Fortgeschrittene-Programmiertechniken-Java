@@ -1,17 +1,15 @@
 package View;
 
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
-import javafx.scene.layout.BorderPane;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
-import javafx.util.Pair;
-
-import java.util.Optional;
 
 
 /**
@@ -23,12 +21,11 @@ public class ViewLogin extends Stage {
 
     private TextField usernameField;
     private PasswordField passwordField;
-    private ButtonType loginButtonType;
+
 
     Button loginBt;
     Button cancelBt;
 
-    Optional<Pair<String, String>> result;
 
     public ViewLogin() {
         this.setTitle("Login Dialog");
@@ -59,9 +56,6 @@ public class ViewLogin extends Stage {
         Scene scene = new Scene(grid);
         this.setScene(scene);
         this.show();
-
-        Platform.runLater(() -> {
-        });
     }
 
     public String getName() {
