@@ -10,7 +10,6 @@ import java.rmi.registry.LocateRegistry;
  */
 public class ServerDriver {
     public static final String NAME = "Team10_RMIChatServer";
-    public static Integer clientCount = 1;
 
     public static void main(String args[]) throws RemoteException, MalformedURLException {
         //Naming.rebind(ServerDriver.NAME, new ChatServer());

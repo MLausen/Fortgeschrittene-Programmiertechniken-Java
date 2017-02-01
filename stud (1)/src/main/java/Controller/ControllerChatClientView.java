@@ -20,7 +20,7 @@ public class ControllerChatClientView {
 
         view.setOnSendHandeler(e->{
             String message = view.getMessage();
-            if(message != null){
+            if(message != null || message.equals("")){
                 view.resetInputField();
                 this.sendToServer(message);
             }
@@ -28,6 +28,6 @@ public class ControllerChatClientView {
     }
 
     public void sendToServer(String message){
-        model.send(message);
+        model.send(model.getName() + ": " + message);
     }
 }
