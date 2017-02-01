@@ -25,7 +25,7 @@ public class ChatServer extends UnicastRemoteObject implements ChatService{
         return this.clients.remove(client);
     }
 
-    public List<String> getUserList(){
+    public List<String> getUserList()throws RemoteException {
         return this.clients;
     }
 

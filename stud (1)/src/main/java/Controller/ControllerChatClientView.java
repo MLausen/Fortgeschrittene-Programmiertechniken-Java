@@ -2,7 +2,6 @@ package Controller;
 
 import ChatComponents.ChatClient;
 import ChatComponents.ClientService;
-import Helper.ErrorDialog;
 import View.ViewChatClient;
 
 import java.rmi.RemoteException;
@@ -22,7 +21,7 @@ public class ControllerChatClientView {
         setClientEventHandler();
     }
 
-    public void sendToServer(String message){
+    public void sendToServer(String message) throws RemoteException {
         model.send(model.getName() + ": " + message);
     }
 
@@ -31,7 +30,11 @@ public class ControllerChatClientView {
             String message = view.getMessage();
             if(message != null || message.equals("")){
                 view.resetInputField();
-                this.sendToServer(message);
+                try {
+                    this.sendToServer(message);
+                } catch (RemoteException e1) {
+                    e1.printStackTrace();
+                }
             }
         });
 
