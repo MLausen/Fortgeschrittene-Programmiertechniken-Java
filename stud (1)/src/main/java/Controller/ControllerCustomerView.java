@@ -26,7 +26,7 @@ public class ControllerCustomerView {
     private ModelShop modelShop;
     private ViewCustomer viewCustomer;
     private Order order;
-    Client client;
+
 
     // threads
     private Thread timeRequestThread;
@@ -54,15 +54,17 @@ public class ControllerCustomerView {
                     addElement();
                     break;
                 case "buy":
-                    try {
-                        client = new Client(order);
-                        buyOperation();
-                    } catch (ClassNotFoundException e1) {
-                        e1.printStackTrace();
-                    }
+                    buyOperation();
+                    break;
+                case "chat":
+                    openChat();
                     break;
             }
         });
+    }
+
+    private void openChat() {
+        //TODO
     }
 
     private void addElement() {
@@ -81,14 +83,10 @@ public class ControllerCustomerView {
         }
     }
 
-    private void buyOperation() throws ClassNotFoundException {
+    private void buyOperation() {
         ControllerLoginView crtlLogin = new ControllerLoginView();
-        crtlLogin.link(client, new ViewLogin());
+        crtlLogin.link(new Client(order), new ViewLogin());
 
-        if (client.login) {
-            viewCustomer.totalSum("Sent Successfully  ✓");
-            order.clear();
-        }
     }
 
     // method to send a request to a server by a client via udp-package
