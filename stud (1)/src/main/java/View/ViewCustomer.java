@@ -3,7 +3,6 @@ package View;
 import Model.ModelShop;
 import Model.Order;
 import fpt.com.Product;
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
@@ -14,13 +13,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 
-import java.io.IOException;
-import java.net.*;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Scanner;
-
 /**
  * Created by Team 10
  */
@@ -30,6 +22,7 @@ public class ViewCustomer extends BorderPane {
 
     // view components
     private Button buy;
+    private Button enterChat;
     private Button add;
     private Label timeLable;
     private Label total;
@@ -42,10 +35,13 @@ public class ViewCustomer extends BorderPane {
         add = new Button("Add");
         add.setId("add");
 
+        enterChat = new Button("Chat");
+        enterChat.setId("chat");
+
         timeLable = new Label();
         total = new Label("");
 
-        box = new BorderPane(null, null, new HBox(10, total, add, buy), null, timeLable);
+        box = new BorderPane(null, null, new HBox(10, total, add, buy), null,  new HBox(10,timeLable,enterChat));
 
         setBottom(box);
 
@@ -84,6 +80,7 @@ public class ViewCustomer extends BorderPane {
     public void addEventHandler(EventHandler<ActionEvent> eventHandler) {
         buy.addEventHandler(ActionEvent.ACTION, eventHandler);
         add.addEventHandler(ActionEvent.ACTION, eventHandler);
+        enterChat.addEventHandler(ActionEvent.ACTION, eventHandler);
     }
 
     public void updateTimeLabel(String time) {
