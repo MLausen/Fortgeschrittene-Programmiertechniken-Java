@@ -5,9 +5,8 @@ import Helper.ErrorDialog;
 import Model.ModelShop;
 import Model.Order;
 import Model.Product;
-import TCPConnection.Client;
+import TCPConnection.LoginInitializer;
 import View.ViewCustomer;
-import View.ViewLogin;
 import javafx.application.Platform;
 import javafx.scene.control.Button;
 
@@ -95,8 +94,7 @@ public class ControllerCustomerView {
     }
 
     private void buyOperation() {
-        ControllerLoginView crtlLogin = new ControllerLoginView();
-        crtlLogin.link(new Client(order), new ViewLogin());
+        LoginInitializer.getInstance(order);
 
     }
 

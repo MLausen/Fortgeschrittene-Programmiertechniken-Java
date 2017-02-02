@@ -35,11 +35,10 @@ public class ControllerLoginView {
 
     public void login(){
         client.buyRequest(getUserData().getKey(), getUserData().getValue());
-        viewLogin.close();
+
     }
 
     public void cancelLogin(){
-        viewLogin.close();
     }
 
     public Pair<String, String> getUserData(){
