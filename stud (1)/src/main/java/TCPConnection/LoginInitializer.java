@@ -21,11 +21,10 @@ public class LoginInitializer extends Stage {
         if (LoginInitializer.instance == null || !LoginInitializer.instance.isShowing()) {
             LoginInitializer.instance = new LoginInitializer(order);
         }
-
+        LoginInitializer.instance.requestFocus();
         return LoginInitializer.instance;
     }
     public LoginInitializer(Order order)  {
-        this.setAlwaysOnTop(true);
 
         Client client = new Client((Model.Order) order);
         ViewLogin view = new ViewLogin();

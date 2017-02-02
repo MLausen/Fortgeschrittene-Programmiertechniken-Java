@@ -94,8 +94,7 @@ public class ControllerCustomerView {
     }
 
     private void buyOperation() {
-        LoginInitializer.getInstance(order);
-
+            LoginInitializer.getInstance(order);
     }
 
     // method to send a request to a server by a client via udp-package

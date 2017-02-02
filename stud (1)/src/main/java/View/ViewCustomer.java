@@ -35,7 +35,7 @@ public class ViewCustomer extends BorderPane {
         add = new Button("Add");
         add.setId("add");
 
-        enterChat = new Button("Chat");
+        enterChat = new Button("join Chat");
         enterChat.setId("chat");
 
         timeLable = new Label();
