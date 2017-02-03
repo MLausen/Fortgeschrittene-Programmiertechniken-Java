@@ -18,21 +18,21 @@ import java.rmi.RemoteException;
 /**
  * Created by Team 10
  */
-public class ClientInitializer extends Stage {
+public class StartChatWindow extends Stage {
     public static String url;
 
-    private static ClientInitializer instance;
+    private static StartChatWindow instance;
 
 
-    public static ClientInitializer getInstance() throws RemoteException, NotBoundException, MalformedURLException {
-        if (ClientInitializer.instance == null || !ClientInitializer.instance.isShowing()) {
-            ClientInitializer.instance = new ClientInitializer();
+    public static StartChatWindow getInstance() throws RemoteException, NotBoundException, MalformedURLException {
+        if (StartChatWindow.instance == null || !StartChatWindow.instance.isShowing()) {
+            StartChatWindow.instance = new StartChatWindow();
         }
-        ClientInitializer.instance.requestFocus();
-        return ClientInitializer.instance;
+        StartChatWindow.instance.requestFocus();
+        return StartChatWindow.instance;
     }
 
-    public ClientInitializer() throws RemoteException, MalformedURLException, NotBoundException {
+    public StartChatWindow() throws RemoteException, MalformedURLException, NotBoundException {
         url = "//localhost:1099/" + Warehouse.NAME; // registry
         try {
             ChatService server = (ChatService) Naming.lookup(url);
