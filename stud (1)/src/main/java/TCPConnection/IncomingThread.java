@@ -9,8 +9,9 @@ import java.io.ObjectInputStream;
  * Created by Team 10
  */
 public class IncomingThread extends Thread{
-    ObjectInputStream in;
-    Order newOrder;
+    private ObjectInputStream in;
+
+    public  Order newOrder;
     public boolean login;
 
     public IncomingThread(ObjectInputStream input){
@@ -38,5 +39,4 @@ public class IncomingThread extends Thread{
             login = true;
         }
     }
-
 }

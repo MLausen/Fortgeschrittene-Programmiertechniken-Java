@@ -11,10 +11,12 @@ import java.util.concurrent.locks.Lock;
  * Created by Team 10
  */
 public class OutcomingThread extends Thread {
-    boolean login;
-    ObjectOutputStream out;
-    Order newOrder;
-    Lock lock;
+    private boolean login;
+
+    private ObjectOutputStream out;
+    private Order newOrder;
+
+    protected  Lock lock;
 
     public OutcomingThread(Lock lock, ObjectOutputStream output, boolean login, Order order) {
         this.lock = lock;

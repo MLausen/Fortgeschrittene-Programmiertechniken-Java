@@ -16,7 +16,7 @@ import java.net.SocketException;
  */
 public class Client {
     public boolean login;
-    Order order;
+    public Order order;
 
     public Client(Order order) {
         this.order = order;

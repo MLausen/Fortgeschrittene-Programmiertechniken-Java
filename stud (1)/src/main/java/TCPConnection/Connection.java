@@ -17,7 +17,7 @@ public class Connection extends Thread {
     public static final String USERNAME = "admin";
     public static final String PASSWORT = "admin";
 
-    Order newOrder;
+    private Order newOrder;
     private int name;
     private Socket socket;
     private boolean login;

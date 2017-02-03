@@ -19,10 +19,8 @@ import java.rmi.RemoteException;
  * Created by Team 10
  */
 public class StartChatWindow extends Stage {
-    public static String url;
-
     private static StartChatWindow instance;
-
+    public static String url;
 
     public static StartChatWindow getInstance() throws RemoteException, NotBoundException, MalformedURLException {
         if (StartChatWindow.instance == null || !StartChatWindow.instance.isShowing()) {
