@@ -49,12 +49,11 @@ public class Client {
             e.printStackTrace();
             ErrorDialog.error("Sorry..Server is Down");
         } catch (SocketException e) {
-            //TODo
             e.printStackTrace();
             ErrorDialog.error("Sorry..");
         } catch (IOException e) {
             e.printStackTrace();
-            ErrorDialog.error("Make sure you entered username and password correctly");
+            ErrorDialog.error("IO Exc");
         }
         return login;
     }

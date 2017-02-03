@@ -8,10 +8,6 @@ import java.net.*;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Scanner;
 
 /**
  * Created by Team 10
@@ -40,8 +36,9 @@ public class Warehouse {
                     //wait until some client call the address and has the same port
                     Socket socket = server.accept();
                     connections++;
+                    System.out.println("connections: " + connections);
                     //create a thread which response to that client
-                    new ClientThread(connections, socket).start();
+                    new Connection(connections, socket).start();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
