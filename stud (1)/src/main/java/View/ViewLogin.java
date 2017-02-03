@@ -11,7 +11,7 @@ import javafx.scene.layout.GridPane;
 
 
 /**
- * Created by Sufian Vaio on 17.01.2017.
+ * Created  by Team 10
  */
 public class ViewLogin extends GridPane {
     public static final String CANCEL_BUTTON = "cancelButton";

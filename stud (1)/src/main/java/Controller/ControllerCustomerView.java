@@ -1,11 +1,11 @@
 package Controller;
 
-import ChatComponents.ClientInitializer;
+import ChatComponents.StartChatWindow;
 import Helper.ErrorDialog;
 import Model.ModelShop;
 import Model.Order;
 import Model.Product;
-import TCPConnection.LoginInitializer;
+import TCPConnection.StartLoginWindow;
 import View.ViewCustomer;
 import javafx.application.Platform;
 import javafx.scene.control.Button;
@@ -14,10 +14,6 @@ import java.io.IOException;
 import java.net.*;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Scanner;
 
 
 /**
@@ -63,7 +59,7 @@ public class ControllerCustomerView {
 
     private void openChat() {
         try {
-             ClientInitializer.getInstance();
+             StartChatWindow.getInstance();
         } catch (RemoteException e) {
             e.printStackTrace();
         } catch (MalformedURLException e) {
@@ -90,7 +86,7 @@ public class ControllerCustomerView {
     }
 
     private void buyOperation() {
-            LoginInitializer.getInstance(order);
+            StartLoginWindow.getInstance(order);
     }
 
     // method to send a request to a server by a client via udp-package

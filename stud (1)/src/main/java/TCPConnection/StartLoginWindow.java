@@ -9,22 +9,22 @@ import javafx.stage.Stage;
 /**
  * Created by Team 10
  */
-public class LoginInitializer extends Stage {
+public class StartLoginWindow extends Stage {
 
 
 
 
-    private static LoginInitializer instance;
+    private static StartLoginWindow instance;
 
 
-    public static LoginInitializer getInstance(Order order)  {
-        if (LoginInitializer.instance == null || !LoginInitializer.instance.isShowing()) {
-            LoginInitializer.instance = new LoginInitializer(order);
+    public static StartLoginWindow getInstance(Order order)  {
+        if (StartLoginWindow.instance == null || !StartLoginWindow.instance.isShowing()) {
+            StartLoginWindow.instance = new StartLoginWindow(order);
         }
-        LoginInitializer.instance.requestFocus();
-        return LoginInitializer.instance;
+        StartLoginWindow.instance.requestFocus();
+        return StartLoginWindow.instance;
     }
-    public LoginInitializer(Order order)  {
+    public StartLoginWindow(Order order)  {
 
         Client client = new Client((Model.Order) order);
         ViewLogin view = new ViewLogin();
