@@ -44,13 +44,13 @@ public class OutcomingThread extends Thread {
                 System.out.println("total count : " + Warehouse.order.getQuantity());
                 //send positive feedback
                 this.lock.unlock();
+
                 try {
                     out.writeObject("Your order is on the way to the Warehouse" + '\n' + answer);
                     out.flush();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-
             } else {
                 try {
                 //send negative feedback if the list were empty

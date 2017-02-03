@@ -45,7 +45,7 @@ public class Connection extends Thread {
             Order order = null;
 
             while(incoming.isAlive()){
-                System.out.println("is alive");
+                //System.out.println("in is alive");
                 login = incoming.login;
                 if(login == true){
                     order = incoming.newOrder;
@@ -54,6 +54,12 @@ public class Connection extends Thread {
 
             outcoming = new OutcomingThread(lock, out, login, order);
             outcoming.start();
+
+            try {
+                outcoming.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
 
             closeSockets();
         } catch (IOException e1) {

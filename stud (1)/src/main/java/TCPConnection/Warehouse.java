@@ -32,7 +32,6 @@ public class Warehouse {
             //always running
             while (true) {
                 try {
-
                     //wait until some client call the address and has the same port
                     Socket socket = server.accept();
                     connections++;
