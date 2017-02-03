@@ -28,8 +28,8 @@ public class ControllerChatClientView {
     private void setClientEventHandler(){
         view.setOnSendHandeler(e->{
             String message = view.getMessage();
-            if(message != null || message.equals("")){
-                view.resetInputField();
+            if(message != null && !message.equals("")){
+                view.resetInputField("");
                 try {
                     this.sendToServer(message);
                 } catch (RemoteException e1) {

@@ -40,14 +40,12 @@ public class ViewChatClient extends BorderPane {
         inputField.setPromptText("Gib eine Nachricht ein");
     }
 
-    // auslagern in controller mit reflection?
-
     public String getMessage(){
         return this.inputField.getText();
     }
 
-    public void resetInputField(){
-        this.inputField.setText("");
+    public void resetInputField(String text){
+        this.inputField.setText(text);
     }
 
     public TextArea getChatArea(){

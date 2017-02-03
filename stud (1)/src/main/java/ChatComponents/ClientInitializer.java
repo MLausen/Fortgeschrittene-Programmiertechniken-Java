@@ -2,6 +2,7 @@ package ChatComponents;
 
 import Controller.ControllerChatClientView;
 import Helper.ErrorDialog;
+import TCPConnection.Warehouse;
 import View.ViewChatClient;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
@@ -32,13 +33,12 @@ public class ClientInitializer extends Stage {
     }
 
     public ClientInitializer() throws RemoteException, MalformedURLException, NotBoundException {
-
-        url = "//localhost:1099/" + ServerDriver.NAME; // registry
+        url = "//localhost:1099/" + Warehouse.NAME; // registry
         try {
             ChatService server = (ChatService) Naming.lookup(url);
-             ClientService client = new ChatClient(server);
-             ViewChatClient view = new ViewChatClient(client.getName());
-             ControllerChatClientView ctrl = new ControllerChatClientView(view, client);
+            ClientService client = new ChatClient(server);
+            ViewChatClient view = new ViewChatClient(client.getName());
+            ControllerChatClientView ctrl = new ControllerChatClientView(view, client);
 
             Scene scene = new Scene(view);
             this.setScene(scene);
