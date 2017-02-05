@@ -1,8 +1,5 @@
 package ChatComponents;
 
-import Helper.ErrorDialog;
-import javafx.stage.Stage;
-
 import java.rmi.RemoteException;
 
 /**
@@ -24,8 +21,8 @@ public class ThreadChatClient implements Runnable {
             e.printStackTrace();
         }
 
-        while(client.login == true){
-            //System.out.println("active");
+        while(client.login){
+            
         }
 
         System.out.println("ended client thread");

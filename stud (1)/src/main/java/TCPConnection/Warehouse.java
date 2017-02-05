@@ -117,18 +117,3 @@ public class Warehouse {
         };
     }
 }
-/*
-    // method to get a timeresponse by a server via udp-package
-    public void timeResponse() {
-        // could happen?
-        if (this.timeResponseThread != null) {
-            return;
-        }
-
-        this.timeResponseThread = new Thread("Time Response") {
-            public void run() {
-                // server socket with port 6667
-                try (DatagramSocket socket = new DatagramSocket(6667)) {
-                    while (true) {
-
-                        */

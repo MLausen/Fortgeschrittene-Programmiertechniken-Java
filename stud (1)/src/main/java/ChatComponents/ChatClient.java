@@ -14,7 +14,7 @@ public class ChatClient extends UnicastRemoteObject implements ClientService{
     private ChatService server;
     private TextArea chatArea;
     private Integer id = -1;
-    public boolean login = true;
+    public volatile boolean login = true;
 
 
     public ChatClient (ChatService server) throws RemoteException, MalformedURLException{
