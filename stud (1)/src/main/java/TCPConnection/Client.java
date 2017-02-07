@@ -74,6 +74,7 @@ public class Client {
             if (loginFeedback.substring(0, 10).equals("Your order is on the way to the Warehouse".substring(0, 10))) {
                 login = true;
                 order.clear();
+                order.setFinished(false);
             }
 
 

@@ -22,7 +22,6 @@ public class StartLoginWindow extends Stage {
     }
 
     public StartLoginWindow(Order order) {
-
         Client.getInstance().setOrder((Model.Order) order);
         ViewLogin view = new ViewLogin();
         ControllerLoginView ctrl = new ControllerLoginView();

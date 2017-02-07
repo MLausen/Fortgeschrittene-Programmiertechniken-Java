@@ -34,14 +34,14 @@ public class ControllerCustomerView {
     private Thread timeRequestThread;
 
     // defines controller for customer view
-    public void link(ModelShop model, ViewCustomer view, Order o) {
+    public void link(ModelShop model, ViewCustomer view, Order order) {
         this.modelShop = model;
         this.viewCustomer = view;
-        this.order = o;
+        this.order = order;
 
         // link ProductList from ModelShop to Customer View
         viewCustomer.setProducts(modelShop);
-        viewCustomer.setOrders(order);
+        viewCustomer.setOrders(this.order);
 
         timeRequest();
         timeRequestThread.start();
