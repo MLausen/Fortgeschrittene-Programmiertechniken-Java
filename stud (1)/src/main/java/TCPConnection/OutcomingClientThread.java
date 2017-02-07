@@ -24,7 +24,7 @@ public class OutcomingClientThread extends Thread {
     public void run() {
         try (ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());) {
             while (!socket.isClosed()) {
-                if (order != null) {
+                if (order.size() > 0 && ((Model.Order)order).isFinished()) {
                     if (order.size() > 0 && ((Model.Order) order).isFinished()) {
                         //send what the client wrote in the Dialog then flush
                         out.writeObject("admin");
