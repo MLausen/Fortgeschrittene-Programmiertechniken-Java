@@ -6,7 +6,6 @@ import Model.ModelShop;
 import Model.Order;
 import Model.Product;
 import TCPConnection.Client;
-import TCPConnection.Connect;
 import TCPConnection.StartLoginWindow;
 import View.ViewCustomer;
 import javafx.application.Platform;
@@ -84,8 +83,7 @@ public class ControllerCustomerView {
             } else {
                 ErrorDialog.error("not available now");
             }
-        }
-        else{
+        } else {
             ErrorDialog.error("select product first");
         }
     }
@@ -148,16 +146,10 @@ public class ControllerCustomerView {
     }
 
     public void closeConnection(Stage stage) {
-
-            stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-                public void handle(WindowEvent we) {
-                    try {
-                        Client.getInstance().sendCloseSignal();
-                        Connect.getInstance().closeConnection();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            });
-        }
+        stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            public void handle(WindowEvent we) {
+                Client.getInstance().sendCloseSignal();
+            }
+        });
     }
+}

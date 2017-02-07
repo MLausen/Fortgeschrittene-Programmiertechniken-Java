@@ -17,6 +17,7 @@ public class Client {
     ObjectOutputStream out;
     ObjectInputStream in;
     public Order order;
+    Socket serverCon;
     private static Client instance = null;
 
     public void setOrder(Order order) {
@@ -25,7 +26,7 @@ public class Client {
 
     private Client() {
         try {
-            Socket serverCon = Connect.getInstance().getSocket();
+             serverCon = new Socket("localhost", 6666);
             out = new ObjectOutputStream(serverCon.getOutputStream());
             in = new ObjectInputStream(serverCon.getInputStream());
         } catch (ConnectException e) {
@@ -39,17 +40,6 @@ public class Client {
     public static Client getInstance() {
         if (instance == null) instance = new Client();
         return instance;
-    }
-    public void sendCloseSignal(){
-        try {
-            out.writeObject("close");
-            out.flush();
-            if (in != null) in.close();
-            if (out != null) out.close();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     public boolean buyRequest(String username, String password) {
@@ -83,5 +73,19 @@ public class Client {
             ErrorDialog.error("IO Exc");
         }
         return login;
+    }
+
+    public void sendCloseSignal(){
+        try {
+            out.writeObject("close");
+            out.flush();
+            if (in != null) in.close();
+            if (out != null) out.close();
+
+            if (!serverCon.isClosed()) serverCon.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
