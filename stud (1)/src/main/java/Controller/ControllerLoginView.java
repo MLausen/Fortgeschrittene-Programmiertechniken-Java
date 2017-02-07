@@ -15,8 +15,8 @@ public class ControllerLoginView {
     public ControllerLoginView(){}
 
     // defines controller for shop view
-    public void link(Client client, ViewLogin view) {
-        this.client = client;
+    public void link(ViewLogin view) {
+        this.client = Client.getInstance();
         this.viewLogin = view;
 
         viewLogin.addEventHandler(e -> {

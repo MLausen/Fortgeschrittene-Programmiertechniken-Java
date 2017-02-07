@@ -41,7 +41,7 @@ public class ControllerCustomerView {
         timeRequest();
         timeRequestThread.start();
 
-        viewCustomer.addEventHandler(e -> {
+       viewCustomer.addEventHandler(e -> {
             String buttonID = ((Button) e.getSource()).getId();
             switch (buttonID) {
                 case "add":
@@ -89,7 +89,7 @@ public class ControllerCustomerView {
             StartLoginWindow.getInstance(order);
     }
 
-    // method to send a request to a server by a client via udp-package
+    // method to buyRequest a request to a server by a client via udp-package
     public void timeRequest() {
         this.timeRequestThread = new Thread("Time Request") {
             public void run() {

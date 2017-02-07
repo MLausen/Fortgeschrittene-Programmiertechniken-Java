@@ -12,6 +12,7 @@ import javafx.stage.Stage;
 public class StartLoginWindow extends Stage {
     private static StartLoginWindow instance;
 
+
     public static StartLoginWindow getInstance(Order order) {
         if (StartLoginWindow.instance == null || !StartLoginWindow.instance.isShowing()) {
             StartLoginWindow.instance = new StartLoginWindow(order);
@@ -20,12 +21,12 @@ public class StartLoginWindow extends Stage {
         return StartLoginWindow.instance;
     }
 
-    public StartLoginWindow(Order order) {
+    private StartLoginWindow(Order order) {
 
-        Client client = new Client((Model.Order) order);
+        Client.getInstance().setOrder((Model.Order) order);
         ViewLogin view = new ViewLogin();
         ControllerLoginView ctrl = new ControllerLoginView();
-        ctrl.link(client, view);
+        ctrl.link( view);
 
         Scene scene = new Scene(view);
         this.setScene(scene);

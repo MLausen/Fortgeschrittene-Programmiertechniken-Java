@@ -21,10 +21,9 @@ public class ThreadChatClient implements Runnable {
             e.printStackTrace();
         }
 
-        while(client.login){
-            
-        }
+            while (client.login) {
 
+        }
         System.out.println("ended client thread");
     }
 }

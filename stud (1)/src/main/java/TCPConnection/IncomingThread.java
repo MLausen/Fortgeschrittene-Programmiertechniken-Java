@@ -34,7 +34,7 @@ public class IncomingThread extends Thread{
             e.printStackTrace();
         }
 
-        //authorize admin admin and send feedback then flush
+        //authorize admin admin and buyRequest feedback then flush
         if (username.equals(Connection.USERNAME) && password.equals(Connection.PASSWORT)) {
             login = true;
         }

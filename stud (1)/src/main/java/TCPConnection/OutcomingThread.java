@@ -44,7 +44,7 @@ public class OutcomingThread extends Thread {
                 System.out.println("============================");
                 System.out.println("total sell  : " + Warehouse.order.getSum() + " €");
                 System.out.println("total count : " + Warehouse.order.getQuantity());
-                //send positive feedback
+                //buyRequest positive feedback
                 this.lock.unlock();
 
                 try {
@@ -55,7 +55,7 @@ public class OutcomingThread extends Thread {
                 }
             } else {
                 try {
-                //send negative feedback if the list were empty
+                //buyRequest negative feedback if the list were empty
                     out.writeObject("sorry .. your order List is empty");
                     out.flush();
                 } catch (IOException e) {
