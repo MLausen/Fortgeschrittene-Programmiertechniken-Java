@@ -63,5 +63,4 @@ public interface Order extends Serializable, Iterable<Product> {
 	 * @return The overall quantity of Products in the Order
 	 */
 	int getQuantity();
-	
 }

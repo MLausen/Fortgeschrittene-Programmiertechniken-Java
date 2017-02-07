@@ -21,11 +21,9 @@ public class StartLoginWindow extends Stage {
     }
 
     public StartLoginWindow(Order order) {
-
-        Client client = new Client((Model.Order) order);
         ViewLogin view = new ViewLogin();
         ControllerLoginView ctrl = new ControllerLoginView();
-        ctrl.link(client, view);
+        ctrl.link(order, view);
 
         Scene scene = new Scene(view);
         this.setScene(scene);

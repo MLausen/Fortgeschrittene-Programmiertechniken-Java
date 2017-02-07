@@ -2,6 +2,7 @@ import Controller.ControllerCustomerView;
 import Controller.ControllerShop;
 import Model.ModelShop;
 import Model.Order;
+import TCPConnection.Client;
 import View.ViewCustomer;
 import View.ViewShop;
 import javafx.application.Application;
@@ -47,5 +48,8 @@ public class Main extends Application {
         // link view and controller
         controllerShop.link(model, viewShop);
         controllerCustomerView.link(model, viewCustomer,order);
+
+        Client client = new Client();
+        client.run();
     }
 }

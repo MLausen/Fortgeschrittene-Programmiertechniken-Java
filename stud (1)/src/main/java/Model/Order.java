@@ -12,6 +12,17 @@ import java.util.List;
 public class Order extends ModifiableObservableListBase<Product> implements fpt.com.Order {
     List<Product> ordersList;
 
+    public void setFinished(boolean finished) {
+        this.finished = finished;
+    }
+    public boolean getFinished() {
+        return finished;
+    }
+
+    boolean finished = false;
+    /*String password;
+    String username;*/
+
     public Order() {
         ordersList = new ArrayList<Product>();
     }
