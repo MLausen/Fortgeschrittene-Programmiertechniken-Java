@@ -1,7 +1,6 @@
 package TCPConnection;
 
 import Model.Order;
-import Model.Product;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -22,8 +21,8 @@ public class Connection extends Thread {
     private Socket socket;
     private boolean login;
 
-    private IncomingThread incoming;
-    private OutcomingThread outcoming;
+    private IncomingServerThread incoming;
+    private OutcomingServerThread outcoming;
 
     public Connection(int name, Socket socket) {
         this.name = name;
@@ -38,7 +37,7 @@ public class Connection extends Thread {
 
             Lock lock = new ReentrantLock();
 
-            incoming = new IncomingThread(in);
+            incoming = new IncomingServerThread(in);
             incoming.start();
 
             boolean login = false;
@@ -52,7 +51,7 @@ public class Connection extends Thread {
                 }
             }
 
-            outcoming = new OutcomingThread(lock, out, login, order);
+            outcoming = new OutcomingServerThread(lock, out, login, order);
             outcoming.start();
 
             try {

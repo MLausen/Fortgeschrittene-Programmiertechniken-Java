@@ -8,13 +8,13 @@ import java.io.ObjectInputStream;
 /**
  * Created by Team 10
  */
-public class IncomingThread extends Thread{
+public class IncomingServerThread extends Thread{
     private ObjectInputStream in;
 
     public  Order newOrder;
     public boolean login;
 
-    public IncomingThread(ObjectInputStream input){
+    public IncomingServerThread(ObjectInputStream input){
         this.in = input;
         this.login = false;
     }

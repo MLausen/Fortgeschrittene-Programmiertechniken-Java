@@ -10,7 +10,7 @@ import java.util.concurrent.locks.Lock;
 /**
  * Created by Team 10
  */
-public class OutcomingThread extends Thread {
+public class OutcomingServerThread extends Thread {
     private boolean login;
 
     private ObjectOutputStream out;
@@ -18,7 +18,7 @@ public class OutcomingThread extends Thread {
 
     protected  Lock lock;
 
-    public OutcomingThread(Lock lock, ObjectOutputStream output, boolean login, Order order) {
+    public OutcomingServerThread(Lock lock, ObjectOutputStream output, boolean login, Order order) {
         this.lock = lock;
         this.login = login;
         this.out = output;

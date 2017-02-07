@@ -16,7 +16,6 @@ import java.net.SocketException;
  */
 public class Client extends Thread {
     public boolean login;
-    public boolean buyRequest;
     String username;
     String password;
     public Order order;
@@ -29,13 +28,11 @@ public class Client extends Thread {
 
     }
 
-    public void buyRequest(String username, String password) {
+   /* public void buyRequest(String username, String password) {
         //start to send by creating a new socket with the server address and port
         this.password = password;
         this.username = username;
-
-        this.buyRequest = true;
-    }
+    }*/
 
     @Override
     public void run() {
@@ -43,34 +40,11 @@ public class Client extends Thread {
              ObjectOutputStream out = new ObjectOutputStream(serverCon.getOutputStream());
              ObjectInputStream in = new ObjectInputStream(serverCon.getInputStream())) {
 
-            while (true) {
-                if (order != null) {
-                    if (order.size() > 0 && order.getFinished()) {
-                        //send what the client wrote in the Dialog then flush
-                        //out.writeObject(order.password);
-                        out.writeObject(password);
-                        out.writeObject(username);
-                        //out.writeObject(order.username);
-                        out.writeObject(order);
-                        out.flush();
+            IncomingClientThread inThread = new IncomingClientThread(serverCon, order);
+            OutcomingClientThread outThread = new OutcomingClientThread(serverCon, order);
 
-                        //wait till the server responses
-                        String loginFeedback = null;
-                        try {
-                            loginFeedback = (String) in.readObject();
-                        } catch (ClassNotFoundException e) {
-                            e.printStackTrace();
-                        }
-
-                        System.out.println(loginFeedback);
-                        if (loginFeedback.substring(0, 10).equals("Your order is on the way to the Warehouse".substring(0, 10))) {
-                            login = true;
-                            order.setFinished(false);
-                            order.clear();
-                        }
-                    }
-                }
-            }
+            inThread.start();
+            outThread.start();
 
         } catch (ConnectException e) {
             e.printStackTrace();
