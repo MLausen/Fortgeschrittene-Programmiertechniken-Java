@@ -16,10 +16,10 @@ public class Connection extends Thread {
     public static final String USERNAME = "admin";
     public static final String PASSWORT = "admin";
 
-    private Order newOrder;
+
     private int name;
     private Socket socket;
-    private boolean login;
+
 
     private IncomingThread incoming;
     private OutcomingThread outcoming;
@@ -38,30 +38,29 @@ public class Connection extends Thread {
         try {
             out = new ObjectOutputStream(socket.getOutputStream());
             in = new ObjectInputStream(socket.getInputStream());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
 
-        Lock lock = new ReentrantLock();
+            while (socket.isConnected()) {
+                Lock lock = new ReentrantLock();
 
-        incoming = new IncomingThread(in);
-        incoming.start();
+                incoming = new IncomingThread(in);
+                incoming.start();
 
-        boolean login = false;
-        Order order = null;
+                boolean login = false;
+                Order order = null;
 
-        while (incoming.isAlive()) {
-            //System.out.println("in is alive");
-            login = incoming.login;
-            if (login == true) {
-                order = incoming.newOrder;
+                while (incoming.isAlive()) {
+                    login = incoming.login;
+                    if (login) order = incoming.newOrder;
+                }
+
+                outcoming = new OutcomingThread(lock, out, login, order);
+                outcoming.start();
             }
+            closeSockets();
+        } catch (IOException e) {
+        e.printStackTrace();
         }
-
-        outcoming = new OutcomingThread(lock, out, login, order);
-        outcoming.start();
-
 
     }
 

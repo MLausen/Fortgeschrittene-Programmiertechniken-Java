@@ -5,10 +5,14 @@ import Helper.ErrorDialog;
 import Model.ModelShop;
 import Model.Order;
 import Model.Product;
+import TCPConnection.Connect;
 import TCPConnection.StartLoginWindow;
 import View.ViewCustomer;
 import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.scene.control.Button;
+import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 import java.io.IOException;
 import java.net.*;
@@ -41,7 +45,7 @@ public class ControllerCustomerView {
         timeRequest();
         timeRequestThread.start();
 
-       viewCustomer.addEventHandler(e -> {
+        viewCustomer.addEventHandler(e -> {
             String buttonID = ((Button) e.getSource()).getId();
             switch (buttonID) {
                 case "add":
@@ -59,7 +63,7 @@ public class ControllerCustomerView {
 
     private void openChat() {
         try {
-             StartChatWindow.getInstance();
+            StartChatWindow.getInstance();
         } catch (RemoteException e) {
             e.printStackTrace();
         } catch (MalformedURLException e) {
@@ -86,7 +90,7 @@ public class ControllerCustomerView {
     }
 
     private void buyOperation() {
-            StartLoginWindow.getInstance(order);
+        StartLoginWindow.getInstance(order);
     }
 
     // method to buyRequest a request to a server by a client via udp-package
@@ -141,4 +145,17 @@ public class ControllerCustomerView {
             }
         };
     }
-}
+
+    public void closeConnection(Stage stage) {
+
+            stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+                public void handle(WindowEvent we) {
+                    try {
+                        Connect.getInstance().closeConnection();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+        }
+    }

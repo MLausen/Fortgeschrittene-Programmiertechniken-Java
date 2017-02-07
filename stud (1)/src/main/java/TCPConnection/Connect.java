@@ -37,16 +37,6 @@ public class Connect {
         return serverCon;
     }
 
-    public ObjectOutputStream getOutStream() {
-      /*  ObjectOutputStream temp = out;
-        out.reset();*/
-        return this.out;
-    }
-
-    public ObjectInputStream getInStream() {
-        return this.in;
-    }
-
     public void closeConnection() throws IOException {
         if (in != null) in.close();
         if (out != null) out.close();

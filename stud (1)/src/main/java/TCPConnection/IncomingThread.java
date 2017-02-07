@@ -20,14 +20,15 @@ public class IncomingThread extends Thread{
     }
 
     public void run(){
+
         //read what has the client sent
         String username = null;
         String password = null;
-
         try {
             username = (String) in.readObject();
             password = (String) in.readObject();
             newOrder = (Order) in.readObject();
+
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
@@ -38,5 +39,6 @@ public class IncomingThread extends Thread{
         if (username.equals(Connection.USERNAME) && password.equals(Connection.PASSWORT)) {
             login = true;
         }
+
     }
 }

@@ -36,6 +36,8 @@ public class Main extends Application {
         Scene scene = new Scene(viewCustomer);
         CustomerStage.setScene(scene);
         CustomerStage.show();
+        controllerCustomerView.closeConnection(CustomerStage);
+
 
         // prepare shop stage
         Stage shopStage = new Stage();
