@@ -2,6 +2,7 @@ package Controller;
 
 import TCPConnection.Client;
 import View.ViewLogin;
+import fpt.com.Order;
 import javafx.scene.control.Button;
 import javafx.util.Pair;
 
@@ -10,12 +11,14 @@ import javafx.util.Pair;
  */
 public class ControllerLoginView {
     private ViewLogin viewLogin;
+    Order order;
 
     public ControllerLoginView(){}
 
     // defines controller for shop view
-    public void link(ViewLogin view) {
+    public void link(ViewLogin view, Order order) {
         this.viewLogin = view;
+        this.order = order;
 
         viewLogin.addEventHandler(e -> {
             //get id we defined in viewlogin
@@ -32,7 +35,7 @@ public class ControllerLoginView {
     }
 
     public void login(){
-        Client.getInstance().buyRequest(getUserData().getKey(), getUserData().getValue());
+        ((Model.Order)order).setFinished(true);
     }
 
     public void cancelLogin(){

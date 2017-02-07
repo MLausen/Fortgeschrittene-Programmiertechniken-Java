@@ -2,6 +2,7 @@
 
 package TCPConnection;
 
+import com.sun.security.ntlm.*;
 import fpt.com.Order;
 
 import java.io.IOException;
@@ -23,23 +24,25 @@ public class OutcomingClientThread extends Thread {
     @Override
     public void run() {
         try (ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());) {
+            out.writeObject("open");
             while (!socket.isClosed()) {
-                if (order.size() > 0 && ((Model.Order)order).isFinished()) {
+                //  if (order != null) {
                     if (order.size() > 0 && ((Model.Order) order).isFinished()) {
-                        //send what the client wrote in the Dialog then flush
-                        out.writeObject("admin");
-                        out.writeObject("admin");
-                        out.writeObject(order);
-                        out.flush();
-                        out.reset();
+                        if (order.size() > 0 && ((Model.Order) order).isFinished()) {
+                            //send what the client wrote in the Dialog then flush
+                            out.writeObject("admin");
+                            out.writeObject("admin");
+                            out.writeObject(order);
+                            out.flush();
+                            out.reset();
+
+                            if(Client.getInstance().login){
+
+                            }
+                        }
                     }
                 }
-                try {
-                    sleep(100);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
+           // }
         } catch (IOException e) {
             e.printStackTrace();
         }

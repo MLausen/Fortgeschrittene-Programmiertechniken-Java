@@ -22,6 +22,7 @@ public class IncomingClientThread extends Thread {
 
     @Override
     public void run(){
+        // closes afterwards
         try (ObjectInputStream in = new ObjectInputStream(socket.getInputStream())) {
             while (!socket.isClosed()) {
                 //wait till the server responses
@@ -32,15 +33,15 @@ public class IncomingClientThread extends Thread {
                     e.printStackTrace();
                 }
                 if (loginFeedback.substring(0, 10).equals("Your order is on the way to the Warehouse".substring(0, 10))) {
+                    Client.getInstance().login = true;
                     ((Model.Order)order).setFinished(false);
                     ((Model.Order)order).clear();
                 }
             }
-
         } catch (SocketException e) {
-
+            e.printStackTrace();
         } catch (IOException e) {
-
+            e.printStackTrace();
         }
     }
 }
