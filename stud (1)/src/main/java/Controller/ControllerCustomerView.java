@@ -5,6 +5,7 @@ import Helper.ErrorDialog;
 import Model.ModelShop;
 import Model.Order;
 import Model.Product;
+import TCPConnection.Client;
 import TCPConnection.Connect;
 import TCPConnection.StartLoginWindow;
 import View.ViewCustomer;
@@ -151,6 +152,7 @@ public class ControllerCustomerView {
             stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
                 public void handle(WindowEvent we) {
                     try {
+                        Client.getInstance().sendCloseSignal();
                         Connect.getInstance().closeConnection();
                     } catch (IOException e) {
                         e.printStackTrace();

@@ -1,8 +1,6 @@
 package TCPConnection;
 
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 /**
@@ -10,17 +8,12 @@ import java.net.Socket;
  */
 public class Connect {
     Socket serverCon = null;
-    ObjectOutputStream out;
-    ObjectInputStream in;
-
     static Connect instance = null;
 
     private Connect() {
 
         try {
             serverCon = new Socket("localhost", 6666);
-           /* out = new ObjectOutputStream(serverCon.getOutputStream());
-            in = new ObjectInputStream(serverCon.getInputStream());*/
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -38,8 +31,6 @@ public class Connect {
     }
 
     public void closeConnection() throws IOException {
-        if (in != null) in.close();
-        if (out != null) out.close();
         if (!serverCon.isClosed()) serverCon.close();
     }
 }

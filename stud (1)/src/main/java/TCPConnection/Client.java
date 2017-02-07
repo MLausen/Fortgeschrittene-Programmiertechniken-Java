@@ -40,15 +40,27 @@ public class Client {
         if (instance == null) instance = new Client();
         return instance;
     }
+    public void sendCloseSignal(){
+        try {
+            out.writeObject("close");
+            out.flush();
+            if (in != null) in.close();
+            if (out != null) out.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     public boolean buyRequest(String username, String password) {
         try {
             //send what the client wrote in the Dialog then flush
+            out.writeObject("open");
             out.writeObject(username);
             out.writeObject(password);
             out.writeObject(order);
             out.flush();
-            out.reset(); // otherwise the stream would give the same order everytime
+            out.reset(); // otherwise the stream would give the same order every time
 
             //wait till the server responses
             String loginFeedback = null;

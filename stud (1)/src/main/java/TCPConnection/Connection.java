@@ -39,7 +39,7 @@ public class Connection extends Thread {
             out = new ObjectOutputStream(socket.getOutputStream());
             in = new ObjectInputStream(socket.getInputStream());
 
-
+            mainLoop:
             while (socket.isConnected()) {
                 Lock lock = new ReentrantLock();
 
@@ -50,6 +50,12 @@ public class Connection extends Thread {
                 Order order = null;
 
                 while (incoming.isAlive()) {
+                    if(incoming.signal) {
+                        if (in != null) in.close();
+                        if (out != null) out.close();
+                        closeSockets();
+                        break mainLoop;
+                    }
                     login = incoming.login;
                     if (login) order = incoming.newOrder;
                 }
@@ -57,7 +63,7 @@ public class Connection extends Thread {
                 outcoming = new OutcomingThread(lock, out, login, order);
                 outcoming.start();
             }
-            closeSockets();
+
         } catch (IOException e) {
         e.printStackTrace();
         }

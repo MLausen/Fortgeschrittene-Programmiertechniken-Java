@@ -5,6 +5,7 @@ import Model.Product;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.net.SocketException;
 import java.util.concurrent.locks.Lock;
 
 /**
@@ -67,6 +68,8 @@ public class OutcomingThread extends Thread {
                 try {
                     out.writeObject("Invalid Username and/or password.");
                     out.flush();
+                } catch (SocketException e){
+                    e.printStackTrace();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
