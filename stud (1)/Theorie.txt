@@ -1,4 +1,4 @@
-Aufgabe 1 - Theorie
+﻿Aufgabe 1 - Theorie
 
 blockierende Methoden:
 
@@ -28,7 +28,7 @@ gültige Methodensignatur in RMI:
 	
 Was ist der Unterschied zu bisherigen Methodensignaturen (ohne RMI)?
 
-	- dass eine RemotException geworfen wird ^^
+	- dass eine RemotException geworfen werden muss
 	
 Wie wird ein Objekt bei der Registry angemeldet?
 
@@ -41,7 +41,7 @@ Wie kann eine Referenz auf ein Objekt der Registry geholt werden
 	
 Was ist der Unterschied zwischen bind und rebind?
 
-	- bind(String name, Object obj): wirft eine alreadyBoundException, wenn es schon ein 
+	- bind(String name, Object obj): wirft eine AlreadyBoundException, wenn es schon ein 
 	Objekt gibt, dass den Namen in der registry nutzt
 	- rebind(String name, Object obj): wird das Objekt, dass den Namen in der Registry nutzt, ersetzen.
 	Wenn ein Objekt mit dem Namen in der Registry nicht existiert, wird es dort eingeschrieben wie normal auch.
