@@ -42,6 +42,8 @@ public class ControllerCustomerView {
         viewCustomer.setProducts(modelShop);
         viewCustomer.setOrders(this.order);
 
+        Client.getInstance();
+
         timeRequest();
         timeRequestThread.start();
 
@@ -120,6 +122,7 @@ public class ControllerCustomerView {
                             // preparing package for response
                             packet = new DatagramPacket(answer, answer.length);
                             // waiting for response
+
                             dSocket.receive(packet);
                             String timeText = new String(packet.getData(), 0, packet
                                     .getLength());
@@ -148,7 +151,8 @@ public class ControllerCustomerView {
     public void closeConnection(Stage stage) {
         stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
             public void handle(WindowEvent we) {
-                Client.getInstance().sendCloseSignal();
+                if(Client.isConnected())Client.getInstance().sendCloseSignal();
+                System.exit(0);
             }
         });
     }

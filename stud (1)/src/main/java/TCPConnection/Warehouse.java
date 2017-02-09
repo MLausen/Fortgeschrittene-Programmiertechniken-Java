@@ -6,6 +6,7 @@ import Model.Order;
 import java.io.IOException;
 import java.net.*;
 import java.rmi.Naming;
+import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.text.DateFormat;
@@ -24,7 +25,8 @@ public class Warehouse {
     public static void main(String[] args) throws RemoteException, MalformedURLException{
         // Chat
         LocateRegistry.createRegistry(1099); // registered
-        Naming.rebind("//localhost:1099/" + Warehouse.SERVER_NAME, new ChatServer());
+        Remote chatServer = new ChatServer();
+        Naming.rebind("//localhost:1099/" + Warehouse.SERVER_NAME, chatServer);
 
         // Order (tcp)
         try (ServerSocket server = new ServerSocket(6666)) {

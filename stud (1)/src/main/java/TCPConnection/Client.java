@@ -13,6 +13,9 @@ import java.net.Socket;
  * Created by Team 10
  */
 public class Client {
+
+
+    private static boolean connected;
     public boolean login;
     ObjectOutputStream out;
     ObjectInputStream in;
@@ -23,10 +26,13 @@ public class Client {
     public void setOrder(Order order) {
         this.order = order;
     }
-
+    public static boolean isConnected() {
+        return connected;
+    }
     private Client() {
         try {
              serverCon = new Socket("localhost", 6666);
+            connected = serverCon.isConnected();
             out = new ObjectOutputStream(serverCon.getOutputStream());
             in = new ObjectInputStream(serverCon.getInputStream());
         } catch (ConnectException e) {
@@ -38,7 +44,7 @@ public class Client {
     }
 
     public static Client getInstance() {
-        if (instance == null) instance = new Client();
+        if (instance == null || !connected) instance = new Client();
         return instance;
     }
 
@@ -68,6 +74,9 @@ public class Client {
             }
 
 
+        } catch (ConnectException e) {
+            e.printStackTrace();
+            ErrorDialog.error("Sorry..Server is Down");
         } catch (IOException e) {
             e.printStackTrace();
             ErrorDialog.error("IO Exc");
