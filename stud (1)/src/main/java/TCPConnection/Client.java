@@ -13,8 +13,6 @@ import java.net.Socket;
  * Created by Team 10
  */
 public class Client {
-
-
     private static boolean connected;
     public boolean login;
     ObjectOutputStream out;
@@ -26,9 +24,11 @@ public class Client {
     public void setOrder(Order order) {
         this.order = order;
     }
+
     public static boolean isConnected() {
         return connected;
     }
+    
     private Client() {
         try {
              serverCon = new Socket("localhost", 6666);
