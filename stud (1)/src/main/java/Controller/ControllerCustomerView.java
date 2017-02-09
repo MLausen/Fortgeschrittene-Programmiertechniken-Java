@@ -1,12 +1,12 @@
 package Controller;
 
-import ChatComponents.StartChatWindow;
+import ChatComponents.ChatWindowCreator;
 import Helper.ErrorDialog;
 import Model.ModelShop;
 import Model.Order;
 import Model.Product;
 import TCPConnection.Client;
-import TCPConnection.StartLoginWindow;
+import TCPConnection.LoginWindowCreator;
 import View.ViewCustomer;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
@@ -63,7 +63,7 @@ public class ControllerCustomerView {
 
     private void openChat() {
         try {
-            StartChatWindow.getInstance();
+            ChatWindowCreator.getInstance();
         } catch (RemoteException e) {
             e.printStackTrace();
         } catch (MalformedURLException e) {
@@ -89,7 +89,7 @@ public class ControllerCustomerView {
     }
 
     private void buyOperation() {
-        StartLoginWindow.getInstance(order);
+        LoginWindowCreator.getInstance(order);
     }
 
     // method to buyRequest a request to a server by a client via udp-package

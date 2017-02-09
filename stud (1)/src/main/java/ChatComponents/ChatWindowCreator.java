@@ -4,6 +4,7 @@ import Controller.ControllerChatClientView;
 import Helper.ErrorDialog;
 import TCPConnection.Warehouse;
 import View.ViewChatClient;
+
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -18,20 +19,20 @@ import java.rmi.RemoteException;
 /**
  * Created by Team 10
  */
-public class StartChatWindow extends Stage {
-    private static StartChatWindow instance;
+public class ChatWindowCreator extends Stage {
+    private static ChatWindowCreator instance;
     public static String url;
 
-    public static StartChatWindow getInstance() throws RemoteException, NotBoundException, MalformedURLException {
-        if (StartChatWindow.instance == null || !StartChatWindow.instance.isShowing()) {
-            StartChatWindow.instance = new StartChatWindow();
+    public static ChatWindowCreator getInstance() throws RemoteException, NotBoundException, MalformedURLException {
+        if (ChatWindowCreator.instance == null || !ChatWindowCreator.instance.isShowing()) {
+            ChatWindowCreator.instance = new ChatWindowCreator();
         }
-        StartChatWindow.instance.requestFocus();
-        return StartChatWindow.instance;
+        ChatWindowCreator.instance.requestFocus();
+        return ChatWindowCreator.instance;
     }
 
-    public StartChatWindow() throws RemoteException, MalformedURLException, NotBoundException {
-        url = "//localhost:1099/" + Warehouse.NAME; // registry
+    public ChatWindowCreator() throws RemoteException, MalformedURLException, NotBoundException {
+        url = "//localhost:1099/" + Warehouse.SERVER_NAME; // registry
         try {
             ChatService server = (ChatService) Naming.lookup(url);
             ClientService client = new ChatClient(server);

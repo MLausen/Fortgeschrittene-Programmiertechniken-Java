@@ -11,12 +11,13 @@ import java.rmi.server.UnicastRemoteObject;
  */
 public class ChatClient extends UnicastRemoteObject implements ClientService {
     private static final long serialVersionUID = 1L;
-    private String prefix = "Person";
+
     private ChatService server;
-    private Integer id = -1;
-    public volatile boolean login = true;
     public ChatContentObservable observable;
 
+    private String prefix = "Person";
+    public volatile boolean login = true;
+    private Integer id = -1;
 
     public ChatClient(ChatService server) throws RemoteException, MalformedURLException {
         this.server = (ChatService) server;

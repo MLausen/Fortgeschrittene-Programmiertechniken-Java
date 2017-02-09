@@ -33,7 +33,6 @@ public class ChatServer extends UnicastRemoteObject implements ChatService{
     public boolean login(String client) throws RemoteException {
         System.out.println("Client " + client + " logged in.");
         return this.clients.add(client);
-
     }
 
     @Override

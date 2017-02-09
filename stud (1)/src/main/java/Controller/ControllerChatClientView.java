@@ -15,7 +15,7 @@ public class ControllerChatClientView implements Observer {
     ViewChatClient view;
     ChatClient model;
 
-    public ControllerChatClientView(ViewChatClient view, ClientService model){
+    public ControllerChatClientView(ViewChatClient view, ClientService model) {
         this.view = view;
         this.model = (ChatClient) model;
         view.getChatArea().setText(((ChatClient) model).observable.getText());
@@ -28,10 +28,10 @@ public class ControllerChatClientView implements Observer {
         model.send(model.getName() + ": " + message);
     }
 
-    private void setClientEventHandler(){
-        view.setOnSendHandeler(e->{
+    private void setClientEventHandler() {
+        view.setOnSendHandeler(e -> {
             String message = view.getMessage();
-            if(message != null && !message.equals("")){
+            if (message != null && !message.equals("")) {
                 view.resetInputField("");
                 try {
                     this.sendToServer(message);

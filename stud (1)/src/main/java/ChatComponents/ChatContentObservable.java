@@ -4,6 +4,8 @@ import java.util.Observable;
 
 /**
  * Created by Team 10
+ * Observer fires event if text has changed
+ * Controller of ChatWindow will update content in TextArea
  */
 public class ChatContentObservable extends Observable {
     String text;

@@ -16,10 +16,8 @@ public class Connection extends Thread {
     public static final String USERNAME = "admin";
     public static final String PASSWORT = "admin";
 
-
     private int name;
     private Socket socket;
-
 
     private IncomingThread incoming;
     private OutcomingThread outcoming;
@@ -67,9 +65,7 @@ public class Connection extends Thread {
         } catch (IOException e) {
         e.printStackTrace();
         }
-
     }
-
 
     private void printConnection() {
         System.out.println("TCP Connection to " + name + " " + socket.getInetAddress() + "  " + socket.getLocalPort());

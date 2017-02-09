@@ -19,21 +19,21 @@ import java.util.Scanner;
 public class Warehouse {
     static Order order = new Order();
     private static Thread timeResponseThread;
-    public static final String NAME = "Team10_RMIChatServer";
+    public static final String SERVER_NAME = "Team10_RMIChatServer";
 
     public static void main(String[] args) throws RemoteException, MalformedURLException{
         // Chat
         LocateRegistry.createRegistry(1099); // registered
-        Naming.rebind("//localhost:1099/" + Warehouse.NAME, new ChatServer());
+        Naming.rebind("//localhost:1099/" + Warehouse.SERVER_NAME, new ChatServer());
 
         // Order (tcp)
         try (ServerSocket server = new ServerSocket(6666)) {
             int connections = 0;
 
+            // date time request
             Warehouse.timeResponse();
             timeResponseThread.start();
 
-            //always running
             while (true) {
                 try {
                     //wait until some client call the address and has the same port
@@ -58,8 +58,6 @@ public class Warehouse {
                 try (DatagramSocket socket = new DatagramSocket(6667)) {
                     System.out.println(socket.getLocalPort());
                     while (true) {
-
-                        // new package
                         DatagramPacket packet = new DatagramPacket(new byte[5], 5);
                         // waiting for package
                         try {

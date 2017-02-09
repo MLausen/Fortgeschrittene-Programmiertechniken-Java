@@ -22,8 +22,7 @@ public class IncomingThread extends Thread{
     }
 
     public void run(){
-
-        //read what has the client sent
+        //read what the client has sent
         String username = null;
         String password = null;
         try {

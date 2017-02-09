@@ -9,23 +9,23 @@ import javafx.stage.Stage;
 /**
  * Created by Team 10
  */
-public class StartLoginWindow extends Stage {
-    private static StartLoginWindow instance;
+public class LoginWindowCreator extends Stage {
+    private static LoginWindowCreator instance;
 
 
-    public static StartLoginWindow getInstance(Order order) {
-        if (StartLoginWindow.instance == null || !StartLoginWindow.instance.isShowing()) {
-            StartLoginWindow.instance = new StartLoginWindow(order);
+    public static LoginWindowCreator getInstance(Order order) {
+        if (LoginWindowCreator.instance == null || !LoginWindowCreator.instance.isShowing()) {
+            LoginWindowCreator.instance = new LoginWindowCreator(order);
         }
-        StartLoginWindow.instance.requestFocus();
-        return StartLoginWindow.instance;
+        LoginWindowCreator.instance.requestFocus();
+        return LoginWindowCreator.instance;
     }
 
-    public StartLoginWindow(Order order) {
+    public LoginWindowCreator(Order order) {
         Client.getInstance().setOrder((Model.Order) order);
         ViewLogin view = new ViewLogin();
         ControllerLoginView ctrl = new ControllerLoginView();
-        ctrl.link( view);
+        ctrl.link(view);
 
         Scene scene = new Scene(view);
         this.setScene(scene);

@@ -8,12 +8,12 @@ import java.rmi.RemoteException;
 public class ThreadChatClient implements Runnable {
     ChatClient client;
 
-    public ThreadChatClient(ClientService client){
+    public ThreadChatClient(ClientService client) {
         this.client = (ChatClient) client;
     }
 
     @Override
-    public void run(){
+    public void run() {
         try {
             client.getServer().login(client.getName());
             System.out.println("Client with ID " + client.getId() + " joins the chat.");
@@ -21,9 +21,8 @@ public class ThreadChatClient implements Runnable {
             e.printStackTrace();
         }
 
-            while (client.login) {
+        while (client.login) {  }
 
-        }
         System.out.println("ended client thread");
     }
 }

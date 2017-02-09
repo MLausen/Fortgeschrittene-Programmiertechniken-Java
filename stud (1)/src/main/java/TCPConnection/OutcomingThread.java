@@ -13,7 +13,6 @@ import java.util.concurrent.locks.Lock;
  */
 public class OutcomingThread extends Thread {
     private boolean login;
-
     private ObjectOutputStream out;
     private Order newOrder;
 
@@ -27,7 +26,6 @@ public class OutcomingThread extends Thread {
     }
 
     public void run() {
-
             String answer = "";
             if (login) {
                 if (newOrder.size() > 0) {
@@ -74,6 +72,5 @@ public class OutcomingThread extends Thread {
                     e.printStackTrace();
                 }
             }
-
     }
 }
